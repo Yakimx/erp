@@ -1,0 +1,37 @@
+    
+
+    body{
+      background-image: url('./assets/img/background.png');
+      
+
+    }
+    .app {
+      
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        display: grid;
+               
+        grid-template-columns: 600px auto;
+        grid-template-rows: 6vh 94vh;
+        grid-template-areas:
+          'header header'
+          'listContract main'
+
+          
+      }
+      
+      .header {
+        grid-area: header;
+      }
+      
+      .main {
+        grid-area: main;
+      }
+      
+      .listContract {
+        grid-area: listContract;
+      }
+
+    
+
+

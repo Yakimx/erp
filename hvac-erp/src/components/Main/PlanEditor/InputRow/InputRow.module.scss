@@ -1,0 +1,11 @@
+.inputRow{
+    
+            display: grid;
+            grid-template-columns: 15rem repeat(9,1fr);
+            grid-template-rows: auto;
+            justify-items: center;
+            align-items: center;
+            border-bottom: 2px groove rgb(230, 230, 230);     
+            font-weight: 600;
+        
+}

@@ -1,0 +1,30 @@
+.root{
+    position: relative;     
+    user-select: none; 
+    padding-right: 8px;  
+}
+
+
+.input{       
+    border: 1px solid rgba(0, 0, 0, 0.904);
+    width: 100%;
+    padding: 4px 4px 4px 4px;
+    
+    border-radius: 3px;
+
+&:focus{
+    //border: 3px solid rgba(0, 0, 0, 0.904);
+    border-radius: 5px;
+}
+}
+
+
+.searchImg{
+    width:15px;
+    height:15px;
+    opacity: 0.3;
+    position:absolute;
+    left: 10px;
+    top: 5px;
+}
+

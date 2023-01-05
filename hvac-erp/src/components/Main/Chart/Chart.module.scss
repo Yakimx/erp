@@ -1,0 +1,7 @@
+.chart{
+    display: grid;
+    grid-template-columns: repeat(3, 270px) auto;
+    grid-template-rows: 200px;
+    justify-items: center; 
+
+}

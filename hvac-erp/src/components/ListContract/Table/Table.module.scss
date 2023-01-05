@@ -1,0 +1,70 @@
+.root{
+    
+}
+.table{  
+    border-collapse: collapse;
+    width: 100%;
+    
+    
+    
+    th, td{        
+        border-bottom: 2px groove rgb(230, 230, 230);
+        padding: 8px;
+        color: rgb(0, 0, 0);
+        
+       
+    }
+    tr{
+        cursor: pointer;
+    }
+
+    //tr:nth-child(even){background-color: #f2f2f2;}
+    
+    
+    th {
+        position: sticky;
+        top: -1px;
+        padding-top: 12px;
+        padding-bottom: 5px;
+        text-align: left;
+        background-color: rgb(64, 199, 129);
+        color: rgb(0, 0, 0);
+        cursor: auto;
+    }
+}
+
+// ::-webkit-scrollbar {
+//     width: 0;
+//   } 
+
+.activecontract{
+    
+    background-color: rgb(64, 199, 129);
+}
+
+.inactivecontract:hover{    
+     background-color: rgb(245, 222, 179);
+}
+
+.thone{
+    width: 55px; 
+   
+}
+
+.sortIcon{
+
+        height: 20px;
+        pointer-events: none;
+        padding-left: 35px;       
+        
+}
+
+
+.notfound{
+    height: 100px;
+    padding-top: 50px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 32px;
+    
+}

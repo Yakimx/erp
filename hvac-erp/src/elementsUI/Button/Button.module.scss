@@ -1,0 +1,17 @@
+.button{
+    height: 2em;
+    border-radius: 8px;
+    border: 1px solid rgb(255, 255, 255);
+    //background: rgb(64, 199, 129);
+    background:#bada55;    
+    color:rgb(0, 0, 0);
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+
+    &:disabled{
+        background:#aaaaaa;
+        border: 1px solid rgb(121, 119, 119);
+    }
+}
+//rgb(250, 128, 114)", "rgb(64, 199, 129)

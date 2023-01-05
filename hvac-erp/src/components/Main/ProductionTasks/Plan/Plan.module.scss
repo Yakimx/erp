@@ -1,0 +1,61 @@
+.root{
+margin: 0 1rem 0 1rem;
+    .head{
+        display: grid;
+        grid-template-columns: 8rem 20rem repeat(2,1fr);
+        grid-template-rows: 2rem;
+        justify-items: center;
+        align-items: center;
+        font-weight: 600;
+        user-select: none;
+        border-bottom: 2px groove rgb(230, 230, 230);
+        border-top: 2px groove rgb(230, 230, 230);
+    }
+
+}
+.buttonBar{
+    margin: 0.5rem 0 0.5rem 0;    
+    display: grid;
+    grid-template-columns: 5rem 10rem 30rem;
+}
+
+.list{
+    overflow-y: scroll;
+    height: 47vh;
+    
+    &::-webkit-scrollbar {
+        width: 10px; /* ширина для вертикального скролла */    
+        background-color: '';
+        box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.45);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(109, 125, 128);    
+    }
+
+// .productRow{
+//     display: grid;
+//     //grid-template-columns: repeat(4,1fr);
+//     grid-template-rows: 6rem;
+//     justify-items: center;
+//     align-items: center;
+// }
+    
+    
+
+}
+
+.date{
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 2px groove rgb(230, 230, 230);
+    
+}
+.contractNumber{
+    //text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    border-bottom: 2px groove rgb(230, 230, 230);
+    
+}
+
