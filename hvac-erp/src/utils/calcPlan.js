@@ -1,227 +1,109 @@
-export const calcPlan = (contracts) => {
-  let dateStr = new Date().toLocaleDateString();
-  let doc = [];
-  let res = [
+import { sortDateUp, sortDateDown } from "./sortDate";
+
+export const calcPlan = (contracts, objResources, sector) => {
+  let startPlanDate = objResources.config.startPlanDate;
+  let resources = objResources.resources;
+  //let dateStr = new Date().toLocaleDateString();
+
+  let date = new Date(startPlanDate).getTime();
+
+  let indexDay = 0;
+  let result = [
     {
-      date: "2023-12-12",
-      listPlan: [
-        {
-          products: [],
-        },
-      ],
+      date: new Date(date + indexDay * 24 * 3600 * 1000).toLocaleDateString(),
+      list: [],
     },
   ];
-  // roduct.quantity
+
+  let resourceDay = resources[sector].dayResources;
+  let quantityRem = 0;
+  let quantityDay = 0;
+  let resourceRequired = 0;
+  let resourceRequiredItem = 0;
+
+  let itemPlan = {
+    contractNumber: 0,
+    name: "",
+    id: "",
+    planResourceRequired: 0,
+    // quantityAll: 0,
+    // quantityMade: 0,
+    // quantityMadeToday: 0,
+    //
+    // planQuantityRequired: 0,
+    // indexProduct: 0,
+  };
+
+  let arrResource = [[]];
+  contracts = contracts.slice().sort(sortDateUp);
+
   contracts.map((contract) => {
-    contract.products.map((roduct) => {
-      for (let i = 1; i <= 1; i++) {
-        doc.push({
-          contractNumber: contract.contractNumber,
-          name: roduct.name,
-          quantityAll: roduct.quantity,
-          quantityMade: 0,
-          quantityMadeToday: 0,
-          quantityRequired: roduct.quantity,
-        });
+    contract.products.map((product, index) => {
+      itemPlan.contractNumber = contract.contractNumber;
+      itemPlan.name = product.name;
+      itemPlan.id = product._id;
+      itemPlan.planResourceRequired = 0;
+      itemPlan.quantityMade = product.quantityMade[sector];
+      itemPlan.quantityAll = product.quantity;
+      resourceRequiredItem = product.resourcesRequired[sector];
+
+      //fjsaofjosdfnsdfindjf
+      itemPlan.quantityMadeToday = product.quantityNotConfirmed[sector];
+      itemPlan.indexProduct = index;
+      /////
+      itemPlan.resourceRequiredItem = resourceRequiredItem;
+
+      quantityRem = product.quantity - product.quantityMade[sector];
+      if (quantityRem > 0) {
+        resourceRequired = +(quantityRem * resourceRequiredItem).toFixed(2);
+
+        while (resourceRequired > resourceDay) {
+          itemPlan.planResourceRequired = resourceDay;
+          arrResource[indexDay].push({ ...itemPlan });
+          arrResource.push([]);
+          indexDay += 1;
+          itemPlan.planResourceRequired = 0;
+          resourceRequired = resourceRequired - resourceDay;
+          resourceDay = resources[sector].dayResources;
+        }
+        itemPlan.planResourceRequired = resourceRequired;
+        arrResource[indexDay].push({ ...itemPlan });
+        resourceDay = resourceDay - resourceRequired;
       }
     });
   });
 
-  res[0].listPlan[0].products = doc;
-  console.log(res);
-  return res;
+  //add planQuantityRequired
+  arrResource.map((day, indexDay) => {
+    day.map((item, index) => {
+      let quan =
+        arrResource[indexDay][index].planResourceRequired /
+        arrResource[indexDay][index].resourceRequiredItem;
+      arrResource[indexDay][index].planQuantityRequired =
+        Math.round(quan * 10) / 10;
+
+      let remainder =
+        quan * arrResource[indexDay][index].resourceRequiredItem -
+        (Math.round(quan * 10) / 10) *
+          arrResource[indexDay][index].resourceRequiredItem;
+
+      if (indexDay + 1 < arrResource.length) {
+        if (
+          arrResource[indexDay][index].id == arrResource[indexDay + 1][0].id
+        ) {
+          arrResource[indexDay + 1][0].planResourceRequired += remainder;
+        }
+      }
+    });
+  });
+
+  //add date
+  arrResource.map((day, indexDay) => {
+    arrResource[indexDay] = {
+      date: new Date(date + indexDay * 24 * 3600 * 1000).toLocaleDateString(),
+      list: arrResource[indexDay],
+    };
+  });
+
+  return arrResource;
 };
-
-// let res = [
-//   {
-//     date: "2023-12-12",
-//     listPlan: [
-//       {
-//         contractNumber: 999,
-
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     date: "2023-12-12",
-//     listPlan: [
-//       {
-//         contractNumber: 999,
-//         products: [
-//           {
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// ];
-
-// let res = [
-//   {
-//     date: "2023-12-12",
-//     listPlan: [
-//       {
-//         products: [
-//           {
-//             contractNumber: 999,
-//             name: "ВКК-100",
-//             quantityAll: 5,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 4,
-//           },
-//           {
-//             contractNumber: 999,
-//             name: "ВР80-75",
-//             quantityAll: 10,
-//             quantityMade: 2,
-//             quantityMadeToday: 6,
-//             quantityRequired: 10,
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// ];
