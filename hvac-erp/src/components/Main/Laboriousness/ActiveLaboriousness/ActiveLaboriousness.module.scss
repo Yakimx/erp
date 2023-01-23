@@ -4,21 +4,9 @@
     
 }
 
-
-.buttonBar{
-    display: grid;
-    grid-template-columns: repeat(2, 80px) auto;
-}
-
-.contractInfo{
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-}
-.contractDate{    
-    display: grid;
-    grid-template-columns: 17rem 17rem; 
+.label{
+    font-weight: 600;
+    margin: 1rem 0 1rem 0;
 }
 
 .products{    
@@ -39,20 +27,11 @@
     }
 }
 
-// .row{
-//     display: grid;
-//     grid-template-columns: repeat(10,1fr);
-//     grid-template-rows: 2rem;
-//     justify-items: center;
-//     align-items: center;
-//     border-bottom: 2px groove rgb(230, 230, 230);
-//     }
-
 .headRow{
     margin-right: 1.1rem;
     display: grid;
-    //grid-template-columns: 15rem repeat(9,1fr);
-    grid-template-columns: 15rem repeat(9, minmax(60px, 1fr));
+    //grid-template-columns: 15rem repeat(8,1fr);
+    grid-template-columns: 15rem repeat(8, minmax(60px, 1fr));
     grid-template-rows: auto;
     justify-items: center;
     align-items: center;
@@ -60,22 +39,16 @@
     font-size: 14px;
     border-bottom: 2px groove rgb(230, 230, 230);
     border-top: 2px groove rgb(230, 230, 230);
+    
     div{
         margin: 0 0.2rem 0 0.2rem; 
         text-align: center;
+        
     }
       
 }
 
-.table{
-    
-    h1{
-        font-size: 20px;
-    }
-    
+.buttonBar{
+    display: grid;
+    grid-template-columns: repeat(2, 80px) auto;
 }
-
-.progress{
-    height: 100px;
-}
-

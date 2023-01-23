@@ -4,7 +4,14 @@ export const routes = {
   updateContract: "/list/update",
   sendFile: "/list/xmlUpload",
   getContracts: "/list/contracts",
+  updateNotConfirmed: "/list/updateNotConfirmed",
+  updatePlan: "/list/updatePlan",
 
   getResource: "/resource/data",
   updateResource: "/resource/update",
+
+  getLaboriousness: "/laboriousness/get",
+  updateLaboriousness: "/laboriousness/update",
+  deleteLaboriousness: "/laboriousness/delete",
+  addLaboriousness: "/laboriousness/add",
 };

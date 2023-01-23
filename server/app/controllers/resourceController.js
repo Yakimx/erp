@@ -20,7 +20,7 @@ class resourceController {
         { id: 0 },
         { id, config, resources }
       );
-      res.send("Файл загружен");
+      res.send("Данные оновлены");
     } catch (e) {
       console.log(e);
     }

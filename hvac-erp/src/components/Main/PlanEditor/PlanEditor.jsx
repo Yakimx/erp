@@ -93,7 +93,7 @@ const PlanEditor = () => {
     
     <div>Кол-во</div>
     <div>Документация</div>
-    <div>Автоматика</div>
+    <div>Документация САУ</div>
     <div>Заготовка</div>
     <div>Гибка</div>
     <div>Сборка №1</div>
@@ -110,7 +110,7 @@ const PlanEditor = () => {
 
       <div key={index}>
       {!disabledInput ? (      
-        <InputRow disabledInput={disabledInput} product={product} index={index}/>
+        <InputRow disabledInput={disabledInput} product={product} index={index} maxValue={product.quantity}/>
        ):(<ProgressRow disabledInput={disabledInput} product={product}/> )
         }      
       </div>

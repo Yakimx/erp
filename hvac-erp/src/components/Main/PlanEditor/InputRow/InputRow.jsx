@@ -11,35 +11,35 @@ import {setDocValue,
   setAssemSauValue,
   setAutoValue} from './../../../../redux/slices/contractsSlice'
 
-const InputRow = ({disabledInput, product, index}) => {
+const InputRow = ({disabledInput, product, index, maxValue}) => {
 
 const dispatch = useDispatch();
 const {contract} = useSelector((state)=>state.contracts.activeContract);
 
 const onChangeDocInput = (value)=>{  
-  dispatch(setDocValue({value, index}))
+  dispatch(setDocValue({value, index, maxValue}))
 }
 const onChangeCutInput = (value)=>{
-  dispatch(setCutValue({value, index}))
+  dispatch(setCutValue({value, index, maxValue}))
 }
 const onChangeSheetInput = (value)=>{
-  dispatch(setSheetValue({value, index}))
+  dispatch(setSheetValue({value, index, maxValue}))
 }
 const onChangeAssemAInput = (value)=>{
-  dispatch(setAssemAValue({value, index}))
+  dispatch(setAssemAValue({value, index, maxValue}))
 }
 const onChangeAssemBInput = (value)=>{
-  dispatch(setAssemBValue({value, index}))
+  dispatch(setAssemBValue({value, index, maxValue}))
 }
 const onChangeAssemCInput = (value)=>{
-  dispatch(setAssemCValue({value, index}))
+  dispatch(setAssemCValue({value, index, maxValue}))
 }
 const onChangeAssemSauInput = (value)=>{
-  dispatch(setAssemSauValue({value, index}))
+  dispatch(setAssemSauValue({value, index, maxValue}))
 }
 
 const onChangeAutoInput = (value)=>{
-  dispatch(setAutoValue({value, index}))
+  dispatch(setAutoValue({value, index, maxValue}))
 }
 
 

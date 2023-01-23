@@ -1,0 +1,57 @@
+.root{
+    
+    padding: 10px 5px 5px 10px;
+    
+}
+
+.buttonBar{
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+.headRow{
+    margin-right: 1.1rem;
+    display: grid;
+    //grid-template-columns: 15rem repeat(8,1fr);
+    grid-template-columns: 15rem repeat(8, minmax(60px, 1fr)) 2rem;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 2px groove rgb(230, 230, 230);
+    border-top: 2px groove rgb(230, 230, 230);
+    div{
+        margin: 0 0.2rem 0 0.2rem; 
+        text-align: center;
+    }
+    
+        
+    
+}
+.label{
+    font-weight: 600;
+    margin: 1rem 0 1rem 0;
+}
+
+.laboriousness{    
+    padding-right: 0.5rem;
+    height: 36vh;
+    overflow-y: scroll;
+    
+    &::-webkit-scrollbar {
+        width: 10px; /* ширина для вертикального скролла */    
+        background-color: '';
+        box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.45);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(109, 125, 128);    
+    }
+    hr{
+        margin: 5px 20px 0 0;
+    }
+}
+
+.wrap{
+    width: 20rem;
+}

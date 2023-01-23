@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route} from "react-router-dom";
 import { fetchContracts } from '../../redux/slices/contractsSlice';
 import { fetchResource } from '../../redux/slices/resourcesSlice';
+import { fetchLaboriousness } from '../../redux/slices/laboriousnessSlice';
 import Chart from './Chart/Chart';
 import GanttChart from './GanttChart/GanttChart';
 import styles from './Main.module.scss'
@@ -19,6 +20,7 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const {status} = useSelector((state)=>state.resources);
+  const statusLab = useSelector((state)=>state.laboriousness.status);
 
 const [activeTab, setActiveTab] = useState(0);
 
@@ -39,6 +41,13 @@ React.useEffect(() => {
   if (status != "success") getResource();
 }, []);
 
+const getLaboriousness = async () => {  
+  dispatch(fetchLaboriousness());
+};
+
+React.useEffect(() => { 
+  if (statusLab != "success") getLaboriousness();
+}, []);
 
 
 return (
@@ -47,7 +56,7 @@ return (
 <Chart />      
 <TabBar listTab={listTab} setActiveTab={setActiveTab} activeTab={activeTab}/>
 
-{activeTab==0 && <ProductionTasks />}  
+{(activeTab==0 && status == "success") && <ProductionTasks />}  
 {activeTab==1 && <GanttChart />}
 {activeTab==2 && <PlanEditor />}
 {(activeTab==3 && status == "success") && <Resource />}

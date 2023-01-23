@@ -69,6 +69,14 @@ export const resourcesSlice = createSlice({
       if (check)
         state.objResources.config.lastDate = action.payload.lastСontractDate;
     },
+    setStartDate: (state, action) => {
+      state.objResources.config.startPlanDate = action.payload;
+    },
+    setCheckBoxStartDate: (state, action) => {
+      let check = action.payload.e;
+      state.objResources.config.checkBoxStartDate = check;
+      if (check) state.objResources.config.startPlanDate = action.payload.today;
+    },
 
     recalculationResources: (state, action) => {
       const countWorkDay = getWorkDay(state.objResources.config.lastDate);
@@ -218,6 +226,8 @@ export const {
   updateValue,
   setLastDate,
   recalculationResources,
+  setStartDate,
+  setCheckBoxStartDate,
 
   setDocumentationDayResources,
   setDocumentationAdjustment,

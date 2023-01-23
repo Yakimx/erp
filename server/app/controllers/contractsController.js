@@ -1,4 +1,5 @@
 const Contract = require("./../models/contract");
+const Resource = require("./../models/resource");
 const fs = require("fs");
 const xmlToJson = require("../utils/parseXml");
 const createContracts = require("../utils/createContracts");
@@ -33,6 +34,77 @@ class contractsController {
     }
   }
 
+  async updatePlan(req, res) {
+    try {
+      const contracts = await Contract.find({});
+      const newContracts = contracts.map((contract) => {
+        let newProducts = contract.products.map((product) => {
+          product.quantityMade.documentation +=
+            +product.quantityNotConfirmed.documentation;
+          product.quantityMade.automation +=
+            +product.quantityNotConfirmed.automation;
+          product.quantityMade.cutting += +product.quantityNotConfirmed.cutting;
+          product.quantityMade.sheetBender +=
+            +product.quantityNotConfirmed.sheetBender;
+          product.quantityMade.assemblingA +=
+            +product.quantityNotConfirmed.assemblingA;
+          product.quantityMade.assemblingB +=
+            +product.quantityNotConfirmed.assemblingB;
+          product.quantityMade.assemblingC +=
+            +product.quantityNotConfirmed.assemblingC;
+          product.quantityMade.assemblingSau +=
+            +product.quantityNotConfirmed.assemblingSau;
+          product.quantityNotConfirmed.documentation = 0;
+          product.quantityNotConfirmed.automation = 0;
+          product.quantityNotConfirmed.cutting = 0;
+          product.quantityNotConfirmed.sheetBender = 0;
+          product.quantityNotConfirmed.assemblingA = 0;
+          product.quantityNotConfirmed.assemblingB = 0;
+          product.quantityNotConfirmed.assemblingC = 0;
+          product.quantityNotConfirmed.assemblingSau = 0;
+          return product;
+        });
+        contract.products = newProducts;
+        return contract;
+      });
+      //console.log(newContracts);
+      //console.log(newContracts.products[0].quantityNotConfirmed.documentation);
+      newContracts.map(async (contract) => {
+        await Contract.findOneAndUpdate(
+          { contractNumber: contract.contractNumber },
+          contract,
+          { new: true }
+        );
+      });
+
+      res.send("Данные оновлены");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async updateNotConfirmed(req, res) {
+    try {
+      let contractsClient = await req.body;
+      // const contracts = await Contract.find({});
+      // let newContracts = contracts.map((contract)=>{
+      //   contract.products.map()
+      // })
+
+      contractsClient.map(async (contract) => {
+        await Contract.findOneAndUpdate(
+          { contractNumber: contract.contractNumber },
+          contract,
+          { new: true }
+        );
+      });
+
+      res.send("OK");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async xmlParse(req, res) {
     try {
       //res.header("Access-Control-Allow-Origin", "*");
@@ -49,9 +121,7 @@ class contractsController {
             updateXml(contractDb, contractXml)
           );
         } else {
-          contractXml.save(function (err) {
-            console.log(err);
-          });
+          await contractXml.save();
         }
       });
 

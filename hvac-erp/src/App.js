@@ -19,7 +19,7 @@ function App() {
   React.useEffect(() => {
     if (statusSubmitFile == "success") {
       getContracts();
-      console.log(allContracts);
+      //console.log(allContracts);
     }
   }, [statusSubmitFile]);
 

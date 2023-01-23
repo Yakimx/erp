@@ -6,6 +6,8 @@ const Resource = new Schema({
   config: {
     lastDate: { type: String, default: "2099-01-01" },
     checkBoxDate: { type: Boolean, default: false },
+    startPlanDate: { type: String, default: "2023-01-01" },
+    checkBoxStartDate: { type: Boolean, default: true },
   },
 
   resources: {

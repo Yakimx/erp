@@ -1,12 +1,15 @@
 .inputRow{
     
             display: grid;
-            //grid-template-columns: 15rem repeat(9,1fr);
-            grid-template-columns: 15rem repeat(9, minmax(60px, 1fr));
+            //grid-template-columns: 15rem repeat(8,1fr);
+            grid-template-columns: 15rem repeat(8, minmax(60px, 1fr));
             grid-template-rows: auto;
             justify-items: center;
             align-items: center;
             border-bottom: 2px groove rgb(230, 230, 230);     
             font-weight: 600;
+            div{
+            text-align: center;
+            }
         
 }

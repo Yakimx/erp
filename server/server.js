@@ -4,15 +4,26 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const contractRouter = require("./app/routes/contractsRouter");
 const resourceRouter = require("./app/routes/resourceRouter");
+const laboriousnessRouter = require("./app/routes/laboriousnessRouter");
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+//app.use(express.json());
+
+app.use(
+  bodyParser.urlencoded({
+    limit: "1mb",
+    extended: false,
+  })
+);
+app.use(bodyParser.json({ limit: "1mb" }));
+
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 app.use("/list", contractRouter);
 app.use("/resource", resourceRouter);
+app.use("/laboriousness", laboriousnessRouter);
 
 const port = 8000;
 const urlDb = "mongodb://127.0.0.1:27017/erp";

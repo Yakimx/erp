@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { setValueDocumentationInput, 
-  setValueCuttingInput,
-  setValueSheetBenderInput, 
-  setValueAssemblingAInput,
-  setValueAssemblingBInput,
-  setValueAssemblingCInput,
-  setValueAssemblingSauInput, 
-  setValueAutomationInput,} from '../../../redux/slices/planSlice';
+// import { setValueDocumentationInput, 
+//   setValueCuttingInput,
+//   setValueSheetBenderInput, 
+//   setValueAssemblingAInput,
+//   setValueAssemblingBInput,
+//   setValueAssemblingCInput,
+//   setValueAssemblingSauInput, 
+//   setValueAutomationInput,} from '../../../redux/slices/planSlice';
 import Plan from './Plan/Plan';
 import styles from './ProductionTasks.module.scss'
-import TabBarTask from './TabBarTask/TabBarTask'
+import TabBarTask from '../../../elementsUI/TabBarTask/TabBarTask'
 
 const ProductionTasks = () => {
 
@@ -44,14 +44,14 @@ const listTab = ['Документация', 'Документация САУ',
   setInputValueSheetBender,
   setInputValueAssembling,
   setInputValueAutomation, */}
-    {activeTab==0 && <Plan plan={documentationPlan} setValueInput={setValueDocumentationInput}/>}
-    {activeTab==1 && <Plan plan={automationPlan} setValueInput={setValueAutomationInput}/>}
-    {activeTab==2 && <Plan plan={cuttingPlan} setValueInput={setValueCuttingInput}/>}
-    {activeTab==3 && <Plan plan={sheetBenderPlan} setValueInput={setValueSheetBenderInput}/>}
-    {activeTab==4 && <Plan plan={assemblingAPlan} setValueInput={setValueAssemblingAInput}/>}
-    {activeTab==5 && <Plan plan={assemblingBPlan} setValueInput={setValueAssemblingBInput}/>}
-    {activeTab==6 && <Plan plan={assemblingCPlan} setValueInput={setValueAssemblingCInput}/>}
-    {activeTab==7 && <Plan plan={assemblingSauPlan} setValueInput={setValueAssemblingSauInput}/>}
+    {activeTab==0 && <Plan plan={documentationPlan} type={'documentation'}/>}
+    {activeTab==1 && <Plan plan={automationPlan} type={'automation'}/>}
+    {activeTab==2 && <Plan plan={cuttingPlan} type={'cutting'}/>}
+    {activeTab==3 && <Plan plan={sheetBenderPlan} type={'sheetBender'}/>}
+    {activeTab==4 && <Plan plan={assemblingAPlan} type={'assemblingA'}/>}
+    {activeTab==5 && <Plan plan={assemblingBPlan} type={'assemblingB'}/>}
+    {activeTab==6 && <Plan plan={assemblingCPlan} type={'assemblingC'}/>}
+    {activeTab==7 && <Plan plan={assemblingSauPlan} type={'assemblingSau'}/>}
     
 
 

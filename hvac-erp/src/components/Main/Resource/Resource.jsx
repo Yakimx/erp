@@ -49,9 +49,10 @@ const Resource = () => {
         dispatch(submitResource(objResources)); 
       }
     const onClickCancelButton = ()=>{
-        dispatch(updateValue()); 
+        //dispatch(updateValue()); 
+        //dispatch(fetchResource(objResources)); 
         dispatch(setDisabledInput(true));
-        dispatch(fetchResource(objResources)); 
+        dispatch(fetchResource()); 
       }
 
     const onChangeInput = (e,setValue)=>{

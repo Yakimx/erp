@@ -2,7 +2,7 @@ const Contract = require("./../models/contract");
 const Product = require("./../models/product");
 
 const createContracts = (objData) => {
-  let contracts = objData.company.customer.map((contract) => {
+  let contracts = objData.map((contract) => {
     let { number, date, status, statusdate, deliverydays, commitmentdate } =
       contract.invoice[0].$;
 
@@ -12,17 +12,22 @@ const createContracts = (objData) => {
         ? new Date(
             deliverydays * 24 * 60 * 60 * 1000 +
               Date.parse(date.split(".").reverse().join("."))
-          ).toLocaleDateString()
-        : commitmentdate;
+          )
+            .toLocaleDateString()
+            .split(".")
+            .reverse()
+            .join(".")
+        : commitmentdate.split(".").reverse().join(".");
 
     return new Contract({
       customer: contract.$.name,
       contractNumber: number,
-      startDate: date,
+      startDate: date.split(".").reverse().join("."),
       deliveryDays: +deliverydays,
       status: status,
-      statusDate: statusdate,
+      statusDate: statusdate.split(".").reverse().join("."),
       completionDateContract: completionDate,
+      completionDateDesired: completionDate,
       products: items.map((item) => {
         return new Product({
           name: item.$.name,

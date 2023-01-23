@@ -7,13 +7,14 @@ const Contract = new Schema({
   startDate: { type: String, default: "" },
   deliveryDays: { type: Number, default: 0 },
   completionDateContract: { type: String, default: "" },
+  completionDateDesired: { type: String, default: "" },
   status: { type: String, default: "" },
   statusDate: { type: String, default: "" },
 
   pause: { type: Boolean, default: false },
   onTime: { type: Boolean, default: true }, //Успеваем ли вовремя сделать
-  completionDatePlan: { type: String, default: "01.01.2099" },
-  completionDateFact: { type: String, default: "01.01.2099" },
+  completionDatePlan: { type: String, default: "2088-05-31" },
+  completionDateFact: { type: String, default: "2088-05-31" },
   completionPercentage: { type: Number, default: 0 },
   //errorData: true,
   resourcesAllProducts: {

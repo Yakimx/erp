@@ -1,39 +1,59 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../../../elementsUI/Button/Button';
-import { setDisabledInput, saveValue, updateValue, setPlan } from '../../../../redux/slices/planSlice';
+import { setValueNotConfirmed, setDisabledInput, saveValue, updateValue, setPlan } from '../../../../redux/slices/planSlice';
+import {  fetchContracts, updateNotConfirmed, updatePlan } from '../../../../redux/slices/contractsSlice';
+import { setStartDate,
+  setCheckBoxStartDate,submitResource } from '../../../../redux/slices/resourcesSlice';
+
+
 import ProductRow from '../ProductRow/ProductRow';
 import styles from './Plan.module.scss'
 
-const Plan = ({plan, setValueInput}) => {
+const Plan = ({plan, type}) => {
 
     const dispatch = useDispatch();
     const {disabledInput} = useSelector((state)=>state.plan);
-    const {} = useSelector((state)=>state.resources);
+    const {objResources} = useSelector((state)=>state.resources);
     const {allContracts} = useSelector((state)=>state.contracts);
+    const {startPlanDate, checkBoxStartDate } = objResources.config;
 
     const onClickEditButton = (bool)=>{           
       dispatch(setDisabledInput(bool));
     }
 
-    const onClickSaveButton = ()=>{
-      dispatch(saveValue());
-      dispatch(setDisabledInput(true));
-      dispatch(updateValue()); 
+    const onClickSaveButton = (bool)=>{
+      dispatch(updateNotConfirmed(allContracts));      
+      //dispatch(fetchContracts()); 
+      dispatch(setDisabledInput(bool));
     }
     const onClickCancelButton = ()=>{
-      dispatch(updateValue()); 
+      dispatch(fetchContracts()); 
+      //dispatch(setPlan({allContracts,objResources}));  
       dispatch(setDisabledInput(true));
     }
 
-    const onClickUpdateButton = ()=>{
-      dispatch(setPlan(allContracts)); 
+    const onClickUpdateButton = (startPlanDate)=>{  
+      dispatch(submitResource(objResources));      
+      dispatch(updatePlan());
     }
 
     const onChangeInput = (obj)=>{
-      dispatch(setValueInput(obj))
+      dispatch(setValueNotConfirmed(obj))
     }
+  
+  const onChangeLastDate = (e)=>{
+      dispatch(setStartDate(e));
+  }
+  const onChangeCheckBoxDate = (e)=>{   
+    const today = new Date().toLocaleDateString().split('.').reverse().join('-');     
+     dispatch(setCheckBoxStartDate({e, today}));
+  }
     
+
+React.useEffect(()=>{
+  dispatch(setPlan({allContracts,objResources})); 
+},[allContracts])    
     
   return (
     <div className={styles.root}>
@@ -42,15 +62,38 @@ const Plan = ({plan, setValueInput}) => {
 { !disabledInput ? (
           <div className={styles.buttonBar}>         
           <Button click={()=>onClickCancelButton(true)} label={'Отмена'}/>
-          <Button click={()=>onClickSaveButton()} label={'Сохранить'}/>
-          <Button click={()=>onClickUpdateButton()} label={'Обновить план'}/>         
+          <Button click={()=>onClickSaveButton(true)} label={'Сохранить'}/>
+          <div className={styles.updatePlan}>
+                  
+          
+      Дата начала нового плана:
+     <input type="date" min={new Date().toLocaleDateString().split('.').reverse().join('-')} 
+            onChange={(e)=>onChangeLastDate(e.target.value)} 
+            disabled={disabledInput || checkBoxStartDate} 
+            value= {startPlanDate}/> 
+           
+                   <div className={styles.checkbox}>
+                   <input type="checkbox"
+                          onChange={(e)=>onChangeCheckBoxDate(e.target.checked)}
+                          checked={checkBoxStartDate} />
+                    Сегодня
+                   </div>
+                   <Button click={()=>onClickUpdateButton(startPlanDate)} label={'Обновить план'}/> 
+                 
+    
+          </div>
+         
           </div>
     ) :(  
           <div className={styles.buttonBar}>          
-          <Button click={()=>onClickEditButton(false)} label={'Редактировать'}/>
+          <Button click={()=>onClickEditButton(false)} label={'Редактировать'}/>         
           </div>)
     }
 </div>
+
+
+
+
 
       <div className={styles.head}> 
       <div>№ договора</div>  
@@ -63,34 +106,31 @@ const Plan = ({plan, setValueInput}) => {
 <div className={styles.list}>
 
       {plan.length!=0 ? (
-  plan.map((day, indexDay)=>(
+  plan.map((dayPlan, indexDay)=>(
   <div key={indexDay}>
     
   <div className={styles.date}>
-    {day.date}
-  </div>
-  <div className={styles.contracts}>
-    {day.listPlan.map((contract, indexContract)=>(
-      <div key={indexContract}>
-
+    {dayPlan.date}
+  </div>   
       
-        {contract.products.map((product,indexProduct)=>(
-          <div key={indexProduct}>
+        {dayPlan.list.map((product, index)=>{
+          let contractNumber = product.contractNumber;
+          let indexProduct = product.indexProduct;
+          return(
+          <div key={index}>
              <div className={styles.productRow}>
               <ProductRow 
-              number={product.contractNumber} 
+              number={contractNumber} 
               product={product} 
               disabledInput={disabledInput} 
-              setValue={(value)=>onChangeInput({value, indexProduct, indexContract, indexDay})}/>
+              setValue={(value, maxValue)=>onChangeInput({value, contractNumber, indexProduct, type, maxValue })}/>
               
               </div>
           </div>
-        ))}
+        )})}
 
-       
-      </div>
-    ))}
-  </div>
+
+  
   </div>
   )
   )

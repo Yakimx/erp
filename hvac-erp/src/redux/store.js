@@ -4,6 +4,7 @@ import filtrReducer from "./slices/filtrSlice";
 import contractEditorReducer from "./slices/contractEditorSlice";
 import resourcesReducer from "./slices/resourcesSlice";
 import planReducer from "./slices/planSlice";
+import laboriousnessReducer from "./slices/laboriousnessSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     contractEditor: contractEditorReducer,
     resources: resourcesReducer,
     plan: planReducer,
+    laboriousness: laboriousnessReducer,
   },
 });
