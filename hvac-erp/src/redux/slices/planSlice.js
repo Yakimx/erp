@@ -23,17 +23,11 @@ export const planSlice = createSlice({
     },
 
     setValueNotConfirmed: (state, action) => {
-      state[type];
-      let { value, contractNumber, indexProduct, type, maxValue } =
+      let { value, indexDay, contractNumber, indexProduct, type, maxValue } =
         action.payload;
-      let indexContract = state.allContracts.findIndex(
-        (item) => item.contractNumber == contractNumber
-      );
       value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-
-      state.allContracts[indexContract].products[
-        indexProduct
-      ].quantityNotConfirmed[type] = +value;
+      console.log(indexDay + "==" + indexProduct);
+      state[type][indexDay].list[indexProduct].quantityMadeToday = +value;
     },
 
     setPlan: (state, action) => {

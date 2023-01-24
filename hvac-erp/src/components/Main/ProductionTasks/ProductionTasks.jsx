@@ -44,14 +44,14 @@ const listTab = ['Документация', 'Документация САУ',
   setInputValueSheetBender,
   setInputValueAssembling,
   setInputValueAutomation, */}
-    {activeTab==0 && <Plan plan={documentationPlan} type={'documentation'}/>}
-    {activeTab==1 && <Plan plan={automationPlan} type={'automation'}/>}
-    {activeTab==2 && <Plan plan={cuttingPlan} type={'cutting'}/>}
-    {activeTab==3 && <Plan plan={sheetBenderPlan} type={'sheetBender'}/>}
-    {activeTab==4 && <Plan plan={assemblingAPlan} type={'assemblingA'}/>}
-    {activeTab==5 && <Plan plan={assemblingBPlan} type={'assemblingB'}/>}
-    {activeTab==6 && <Plan plan={assemblingCPlan} type={'assemblingC'}/>}
-    {activeTab==7 && <Plan plan={assemblingSauPlan} type={'assemblingSau'}/>}
+    {activeTab==0 && <Plan plan={documentationPlan} type={'documentationPlan'}/>}
+    {activeTab==1 && <Plan plan={automationPlan} type={'automationPlan'}/>}
+    {activeTab==2 && <Plan plan={cuttingPlan} type={'cuttingPlan'}/>}
+    {activeTab==3 && <Plan plan={sheetBenderPlan} type={'sheetBenderPlan'}/>}
+    {activeTab==4 && <Plan plan={assemblingAPlan} type={'assemblingAPlan'}/>}
+    {activeTab==5 && <Plan plan={assemblingBPlan} type={'assemblingBPlan'}/>}
+    {activeTab==6 && <Plan plan={assemblingCPlan} type={'assemblingCPlan'}/>}
+    {activeTab==7 && <Plan plan={assemblingSauPlan} type={'assemblingSauPlan'}/>}
     
 
 

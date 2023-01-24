@@ -49,7 +49,7 @@ export const calcPlan = (contracts, objResources, sector) => {
 
       //fjsaofjosdfnsdfindjf
       itemPlan.quantityMadeToday = product.quantityNotConfirmed[sector];
-      itemPlan.indexProduct = index;
+
       /////
       itemPlan.resourceRequiredItem = resourceRequiredItem;
 
@@ -93,6 +93,27 @@ export const calcPlan = (contracts, objResources, sector) => {
         ) {
           arrResource[indexDay + 1][0].planResourceRequired += remainder;
         }
+      }
+    });
+  });
+  //add quantityNotConfirmed
+  arrResource.map((day, indexDay) => {
+    arrResource[indexDay].map((product, index) => {
+      let notConfirmed = product.quantityMadeToday;
+      if (indexDay + 1 < arrResource.length) {
+        if (
+          arrResource[indexDay][index].id == arrResource[indexDay + 1][0].id
+        ) {
+          if (notConfirmed > product.planQuantityRequired) {
+            arrResource[indexDay][index].quantityMadeToday =
+              product.planQuantityRequired;
+            arrResource[indexDay + 1][0].quantityMadeToday =
+              Math.round((notConfirmed - product.planQuantityRequired) * 10) /
+              10;
+          }
+        }
+      } else {
+        arrResource[indexDay][0].quantityMadeToday = notConfirmed;
       }
     });
   });

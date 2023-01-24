@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../../../elementsUI/Button/Button';
 import { setValueNotConfirmed, setDisabledInput, saveValue, updateValue, setPlan } from '../../../../redux/slices/planSlice';
-import {  fetchContracts, updateNotConfirmed, updatePlan } from '../../../../redux/slices/contractsSlice';
+import {  fetchContracts, updateNotConfirmed, updatePlan,setNotConfirmed } from '../../../../redux/slices/contractsSlice';
 import { setStartDate,
   setCheckBoxStartDate,submitResource } from '../../../../redux/slices/resourcesSlice';
 
@@ -13,7 +13,9 @@ import styles from './Plan.module.scss'
 const Plan = ({plan, type}) => {
 
     const dispatch = useDispatch();
-    const {disabledInput} = useSelector((state)=>state.plan);
+   // const {disabledInput} = useSelector((state)=>state.plan);
+    const planState = useSelector((state)=>state.plan);
+    const {disabledInput} = planState;
     const {objResources} = useSelector((state)=>state.resources);
     const {allContracts} = useSelector((state)=>state.contracts);
     const {startPlanDate, checkBoxStartDate } = objResources.config;
@@ -23,12 +25,14 @@ const Plan = ({plan, type}) => {
     }
 
     const onClickSaveButton = (bool)=>{
+      dispatch(setNotConfirmed(planState));       
       dispatch(updateNotConfirmed(allContracts));      
       //dispatch(fetchContracts()); 
       dispatch(setDisabledInput(bool));
     }
     const onClickCancelButton = ()=>{
-      dispatch(fetchContracts()); 
+      dispatch(setPlan({allContracts,objResources}));
+      //dispatch(fetchContracts()); 
       //dispatch(setPlan({allContracts,objResources}));  
       dispatch(setDisabledInput(true));
     }
@@ -115,7 +119,7 @@ React.useEffect(()=>{
       
         {dayPlan.list.map((product, index)=>{
           let contractNumber = product.contractNumber;
-          let indexProduct = product.indexProduct;
+          let indexProduct = index;
           return(
           <div key={index}>
              <div className={styles.productRow}>
@@ -123,7 +127,7 @@ React.useEffect(()=>{
               number={contractNumber} 
               product={product} 
               disabledInput={disabledInput} 
-              setValue={(value, maxValue)=>onChangeInput({value, contractNumber, indexProduct, type, maxValue })}/>
+              setValue={(value, maxValue)=>onChangeInput({value, indexDay ,contractNumber, indexProduct, type, maxValue })}/>
               
               </div>
           </div>

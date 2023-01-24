@@ -53,7 +53,7 @@ export const updateNotConfirmed = createAsyncThunk(
       });
       return summ > 0 ? true : false;
     });
-    console.log(changeContract);
+    //console.log(changeContract);
 
     const data = await axios.post(
       url + routes.updateNotConfirmed,
@@ -79,18 +79,10 @@ export const contractsSlice = createSlice({
         (item) => item.contractNumber == state.activeContract.number
       );
     },
-    // setValueNotConfirmed: (state, action) => {
-    //   let { value, contractNumber, indexProduct, type, maxValue } =
-    //     action.payload;
-    //   let indexContract = state.allContracts.findIndex(
-    //     (item) => item.contractNumber == contractNumber
-    //   );
-    //   value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-
-    //   state.allContracts[indexContract].products[
-    //     indexProduct
-    //   ].quantityNotConfirmed[type] = +value;
-    // },
+    setNotConfirmed: (state, action) => {
+      let plan = action.payload;
+      console.log(plan);
+    },
 
     setDocValue: (state, action) => {
       let value = +action.payload.value;
@@ -235,7 +227,7 @@ export const contractsSlice = createSlice({
 export const {
   setActiveContract,
   brakeChanges,
-  //setValueNotConfirmed,
+  setNotConfirmed,
   setDocValue,
   setCutValue,
   setSheetValue,
