@@ -80,7 +80,7 @@ export const contractsSlice = createSlice({
       );
     },
     setNotConfirmed: (state, action) => {
-      //HELLO
+      //HELL02
       let plan = action.payload;
       console.log(plan);
     },
