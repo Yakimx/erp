@@ -26,6 +26,7 @@ export const calcPlan = (contracts, objResources, sector) => {
     name: "",
     id: "",
     planResourceRequired: 0,
+    renderInput: true,
     // quantityAll: 0,
     // quantityMade: 0,
     // quantityMadeToday: 0,
@@ -110,11 +111,11 @@ export const calcPlan = (contracts, objResources, sector) => {
             arrResource[indexDay + 1][0].quantityMadeToday =
               Math.round((notConfirmed - product.planQuantityRequired) * 10) /
               10;
-          }
+          }else {
+            arrResource[indexDay+1][0].quantityMadeToday = 0;
         }
-      } else {
-        arrResource[indexDay][0].quantityMadeToday = notConfirmed;
-      }
+        }
+      } 
     });
   });
 
@@ -126,5 +127,15 @@ export const calcPlan = (contracts, objResources, sector) => {
     };
   });
 
+  //add isRenderInput
+  arrResource.map((day, indexDay) => {
+    if (indexDay != 0) {
+      arrResource[indexDay].list[0].renderInput = (day.list[0].id == arrResource[indexDay - 1].list[arrResource[indexDay - 1].list.length - 1].id) ? false : true;      
+
+    }
+
+    
+  });
+  
   return arrResource;
 };

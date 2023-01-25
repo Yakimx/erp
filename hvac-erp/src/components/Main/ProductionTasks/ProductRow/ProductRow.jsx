@@ -2,7 +2,7 @@ import React from 'react'
 import Progress from '../../PlanEditor/ProgressRow/Progress/Progress'
 import styles from './ProductRow.module.scss'
 
-const ProductRow = ({product, number, disabledInput, setValue}) => {
+const ProductRow = ({product, number, disabledInput, setValue, renderInput, inputValue}) => {
    
   return (
     <div className={styles.root}>
@@ -13,7 +13,10 @@ const ProductRow = ({product, number, disabledInput, setValue}) => {
     
     {disabledInput 
        ? <Progress max={product.planQuantityRequired} value={product.quantityMadeToday} />
-       :<input  type="number" onChange={(e)=>setValue(e.target.value, product.planQuantityRequired)} className={styles.input} value={product.quantityMadeToday}/>
+       :(
+        renderInput &&
+       <input  type="number" onChange={(e)=>setValue(e.target.value)} className={styles.input} value={inputValue}/>
+       )
 
     }
 

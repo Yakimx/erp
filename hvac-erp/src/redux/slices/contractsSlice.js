@@ -43,21 +43,10 @@ export const updatePlan = createAsyncThunk(
 export const updateNotConfirmed = createAsyncThunk(
   "contractsSlice/updateNotConfirmed",
   async (allContracts) => {
-    let changeContract = allContracts.filter((contract) => {
-      let summ = 0;
-
-      contract.products.map((product) => {
-        for (let key in product.quantityNotConfirmed) {
-          summ += product.quantityNotConfirmed[key];
-        }
-      });
-      return summ > 0 ? true : false;
-    });
-    //console.log(changeContract);
 
     const data = await axios.post(
       url + routes.updateNotConfirmed,
-      changeContract
+      allContracts
     );
     return data.data;
   }
@@ -80,9 +69,50 @@ export const contractsSlice = createSlice({
       );
     },
     setNotConfirmed: (state, action) => {
-      //HELL02
-      let plan = action.payload;
-      console.log(plan);
+      
+      let { indexContract,
+        indexItem,                     
+        value,
+        type } =
+        action.payload;
+        let maxValue = state.allContracts[indexContract].products[indexItem].quantity - state.allContracts[indexContract].products[indexItem].quantityMade[type]
+        value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
+   
+       state.allContracts[indexContract].products[indexItem].quantityNotConfirmed[type] = value;
+      
+      // let plan = action.payload;
+      // console.log(plan)
+      // plan.map((item)=>{
+      //   state.allContracts.map((contract, indexContract)=>{
+      //       contract.products.map((product, indexProduct)=>{
+      //         if(item.id==product._id){
+      //           state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key]=
+      //           state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key] + 
+      //         }
+      //       })
+      //       })
+      //   item.id
+
+      // })
+
+      // let plan = action.payload;
+      
+      // state.allContracts.map((contract, indexContract)=>{
+      //   contract.products.map((product, indexProduct)=>{
+      //     for(let key in product.quantityNotConfirmed){
+            
+      //         let idProduct = state.allContracts[indexContract].products[indexProduct]._id;
+      //         console.log(idProduct)
+      //         console.log(plan.find((item)=>item.id==idProduct?true:false))
+      //         state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key]=
+      //         state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key] + 
+      //         plan.find((item)=>item.id==idProduct?true:false).quantityMadeToday
+              
+      //       }
+      // })
+      // })
+     
+      
     },
 
     setDocValue: (state, action) => {

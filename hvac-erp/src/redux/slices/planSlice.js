@@ -3,14 +3,14 @@ import { calcPlan } from "../../utils/calcPlan";
 
 const initialState = {
   disabledInput: true,
-  documentationPlan: [],
-  cuttingPlan: [],
-  sheetBenderPlan: [],
-  assemblingAPlan: [],
-  assemblingBPlan: [],
-  assemblingCPlan: [],
-  assemblingSauPlan: [],
-  automationPlan: [],
+  documentation: [],
+  cutting: [],
+  sheetBender: [],
+  assemblingA: [],
+  assemblingB: [],
+  assemblingC: [],
+  assemblingSau: [],
+  automation: [],
 };
 
 export const planSlice = createSlice({
@@ -22,48 +22,48 @@ export const planSlice = createSlice({
       state.disabledInput = action.payload;
     },
 
-    setValueNotConfirmed: (state, action) => {
-      let { value, indexDay, contractNumber, indexProduct, type, maxValue } =
-        action.payload;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      console.log(indexDay + "==" + indexProduct);
-      state[type][indexDay].list[indexProduct].quantityMadeToday = +value;
-    },
+    // setValueNotConfirmed: (state, action) => {
+    //   let { value, indexDay, contractNumber, indexProduct, type, maxValue } =
+    //     action.payload;
+    //   value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
+      
+    //   state[type][indexDay].list[indexProduct].quantityMadeToday = +value;
+    // },
 
     setPlan: (state, action) => {
       const { allContracts, objResources } = action.payload;
-      state.documentationPlan = calcPlan(
+      state.documentation = calcPlan(
         allContracts,
         objResources,
         "documentation"
       );
-      state.cuttingPlan = calcPlan(allContracts, objResources, "cutting");
-      state.sheetBenderPlan = calcPlan(
+      state.cutting = calcPlan(allContracts, objResources, "cutting");
+      state.sheetBender = calcPlan(
         allContracts,
         objResources,
         "sheetBender"
       );
-      state.assemblingAPlan = calcPlan(
+      state.assemblingA = calcPlan(
         allContracts,
         objResources,
         "assemblingA"
       );
-      state.assemblingBPlan = calcPlan(
+      state.assemblingB = calcPlan(
         allContracts,
         objResources,
         "assemblingB"
       );
-      state.assemblingCPlan = calcPlan(
+      state.assemblingC = calcPlan(
         allContracts,
         objResources,
         "assemblingC"
       );
-      state.assemblingSauPlan = calcPlan(
+      state.assemblingSau = calcPlan(
         allContracts,
         objResources,
         "assemblingSau"
       );
-      state.automationPlan = calcPlan(allContracts, objResources, "automation");
+      state.automation = calcPlan(allContracts, objResources, "automation");
     },
     // setValueDocumentationInput: (state, action) => {
     //   const { value, indexProduct, indexContract, indexDay } = action.payload;
@@ -125,7 +125,7 @@ export const {
   saveValue,
   updateValue,
   setValueInput,
-  setValueNotConfirmed,
+  //setValueNotConfirmed,
   // setValueDocumentationInput,
   // setValueCuttingInput,
   // setValueSheetBenderInput,

@@ -48,5 +48,5 @@ const Product = new Schema({
     assemblingSau: { type: Number, default: 0 },
   },
 });
-
+//[String],
 module.exports = model("Product", Product);
