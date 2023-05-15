@@ -1,0 +1,17 @@
+.modal{
+    position: fixed;
+    width:100vw;
+    height:100vh;
+    background-color:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+}
+.content{
+    position: fixed;
+    top:15vh;
+    left:37vw;
+    border-radius: 8px;
+    background-color: white;
+    height: 200px;
+    width: 140px;
+}
