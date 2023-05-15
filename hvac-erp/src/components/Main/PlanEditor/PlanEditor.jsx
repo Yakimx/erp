@@ -2,7 +2,12 @@ import React from 'react'
 import styles from './PlanEditor.module.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import {setDisabledInput} from './../../../redux/slices/contractEditorSlice'
-import {brakeChanges, updateContract} from './../../../redux/slices/contractsSlice'
+import {brakeChanges, updateContract, setDatePlan, 
+  setTypeUpkp,
+  setPause,
+  setEquipment,
+  setEquipmentDate,
+  setShipped,} from './../../../redux/slices/contractsSlice'
 import Button from '../../../elementsUI/Button/Button';
 
 import ContractInfo from './ContractInfo/ContractInfo';
@@ -30,11 +35,29 @@ const PlanEditor = () => {
     dispatch(setDisabledInput(true));
   }
 
+  const onChangeCheckBoxUpkp = (bool)=>{
+    dispatch(setTypeUpkp(bool));
+  }
+  const onChangeCheckBoxPause = (bool)=>{
+    dispatch(setPause(bool));
+  }
+  const onChangeCheckBoxEquipment = (bool)=>{
+    dispatch(setEquipment(bool));
+  }
+  const onChangeEquipmentDate = (bool)=>{
+    dispatch(setEquipmentDate(bool));
+  }
+  const onChangeCheckBoxShipped = (bool)=>{
+    dispatch(setShipped(bool));
+  }
+  
 
   return (
     <div className={styles.root}>
 
-      {(contract) && (<div>     
+
+      {(contract) && (<> 
+        <div className={styles.info}>
       
     { !disabledInput ? (
           <div className={styles.buttonBar}>
@@ -48,31 +71,76 @@ const PlanEditor = () => {
           <Button click={()=>onClickEditButton(false)} label={'Редактировать'}/>
           </div>)
     }  
-  
-
-       
-
-  
-  <div className={styles.contractInfo}>    
-    <ContractInfo label={'Статус:'} inputValue={contract.status}/>
-    <ContractInfo label={'Заказчик:'} inputValue={contract.customer}/>
-  </div>
-  <div className={styles.contractDate}>
-    <div>   
-    <ContractInfo label={'Запущен:'} inputValue={contract.startDate}/>
-    <ContractInfo label={'Готовность по плану:'} inputValue={contract.completionDatePlan}/>    
-    </div> 
-    <div>    
-    <ContractInfo label={'Готовность по факту:'} inputValue={contract.completionDateFact}/>
-    <ContractInfo label={'Готовность по договору:'} inputValue={contract.completionDateContract}/>
+      
+  <div className={styles.contractInfo}>
+    <div className={styles.notChange}>
+      <div>Заказчик: </div>
+      <div className={styles.value}>{contract.customer}</div>
+      {/* <div> Статус: </div>
+      <div className={styles.value}>{contract.status} </div> */}
+      <div>Дата подписания:</div>
+      <div className={styles.value}>{contract.startDate}</div>
+      <div>Срок по договору:</div>
+      <div className={styles.value}>{contract.completionDateContract}</div>
+      {/* <div>Дата по плану:</div>
+      <div className={styles.value}>
+      <input    className={styles.inputDate}
+                type="date"
+                //max={contract.completionDateContract.split('.').join('-')}
+                disabled={true}
+                onChange={(e) => onChangePlanDate(e.target.value.split('-').join('.'))}
+                value={contract.completionDatePlan.split('.').reverse().join('-')} />       
+      </div> */}
+    
     </div>
+
+    <div className={styles.change}>
+    
+    <div> Установки типа УПКП: </div>
+    <input className={styles.checkbox}
+                  type="checkbox"
+                  onChange={(e) => onChangeCheckBoxUpkp(e.target.checked)}
+                  disabled={disabledInput}
+                  checked={contract.typeUpkp}
+                />
+
+    <div> Приостановлен: </div>
+    <input className={styles.checkbox}
+                  type="checkbox"
+                  onChange={(e) => onChangeCheckBoxPause(e.target.checked)}
+                  disabled={disabledInput}
+                  checked={contract.pause}
+                />
+
+    <div> Комплектация: </div>
+      <div className={styles.equipment}>
+    <input className={styles.checkbox}
+                  type="checkbox"
+                  onChange={(e) => onChangeCheckBoxEquipment(e.target.checked)}
+                  disabled={disabledInput}
+                  checked={contract.equipment}
+                />
+    <input    className={styles.inputDate}
+                hidden={contract.equipment}
+                type="date"
+                //max={contract.completionDateContract.split('.').join('-')}
+                disabled={disabledInput}
+                onChange={(e) => onChangeEquipmentDate(e.target.value.split('-').reverse().join('.'))}
+                value={contract.equipmentDate.split('.').reverse().join('-')} />
+      </div>
+      <div> Отгружен: </div>
+    <input className={styles.checkbox}
+                  type="checkbox"
+                  onChange={(e) => onChangeCheckBoxShipped(e.target.checked)}
+                  disabled={disabledInput}
+                  checked={contract.shipped}
+                />
+    </div>
+    
+    {/* completionDate: { type: String, default: "2088.05.31" },
+  equipment: { type: Boolean, default: true }, */}
+    
   </div>
-
-  
-
-
-  <div className={styles.table}>      
-  
 
   { !disabledInput ? 
   (
@@ -81,7 +149,10 @@ const PlanEditor = () => {
   (   
     <h1>Продукция:</h1>  
   )}  
-         
+  </div>
+
+
+  <div className={styles.table}>             
     
 
  
@@ -126,7 +197,7 @@ const PlanEditor = () => {
 
 
     
-  </div>)}
+  </>)}
     </div>
 )
 }

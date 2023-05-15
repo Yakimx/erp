@@ -27,7 +27,7 @@
         padding-top: 12px;
         padding-bottom: 5px;
         text-align: left;
-        background-color: rgb(64, 199, 129);
+        background-color: rgb(64, 199, 129, 1);
         color: rgb(0, 0, 0);
         cursor: auto;
     }
@@ -37,13 +37,12 @@
 //     width: 0;
 //   } 
 
-.activecontract{
-    
-    background-color: rgb(64, 199, 129);
+.activecontract{    
+    background-color: rgb(64, 199, 129, 0.8);
 }
 
 .inactivecontract:hover{    
-     background-color: rgb(245, 222, 179);
+     background-color: rgba(217, 255, 79, 0.4);
 }
 
 .thone{
@@ -51,13 +50,39 @@
    
 }
 
-.sortIcon{
-
+.sortIconUp{
         height: 20px;
-        pointer-events: none;
-        padding-left: 35px;       
+        cursor: pointer;
+        user-select: none; 
+        display: block;      
+        transition: 0.4s linear;
+}
+.sortIconDown{
+        height: 20px;
+        cursor: pointer;
+        user-select: none; 
+        display: block;            
+        transition: 0.4s linear;    
+        transform: rotate(180deg);
+}
+.iconActive{
+    user-select: none; 
+    opacity: 1;
+}
+.iconInactive{
+    user-select: none; 
+    opacity: 0.2;
+}
+
+.filtrIcon{
+        height: 20px;
+        cursor: pointer;
+        user-select: none; 
+        display: block;       
+        transition: 0.4s linear; 
         
 }
+
 
 
 .notfound{
@@ -68,3 +93,43 @@
     font-size: 32px;
     
 }
+.headlist{
+    padding-top: 8px;
+    height: 25px;
+    margin: 0;
+    background-color: rgb(64, 199, 129, 0.8);
+    text-align: center;
+    font-weight: 800;
+    font-size: 16px;
+    border-bottom: 2px groove rgb(230, 230, 230);
+}
+
+.footerlist{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    position: sticky;
+    bottom: 0;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-top: 8px;
+    background-color: rgb(64, 199, 129,1); 
+}
+
+.statusReady{
+    background-color: rgba(177, 247, 13, 0.5); 
+}
+.statusPending{
+    background-color: transparent;
+}
+.statusPause{
+    background-color: rgba(247, 165, 13, 0.5); 
+}
+.statusShipped{
+    background-color: rgba(13, 173, 247, 0.5); 
+}
+.statusOverdue{
+    background-color: rgba(250, 128, 114, 0.9); 
+}
+//["rgb(250, 128, 114)", "rgb(64, 199, 129)"],

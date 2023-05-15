@@ -3,8 +3,8 @@ const Resource = require("./../models/resource");
 class resourceController {
   async getResource(req, res) {
     try {
-      // let r = new Resource({});
-      // r.save();
+      //let r = new Resource({});
+      //r.save();
       const resource = await Resource.find({});
       res.send(resource);
     } catch (e) {

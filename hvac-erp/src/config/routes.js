@@ -1,4 +1,5 @@
 export const url = "http://127.0.0.1:8000";
+//export const url = "https://2b96-178-120-0-214.ngrok-free.app";
 
 export const routes = {
   updateContract: "/list/update",

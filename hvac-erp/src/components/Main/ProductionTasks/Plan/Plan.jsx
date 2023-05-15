@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setDatePlan } from '../../../../redux/slices/filtrSlice';
+
 import Button from "../../../../elementsUI/Button/Button";
 import {
   //setValueNotConfirmed,
@@ -7,6 +9,7 @@ import {
   saveValue,
   updateValue,
   setPlan,
+  setActive,
 } from "../../../../redux/slices/planSlice";
 import {
   fetchContracts,
@@ -24,6 +27,7 @@ import ProductRow from "../ProductRow/ProductRow";
 import styles from "./Plan.module.scss";
 
 const Plan = ({ plan, type }) => {
+  
   const dispatch = useDispatch();
   // const {disabledInput} = useSelector((state)=>state.plan);
   const planState = useSelector((state) => state.plan);
@@ -31,6 +35,18 @@ const Plan = ({ plan, type }) => {
   const { objResources } = useSelector((state) => state.resources);
   const { allContracts } = useSelector((state) => state.contracts);
   const { startPlanDate, checkBoxStartDate } = objResources.config;
+
+  //const [highlight, setHighlight] = useState(startPlanDate);
+    const [highlight, setHighlight] = useState();
+  
+  // React.useEffect(() => { 
+  //   dispatch(setDatePlan(planState));
+  // }, [planState]);
+
+
+  const onChangeProduct = (index) => {
+    dispatch(setActive(index));
+  };
 
   const onClickEditButton = (bool) => {
     dispatch(setDisabledInput(bool));
@@ -43,15 +59,14 @@ const Plan = ({ plan, type }) => {
     
   };
   const onClickCancelButton = () => {
-    //dispatch(setPlan({ allContracts, objResources }));
-    //dispatch(fetchContracts());
+    dispatch(setPlan({ allContracts, objResources }));
+    dispatch(fetchContracts());
     dispatch(setDisabledInput(true));
   };
 
   const onClickUpdateButton = async (bool) => {
     await dispatch(submitResource(objResources));
     await dispatch(updatePlan());
-
     await dispatch(fetchContracts());    
     dispatch(setDisabledInput(bool));
   };
@@ -66,15 +81,10 @@ const Plan = ({ plan, type }) => {
   const onChangeCheckBoxDate = (e) => {
     const today = new Date()
       .toLocaleDateString()
-      .split(".")
-      .reverse()
-      .join("-");
     dispatch(setCheckBoxStartDate({ e, today }));
   };
 
-  React.useEffect(() => {
-    dispatch(setPlan({ allContracts, objResources }));
-  }, [allContracts]);
+
 
   return (
     <div className={styles.root}>
@@ -92,9 +102,9 @@ const Plan = ({ plan, type }) => {
                   .split(".")
                   .reverse()
                   .join("-")}
-                onChange={(e) => onChangeLastDate(e.target.value)}
+                onChange={(e) => onChangeLastDate(e.target.value.split('-').reverse().join('.'))}
                 disabled={disabledInput || checkBoxStartDate}
-                value={startPlanDate}
+                value={startPlanDate.split('.').reverse().join('-')}
               />
               <div className={styles.checkbox}>
                 <input
@@ -111,60 +121,79 @@ const Plan = ({ plan, type }) => {
             </div>
           </div>
         ) : (
-          <div className={styles.buttonBar}>
+          <div className={styles.buttonBarNoActive}>
             <Button
               click={() => onClickEditButton(false)}
               label={"Редактировать"}
             />
+            {/* <input className={styles.highlight}
+                type="date"
+                onChange={(e) => setHighlight(e.target.value.split('-').reverse().join('.'))}
+                value={highlight.split('.').reverse().join('-')}
+              />  */}
           </div>
+          
         )}
+              
+
+              
       </div>
+      
 
       <div className={styles.head}>
         <div>№ договора</div>
         <div>Наименование</div>
         <div>Выполнено всего</div>
-
-        <div>Текущее задание</div>
+        <div>Необходимо выполнить</div>
+        <div className={styles.datePlan}>        
+        <div>Начало по плану</div>
+        <div>Готовность по плану</div>
+        <div>Ресурсы требуется/ остаток </div>
+        </div>
+        <div>Желаемая дата</div>
+        
       </div>
 
-      <div className={styles.list}>
-        {plan.length != 0
-          ? plan.map((dayPlan, indexDay) => (
-              <div key={indexDay}>
-                <div className={styles.date}>{dayPlan.date}</div>
-
-                {dayPlan.list.map((product, index) => {
-                  let contractNumber = product.contractNumber;
-                  // let indexProduct = index;
-                  let indexContract = allContracts.findIndex((contract)=>contract.contractNumber == contractNumber ? true : false );
-                  let indexItem = allContracts[indexContract].products.findIndex((item)=>item._id ==product.id ? true : false)
-                  let inputValue = allContracts[indexContract].products[indexItem].quantityNotConfirmed[type];                  
-                 
-                  return (
-                    <div key={index}>
-                      <div className={styles.productRow}>
-                        <ProductRow
-                          renderInput = {product.renderInput}
-                          number={contractNumber}
-                          product={product}
-                          inputValue = {inputValue}
+      <div className={styles.list}> 
+        {                  
+        plan.itemsPlan.length != 0
+          ? plan.itemsPlan.map((item, index) => {
+            //console.log(allContracts[item.indexContract].products[item.indexItem].quantityNotConfirmed[type])
+            let quantityNotConfirmed = allContracts[item.indexContract].products[item.indexItem].quantityNotConfirmed[type]; 
+              
+             return <div key={item.id}>
+            
+                
+                {/* //<div className={styles.date}>{dayPlan.date}</div>      */}
+                                            
+                      <div className={planState.active == item.id ? styles.productRowActive : styles.productRowInactive}
+                            onClick={()=>onChangeProduct(item.id)}>
+                        <ProductRow                          
+                          number={item.contractNumber}
+                          product={item}
+                          inputValue = {quantityNotConfirmed}
                           disabledInput={disabledInput}
+                          indexContract = {item.indexContract}
+                          indexItem = {item.indexItem} 
+                          type = {type}
+                          active ={planState.active == item.id}
+                          highlight = {highlight}
                           setValue={(value) =>
                             onChangeInput({
-                              indexContract,
-                              indexItem,                     
+                              indexContract: item.indexContract,
+                              indexItem: item.indexItem,                     
                               value,                          
                               type,
                             })
                           }
                         />
-                      </div>
+                      
                     </div>
-                  );
-                })}
+                  
+                
+                
               </div>
-            ))
+            })
           : "План пуст"}
       </div>
     </div>

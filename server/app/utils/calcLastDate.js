@@ -6,7 +6,7 @@ export const calcLastDate = (allContracts) => {
   });
 
   let max = Math.max.apply(null, arrDateMs);
-  return new Date(max).toLocaleDateString().split(".").reverse().join("-");
+  return new Date(max).toLocaleDateString();
 };
 
 module.exports = createContracts;

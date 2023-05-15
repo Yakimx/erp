@@ -4,7 +4,7 @@ import Button from '../../../../elementsUI/Button/Button';
 
 import styles from './ActiveLaboriousness.module.scss'
 import {setDisabledInput} from './../../../../redux/slices/laboriousnessSlice'
-import {brakeChanges, updateContract} from './../../../../redux/slices/contractsSlice'
+import {brakeChanges, updateContract, updatePlan} from './../../../../redux/slices/contractsSlice'
 import InputRowLab from './InputRowLab/InputRowLab';
 
 const ActiveLaboriousness = () => {
@@ -23,7 +23,7 @@ const ActiveLaboriousness = () => {
     dispatch(setDisabledInput(bool));
     dispatch(brakeChanges());
   }
-  const onClickSaveButton = (bool)=>{
+  const onClickSaveButton = (bool)=> { 
     dispatch(updateContract(contract));
     dispatch(setDisabledInput(bool));
   }

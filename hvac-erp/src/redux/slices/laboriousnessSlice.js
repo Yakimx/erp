@@ -27,7 +27,7 @@ export const addLaboriousness = createAsyncThunk(
 export const deleteLaboriousness = createAsyncThunk(
   "laboriousnessSlice/deleteLaboriousness",
   async (id) => {
-    console.log(id);
+    
     const data = await axios.delete(
       url + routes.deleteLaboriousness + `/${id}`
     );
@@ -115,7 +115,7 @@ export const laboriousnessSlice = createSlice({
       state.laboriousness = "";
     },
     [fetchLaboriousness.fulfilled]: (state, action) => {
-      state.status = "success";
+      state.status = "success";      
       state.laboriousness = action.payload;
     },
     [fetchLaboriousness.rejected]: (state, action) => {

@@ -13,9 +13,15 @@ const Contract = new Schema({
 
   pause: { type: Boolean, default: false },
   onTime: { type: Boolean, default: true }, //Успеваем ли вовремя сделать
-  completionDatePlan: { type: String, default: "2088-05-31" },
-  completionDateFact: { type: String, default: "2088-05-31" },
+  completionDatePlan: { type: String, default: "01.01.2030" },
+  completionDateFact: { type: String, default: "01.01.2030" },
   completionPercentage: { type: Number, default: 0 },
+  equipmentDate: { type: String, default: "01.01.2030" },
+  equipment: { type: Boolean, default: true },
+  typeUpkp: { type: Boolean, default: false },
+  ready: { type: Boolean, default: false },
+  shipped: { type: Boolean, default: false },
+  
   //errorData: true,
   resourcesAllProducts: {
     documentation: { type: Number, default: 0 },

@@ -1,5 +1,5 @@
-.root{
-    
+.root{   
+    height: calc(100% - 30rem);
     padding: 10px 5px 5px 10px;
     
 }
@@ -9,21 +9,68 @@
     display: grid;
     grid-template-columns: repeat(2, 80px) auto;
 }
-
+.info{
+   
+    h1{
+        font-size: 16px;
+    }
+}
 .contractInfo{
     margin-top: 10px;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+    font-weight: 600;
+    padding-left: 1rem;
 }
-.contractDate{    
+
+.notChange{
     display: grid;
-    grid-template-columns: 17rem 17rem; 
+    grid-template-columns: 8rem auto;
+    grid-template-rows: repeat(4, auto);
+    text-align: right;
+    .value{
+        margin-left: 10px;
+        text-align: left;
+    }
+    div{
+        margin-top: 5px;
+    }
+    
+}
+.change{
+    margin-left: 4rem;
+    display: grid;
+    grid-template-columns: 10rem auto;
+    grid-template-rows: repeat(5, auto);
+    text-align: right;
+
+    .checkbox{
+       margin-top: 0;
+       text-align: left;
+       width: 1rem;
+       height: 1rem;
+    }
+    
+}
+.equipment{
+
+    .checkbox{        
+        text-align: left;
+        width: 1rem;
+        height: 1rem;
+     }
+    text-align: left;
+    .inputDate{  
+        margin: 0;
+        padding: 0;
+        height: 1rem;
+    }
 }
 
 .products{    
     padding-right: 0.5rem;
-    height: 36vh;
+    height: 100%;
     overflow-y: scroll;
     
     &::-webkit-scrollbar {
@@ -49,10 +96,11 @@
 //     }
 
 .headRow{
+    
     margin-right: 1.1rem;
     display: grid;
     //grid-template-columns: 15rem repeat(9,1fr);
-    grid-template-columns: 15rem repeat(9, minmax(60px, 1fr));
+    grid-template-columns: 15rem repeat(9, minmax(55px, 1fr));
     grid-template-rows: auto;
     justify-items: center;
     align-items: center;
@@ -61,17 +109,20 @@
     border-bottom: 2px groove rgb(230, 230, 230);
     border-top: 2px groove rgb(230, 230, 230);
     div{
+        display:inline-block;
+        max-width:100%;
         margin: 0 0.2rem 0 0.2rem; 
         text-align: center;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden; 
     }
       
 }
 
 .table{
     
-    h1{
-        font-size: 20px;
-    }
+    height: 100%;
     
 }
 
@@ -79,3 +130,23 @@
     height: 100px;
 }
 
+.inputDate{  
+
+    background-color: transparent;         
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border:1px solid white;
+    border-radius: 5px;      
+    width: 7rem; 
+    height: 100%;
+    margin-left: -2px;
+    &:disabled{
+        border: none;
+        
+        color: black;
+    }       
+  
+
+   }

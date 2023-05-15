@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { calcPlan } from "../../utils/calcPlan";
 
 const initialState = {
+  active: -1,
   disabledInput: true,
   documentation: [],
   cutting: [],
@@ -21,6 +22,12 @@ export const planSlice = createSlice({
     setDisabledInput: (state, action) => {
       state.disabledInput = action.payload;
     },
+    setActive: (state, action) => {     
+      state.active = action.payload;
+    },
+    resetActive: (state, action) => {     
+      state.active = 0;
+    },
 
     // setValueNotConfirmed: (state, action) => {
     //   let { value, indexDay, contractNumber, indexProduct, type, maxValue } =
@@ -30,13 +37,14 @@ export const planSlice = createSlice({
     //   state[type][indexDay].list[indexProduct].quantityMadeToday = +value;
     // },
 
-    setPlan: (state, action) => {
+    setPlan: (state, action) => {      
       const { allContracts, objResources } = action.payload;
       state.documentation = calcPlan(
         allContracts,
         objResources,
         "documentation"
       );
+      
       state.cutting = calcPlan(allContracts, objResources, "cutting");
       state.sheetBender = calcPlan(
         allContracts,
@@ -125,6 +133,8 @@ export const {
   saveValue,
   updateValue,
   setValueInput,
+  setActive,
+  resetActive,
   //setValueNotConfirmed,
   // setValueDocumentationInput,
   // setValueCuttingInput,

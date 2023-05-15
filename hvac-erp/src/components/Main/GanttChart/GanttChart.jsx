@@ -1,8 +1,13 @@
 import React from 'react'
 import styles from './GanttChart.module.scss'
 import { Chart } from "react-google-charts";
+import { useSelector } from 'react-redux';
 
 const GanttChart = () => {
+
+  const {contract} = useSelector((state)=>state.contracts.activeContract);
+
+
 
   const columns = [
     { type: "string", label: "Task ID" },

@@ -9,11 +9,12 @@ const initialState = {
   statusUpdate: "loading", //loading | success|error
   allContracts: [],
   allContractsNoChange: [],
-  lastСontractDate: "2099-01-02",
+  lastСontractDate: "30.10.1991",
   activeContract: {
     number: 0,
     contract: null,
   },
+  
 };
 
 export const fetchContracts = createAsyncThunk(
@@ -63,20 +64,27 @@ export const contractsSlice = createSlice({
         (item) => item.contractNumber == state.activeContract.number
       );
     },
+    setActiveContractDate: (state, action) => {
+      // state.activeContract.contract.completionDatePlan = action.payload.completionDatePlan
+      // state.activeContract.contract.startDatePlan = action.payload.startDatePlan
+      
+    },
+    
     brakeChanges: (state, action) => {
       state.activeContract.contract = state.allContracts.find(
         (item) => item.contractNumber == state.activeContract.number
       );
     },
     setNotConfirmed: (state, action) => {
-      
+      console.log(action.payload)
       let { indexContract,
         indexItem,                     
         value,
         type } =
         action.payload;
-        let maxValue = state.allContracts[indexContract].products[indexItem].quantity - state.allContracts[indexContract].products[indexItem].quantityMade[type]
+        let maxValue = Math.round((state.allContracts[indexContract].products[indexItem].quantity - state.allContracts[indexContract].products[indexItem].quantityMade[type]) *10)/10
         value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
+        
    
        state.allContracts[indexContract].products[indexItem].quantityNotConfirmed[type] = value;
       
@@ -114,6 +122,44 @@ export const contractsSlice = createSlice({
      
       
     },
+    setCorrectDayUp: (state, action) => {
+      let { indexContract,
+        indexItem,                     
+        type } =
+        action.payload;
+      state.allContracts[indexContract].products[indexItem].shift[type] = state.allContracts[indexContract].products[indexItem].shift[type] - 1;
+    },
+    setCorrectDayDown: (state, action) => {
+      let { indexContract,
+        indexItem,                     
+        type } =
+        action.payload;
+      state.allContracts[indexContract].products[indexItem].shift[type] = state.allContracts[indexContract].products[indexItem].shift[type] + 1;
+    },
+
+
+    setDatePlan: (state, action) => {
+      state.activeContract.contract.completionDatePlan = action.payload;
+    },
+    setDatePlan: (state, action) => {
+      state.activeContract.contract.completionDatePlan = action.payload;
+    },
+    setTypeUpkp: (state, action) => {
+      state.activeContract.contract.typeUpkp = action.payload;
+    },
+    setPause: (state, action) => {
+      state.activeContract.contract.pause = action.payload;
+    },
+    setEquipment: (state, action) => {
+      state.activeContract.contract.equipment = action.payload;
+    },
+    setEquipmentDate: (state, action) => {
+      state.activeContract.contract.equipmentDate = action.payload;
+    },
+    setShipped: (state, action) => {
+      state.activeContract.contract.shipped = action.payload;
+    },
+    
 
     setDocValue: (state, action) => {
       let value = +action.payload.value;
@@ -247,7 +293,9 @@ export const contractsSlice = createSlice({
       const index = state.allContracts.findIndex(
         (item) => item.contractNumber == state.activeContract.number
       );
+      
       state.allContracts[index] = action.payload;
+  
     },
     [updateContract.rejected]: (state, action) => {
       state.statusUpdate = "error";
@@ -275,6 +323,15 @@ export const {
   setAssemCValueLab,
   setAssemSauValueLab,
   setAutoValueLab,
+  setDatePlan,
+  setTypeUpkp,
+  setPause,
+  setEquipment,
+  setEquipmentDate,
+  setCorrectDayUp,
+  setCorrectDayDown,
+  setShipped,
+  setActiveContractDate,
 } = contractsSlice.actions;
 
 export default contractsSlice.reducer;

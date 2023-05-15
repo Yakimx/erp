@@ -18,10 +18,21 @@ class contractsController {
 
   async updateContract(req, res) {
     try {
+      // let contract = await req.body;
+      // delete contract._id;
+      // delete contract.__v;
+      // contract.products.map((product) => delete product._id);
+      // let result = await Contract.findOneAndUpdate(
+      //   { contractNumber: contract.contractNumber },
+      //   contract,
+      //   { new: true }
+      // );
+
+      // res.send(result);
       let contract = await req.body;
-      delete contract._id;
-      delete contract.__v;
-      contract.products.map((product) => delete product._id);
+      //delete contract._id;
+      //delete contract.__v;
+      //contract.products.map((product) => delete product._id);
       let result = await Contract.findOneAndUpdate(
         { contractNumber: contract.contractNumber },
         contract,
@@ -29,6 +40,8 @@ class contractsController {
       );
 
       res.send(result);
+
+
     } catch (e) {
       console.log(e);
     }

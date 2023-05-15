@@ -44,7 +44,7 @@ const DefaultLaboriousness = () => {
   return (
     <div className={styles.root}>
 
-{(laboriousness) && (<div>     
+{(laboriousness) && (<>     
       
       { !disabledInput ? (
         <div className={styles.wrap}> 
@@ -101,7 +101,7 @@ laboriousness.map((laboriousnes, index)=>(
 
       
     
-</div>)} 
+</>)} 
 
     </div>
   )

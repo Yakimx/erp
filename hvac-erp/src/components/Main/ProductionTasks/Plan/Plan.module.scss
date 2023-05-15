@@ -1,4 +1,6 @@
 .root{
+    
+    height: 100%;
     .updatePlan{
         display: grid;
         grid-template-columns: 12rem 6rem 6rem 10rem;
@@ -37,14 +39,17 @@
 margin: 0 1rem 0 1rem;
     .head{
         display: grid;
-        grid-template-columns: 8rem 20rem repeat(2,1fr);
-        grid-template-rows: 2rem;
+        grid-template-columns: 8rem 15rem 0.5fr 0.5fr 2fr 0.5fr;
+        grid-template-rows: 3rem;
         justify-items: center;
         align-items: center;
         font-weight: 600;
+        font-size: 12px;
         user-select: none;
         border-bottom: 2px groove rgb(230, 230, 230);
         border-top: 2px groove rgb(230, 230, 230);
+        text-align: center;
+       
     }
 
 }
@@ -57,7 +62,7 @@ margin: 0 1rem 0 1rem;
 
 .list{
     overflow-y: scroll;
-    height: 47vh;
+    height: 100%;
     
     &::-webkit-scrollbar {
         width: 10px; /* ширина для вертикального скролла */    
@@ -96,3 +101,40 @@ margin: 0 1rem 0 1rem;
     
 }
 
+.productRowActive{
+cursor: pointer;
+background-color: rgb(64, 199, 129, 0.5);
+}
+.productRowInactive{
+    cursor: pointer;
+}
+
+.datePlan{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+   }
+
+
+   .highlight{  
+    display: block;
+    
+    background-color: transparent;         
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border:1px solid white;
+    border-radius: 5px;      
+    height: 2rem; 
+}
+
+.buttonBarNoActive{
+    display: grid;    
+    grid-template-columns: 1fr 1fr;
+    
+    
+}

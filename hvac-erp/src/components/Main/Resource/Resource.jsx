@@ -89,9 +89,9 @@ const Resource = () => {
      <div className={styles.date}>
       Ресурсы предприятия до 
      <input type="date" min={new Date().toLocaleDateString().split('.').reverse().join('-')} 
-            onChange={(e)=>onChangeLastDate(e.target.value)} 
+            onChange={(e)=>onChangeLastDate(e.target.value.split('-').reverse().join('.'))} 
             disabled={disabledInput || checkBoxDate} 
-            value= {lastDate}/> 
+            value= {lastDate.split('.').reverse().join('-')}/> 
             {!disabledInput &&(
                    <div className={styles.checkbox}>
                    <input type="checkbox"

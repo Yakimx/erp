@@ -79,7 +79,7 @@ export const resourcesSlice = createSlice({
     },
 
     recalculationResources: (state, action) => {
-      const countWorkDay = getWorkDay(state.objResources.config.lastDate);
+      const countWorkDay = getWorkDay(new Date().toLocaleDateString(), state.objResources.config.lastDate, state.objResources.config.weekend);
       state.objResources.resources.documentation.allWorkDays =
         countWorkDay + +state.objResources.resources.documentation.adjustment;
 

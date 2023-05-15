@@ -8,8 +8,8 @@ const ChartResources = ({ time, freeTime, label }) => {
 
   const data = [
     ["Resours", "Hours"],
-    [`Загрузка:${percentageLoad}%`, time],
-    [`Свободно:${freePercent}%`, freeTime],
+    [`${percentageLoad}%`, time],
+    [`${freePercent}%`, freeTime],
   ];
 
   const options = {
@@ -37,13 +37,16 @@ const ChartResources = ({ time, freeTime, label }) => {
 
   return (
     <div className={styles.root}>
+      
       <Chart
         chartType="PieChart"
         data={data}
         options={options}
         width="100%"
         height="100%"
+        
       />
+      
     </div>
   );
 };

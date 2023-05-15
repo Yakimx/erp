@@ -4,10 +4,11 @@ const Resource = new Schema({
   id: { type: Number, default: 0, unique: true },
 
   config: {
-    lastDate: { type: String, default: "2099-01-01" },
+    lastDate: { type: String, default: "01.01.2030" },
     checkBoxDate: { type: Boolean, default: false },
-    startPlanDate: { type: String, default: "2023-01-01" },
-    checkBoxStartDate: { type: Boolean, default: true },
+    startPlanDate: { type: String, default: "01.01.2030" },
+    checkBoxStartDate: { type: Boolean, default: true },    
+    weekend: { type: [String], default: "01.01.2030" },
   },
 
   resources: {

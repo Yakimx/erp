@@ -18,14 +18,14 @@ const Product = new Schema({
     assemblingSau: { type: Number, default: 0 },
   },
   resourcesRequired: {
-    documentation: { type: Number, default: 0.5 },
-    automation: { type: Number, default: 0.3 },
-    cutting: { type: Number, default: 0.3 },
-    sheetBender: { type: Number, default: 0.4 },
-    assemblingA: { type: Number, default: 0.6 },
-    assemblingB: { type: Number, default: 0.7 },
-    assemblingC: { type: Number, default: 0.8 },
-    assemblingSau: { type: Number, default: 1 },
+    documentation: { type: Number, default: 1 },
+    automation: { type: Number, default: 2 },
+    cutting: { type: Number, default: 4 },
+    sheetBender: { type: Number, default: 4 },
+    assemblingA: { type: Number, default: 4 },
+    assemblingB: { type: Number, default: 4 },
+    assemblingC: { type: Number, default: 4 },
+    assemblingSau: { type: Number, default: 4 },
   },
   resourcesAllQuantity: {
     documentation: { type: Number, default: 0 },
@@ -47,6 +47,16 @@ const Product = new Schema({
     assemblingC: { type: Number, default: 0 },
     assemblingSau: { type: Number, default: 0 },
   },
+  shift: {
+    documentation: { type: Number, default: 0 },
+    automation: { type: Number, default: 0 },
+    cutting: { type: Number, default: 0 },
+    sheetBender: { type: Number, default: 0 },
+    assemblingA: { type: Number, default: 0 },
+    assemblingB: { type: Number, default: 0 },
+    assemblingC: { type: Number, default: 0 },
+    assemblingSau: { type: Number, default: 0 },
+  }
 });
 //[String],
 module.exports = model("Product", Product);
