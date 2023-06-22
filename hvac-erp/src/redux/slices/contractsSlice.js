@@ -5,6 +5,23 @@ import axios from "axios";
 import { calcLastDate } from "../../utils/calcLastDate.js";
 
 const initialState = {
+  areas: [
+    'documentation',
+    'delivery',
+    'cutting',
+    'sheetBender',
+    'welding',
+    'painting',
+    'rolling',
+    'balancing',
+    'assemblingOP',
+    'assemblingBV',
+    'assemblingMTF',
+    'assemblingUPKP',
+    'documentationSAU',
+    'deliverySAU',
+    'assemblingSAU',
+  ],
   status: "loading", //loading | success|error
   statusUpdate: "loading", //loading | success|error
   allContracts: [],
@@ -88,38 +105,7 @@ export const contractsSlice = createSlice({
    
        state.allContracts[indexContract].products[indexItem].quantityNotConfirmed[type] = value;
       
-      // let plan = action.payload;
-      // console.log(plan)
-      // plan.map((item)=>{
-      //   state.allContracts.map((contract, indexContract)=>{
-      //       contract.products.map((product, indexProduct)=>{
-      //         if(item.id==product._id){
-      //           state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key]=
-      //           state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key] + 
-      //         }
-      //       })
-      //       })
-      //   item.id
-
-      // })
-
-      // let plan = action.payload;
       
-      // state.allContracts.map((contract, indexContract)=>{
-      //   contract.products.map((product, indexProduct)=>{
-      //     for(let key in product.quantityNotConfirmed){
-            
-      //         let idProduct = state.allContracts[indexContract].products[indexProduct]._id;
-      //         console.log(idProduct)
-      //         console.log(plan.find((item)=>item.id==idProduct?true:false))
-      //         state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key]=
-      //         state.allContracts[indexContract].products[indexProduct].quantityNotConfirmed[key] + 
-      //         plan.find((item)=>item.id==idProduct?true:false).quantityMadeToday
-              
-      //       }
-      // })
-      // })
-     
       
     },
     setCorrectDayUp: (state, action) => {
@@ -161,113 +147,48 @@ export const contractsSlice = createSlice({
     },
     
 
-    setDocValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
+    setValueQuantityMade: (state, action) => {      
+      let {value, index, maxValue, target} = action.payload;
+
+      value = +value;
+      maxValue = +maxValue;
       value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
       state.activeContract.contract.products[
         action.payload.index
-      ].quantityMade.documentation = +value;
-    },
-    setCutValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.cutting = +value;
-    },
-    setSheetValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.sheetBender = +value;
-    },
-    setAssemAValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.assemblingA = +value;
-    },
-    setAssemBValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.assemblingB = +value;
-    },
-    setAssemCValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.assemblingC = +value;
-    },
-    setAssemSauValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
-      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.assemblingSau = +value;
+      ].quantityMade[target] = +value;
+      
     },
 
-    setAutoValue: (state, action) => {
-      let value = +action.payload.value;
-      let maxValue = +action.payload.maxValue;
+    setValueLab: (state, action) => {
+      let {value, index, key} = action.payload;
+
+      let maxValue = 20;
       value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
+
       state.activeContract.contract.products[
-        action.payload.index
-      ].quantityMade.automation = +value;
+        index
+      ].resourcesRequired[key] = +value;
     },
 
-    setDocValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.documentation = +action.payload.value;
-    },
-    setCutValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.cutting = +action.payload.value;
-    },
-    setSheetValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.sheetBender = +action.payload.value;
-    },
-    setAssemAValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.assemblingA = +action.payload.value;
-    },
-    setAssemBValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.assemblingB = +action.payload.value;
-    },
-    setAssemCValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.assemblingC = +action.payload.value;
-    },
-    setAssemSauValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.assemblingSau = +action.payload.value;
-    },
+    resetValue: (state, action) => {
+    const {laboriousness, contract} = action.payload;
+    
+    contract.products.map((product, id)=>{
+       let labItem = laboriousness.find((item)=> item.code == product.code);
 
-    setAutoValueLab: (state, action) => {
-      state.activeContract.contract.products[
-        action.payload.index
-      ].resourcesRequired.automation = +action.payload.value;
+       if(!labItem){
+       labItem = {}
+       labItem.areas = {...state.activeContract.contract.products[id].resourcesRequired};
+       for(let key in labItem.areas){            
+        labItem.areas[key] = -1;            
+        }
+      }
+
+      state.activeContract.contract.products[id].resourcesRequired = labItem.areas;       
+      })
+    
     },
+    
   },
 
   extraReducers: {
@@ -307,22 +228,8 @@ export const {
   setActiveContract,
   brakeChanges,
   setNotConfirmed,
-  setDocValue,
-  setCutValue,
-  setSheetValue,
-  setAssemAValue,
-  setAssemBValue,
-  setAssemCValue,
-  setAssemSauValue,
-  setAutoValue,
-  setDocValueLab,
-  setCutValueLab,
-  setSheetValueLab,
-  setAssemAValueLab,
-  setAssemBValueLab,
-  setAssemCValueLab,
-  setAssemSauValueLab,
-  setAutoValueLab,
+  setValueQuantityMade,
+  setValueLab,
   setDatePlan,
   setTypeUpkp,
   setPause,
@@ -332,6 +239,7 @@ export const {
   setCorrectDayDown,
   setShipped,
   setActiveContractDate,
+  resetValue,
 } = contractsSlice.actions;
 
 export default contractsSlice.reducer;

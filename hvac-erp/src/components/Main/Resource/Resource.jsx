@@ -5,23 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {setDisabledInput, saveValue, updateValue, 
     setLastDate, 
     recalculationResources,
-    setCheckBoxDate,
-    setDocumentationDayResources,
-    setDocumentationAdjustment,
-    setCuttingDayResources,
-    setCuttingAdjustment,
-    setSheetBenderDayResources,
-    setSheetBenderAdjustment,
-    setAssemblingADayResources,
-    setAssemblingAAdjustment,
-    setAssemblingBDayResources,
-    setAssemblingBAdjustment,
-    setAssemblingCDayResources,
-    setAssemblingCAdjustment,
-    setAssemblingSauDayResources,
-    setAssemblingSauAdjustment,
-    setAutomationDayResources,
-    setAutomationAdjustment,
+    setCheckBoxDate,    
+    setDayResources,
+    setAdjustment,
     submitResource,
     fetchResource,
    } from './../../../redux/slices/resourcesSlice'
@@ -35,6 +21,8 @@ const Resource = () => {
     const {disabledInput, objResources } = useSelector((state)=>state.resources);
     const {lastDate, checkBoxDate } = objResources.config;
     const {resources } = objResources;    
+    const {areas} = useSelector((state)=>state.contracts);
+
 
   React.useEffect(()=>{
     dispatch(recalculationResources());
@@ -55,9 +43,12 @@ const Resource = () => {
         dispatch(fetchResource()); 
       }
 
-    const onChangeInput = (e,setValue)=>{
-        dispatch(setValue(e));
+    const onChangeDayResources = (value,target)=>{
+        dispatch(setDayResources({value,target}));
     }
+    const onChangeAdjustment= (value,target)=>{
+      dispatch(setAdjustment({value,target}));
+  }
 
     const onChangeLastDate = (e)=>{
         dispatch(setLastDate(e));
@@ -107,82 +98,80 @@ const Resource = () => {
 
        <div className={styles.headRow}>   
        <div></div>       
-       <div>Документация </div>
-       <div>Документация САУ</div>
-       <div>Заготовка</div>
-       <div>Гибка</div>
-       <div>Сборка №1</div>
-       <div>Сборка №2</div>
-       <div>Сборка №3</div>
-       <div>Сборка САУ</div>
+       <div>Документация</div>
+    <div>Снабжение</div>
+    <div>Рубка</div>
+    <div>Гибка</div>
+    <div>Сварка</div>
+    <div>Покраска</div>
+    <div>Прокатка</div>
+    <div>Балансировка</div>
+    <div>Сборка ОП</div>
+    <div>Сборка БВ</div>
+    <div>Сборка МТФ</div>
+    <div>Сборка УПКП</div>
+
+    <div>Документация САУ</div>
+    <div>Снабжение САУ</div>
+    <div>Сборка САУ</div>
        
        </div>
       
     <div className={styles.rows}> 
 
     <div className={styles.row}>
-    <div>Доступно в день</div>     
-    <Input setValue={(e)=>onChangeInput(e,setDocumentationDayResources)} disabled={disabledInput} inputValue={resources.documentation.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setAutomationDayResources)} disabled={disabledInput} inputValue={resources.automation.dayResources}/> 
-    <Input setValue={(e)=>onChangeInput(e,setCuttingDayResources)} disabled={disabledInput} inputValue={resources.cutting.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setSheetBenderDayResources)} disabled={disabledInput} inputValue={resources.sheetBender.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingADayResources)} disabled={disabledInput} inputValue={resources.assemblingA.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingBDayResources)} disabled={disabledInput} inputValue={resources.assemblingB.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingCDayResources)} disabled={disabledInput} inputValue={resources.assemblingC.dayResources}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingSauDayResources)} disabled={disabledInput} inputValue={resources.assemblingSau.dayResources}/>
-      
+    <div>Доступно в день</div>      
+
+    {   
+      areas.map((area,index)=>{
+      return <Input key={index} setValue={(e)=>onChangeDayResources(e,area)} disabled={disabledInput} inputValue={resources.areas[area].dayResources}/>
+      })
+    }      
+
     </div>
 
     
     <div className={styles.row}>
-    <div>Корректировка рабочие дни</div>     
-    <Input setValue={(e)=>onChangeInput(e,setDocumentationAdjustment)} disabled={disabledInput} inputValue={resources.documentation.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setAutomationAdjustment)} disabled={disabledInput} inputValue={resources.automation.adjustment}/> 
-    <Input setValue={(e)=>onChangeInput(e,setCuttingAdjustment)} disabled={disabledInput} inputValue={resources.cutting.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setSheetBenderAdjustment)} disabled={disabledInput} inputValue={resources.sheetBender.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingAAdjustment)} disabled={disabledInput} inputValue={resources.assemblingA.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingBAdjustment)} disabled={disabledInput} inputValue={resources.assemblingB.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingCAdjustment)} disabled={disabledInput} inputValue={resources.assemblingC.adjustment}/>
-    <Input setValue={(e)=>onChangeInput(e,setAssemblingSauAdjustment)} disabled={disabledInput} inputValue={resources.assemblingSau.adjustment}/>
-    
+    <div>Корректировка рабочие дни</div>    
+
+    {   
+      areas.map((area,index)=>{
+      return <Input setValue={(e)=>onChangeAdjustment(e,area)} disabled={disabledInput} inputValue={resources.areas[area].adjustment}/>
+      })
+    }   
+
     </div>
 
     <div className={styles.row}>
     <div>Всего рабочих дней до {lastDate}</div>
-    <div>{resources.documentation.allWorkDays}</div>
-    <div>{resources.automation.allWorkDays}</div>
-    <div>{resources.cutting.allWorkDays}</div>
-    <div>{resources.sheetBender.allWorkDays}</div>
-    <div>{resources.assemblingA.allWorkDays}</div>
-    <div>{resources.assemblingB.allWorkDays}</div>
-    <div>{resources.assemblingC.allWorkDays}</div>
-    <div>{resources.assemblingSau.allWorkDays}</div>
+
+    {   
+      areas.map((area,index)=>{
+      return <div>{resources.areas[area].allWorkDays}</div>
+      })
+    }   
     
     </div>
     
     <div className={styles.row}>
     <div>Ресурсы в распоряжении</div>
-    <div>{resources.documentation.totalResources}</div>
-    <div>{resources.automation.totalResources}</div>
-    <div>{resources.cutting.totalResources}</div>
-    <div>{resources.sheetBender.totalResources}</div>
-    <div>{resources.assemblingA.totalResources}</div>
-    <div>{resources.assemblingB.totalResources}</div>
-    <div>{resources.assemblingC.totalResources}</div>
-    <div>{resources.assemblingSau.totalResources}</div>
+
+    {   
+      areas.map((area,index)=>{
+      return <div>{resources.areas[area].totalResources}</div>
+      })
+    }   
     
     </div>
 
     <div className={styles.row}>
     <div>Требуемые ресурсы</div>
-    <div>{resources.documentation.requiredResources}</div>
-    <div>{resources.automation.requiredResources}</div>
-    <div>{resources.cutting.requiredResources}</div>
-    <div>{resources.sheetBender.requiredResources}</div>
-    <div>{resources.assemblingA.requiredResources}</div>
-    <div>{resources.assemblingB.requiredResources}</div>
-    <div>{resources.assemblingC.requiredResources}</div>
-    <div>{resources.assemblingSau.requiredResources}</div>
+
+    {   
+      areas.map((area,index)=>{
+      return <div>{resources.areas[area].requiredResources}</div>
+      })
+    } 
     
     </div>
     

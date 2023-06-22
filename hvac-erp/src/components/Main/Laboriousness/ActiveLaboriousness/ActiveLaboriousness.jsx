@@ -4,7 +4,7 @@ import Button from '../../../../elementsUI/Button/Button';
 
 import styles from './ActiveLaboriousness.module.scss'
 import {setDisabledInput} from './../../../../redux/slices/laboriousnessSlice'
-import {brakeChanges, updateContract, updatePlan} from './../../../../redux/slices/contractsSlice'
+import {brakeChanges, updateContract, updatePlan, resetValue} from './../../../../redux/slices/contractsSlice'
 import InputRowLab from './InputRowLab/InputRowLab';
 
 const ActiveLaboriousness = () => {
@@ -12,7 +12,8 @@ const ActiveLaboriousness = () => {
 
     const dispatch = useDispatch();
     const {contract} = useSelector((state)=>state.contracts.activeContract);
-    const {disabledInput} = useSelector((state)=>state.laboriousness);
+    const {disabledInput, laboriousness} = useSelector((state)=>state.laboriousness);  
+    
 
     
   const onClickEditButton = (bool)=>{
@@ -27,6 +28,10 @@ const ActiveLaboriousness = () => {
     dispatch(updateContract(contract));
     dispatch(setDisabledInput(bool));
   }
+  const onClickReset = (bool)=> {    
+    dispatch(resetValue({laboriousness, contract}));   
+    
+  }
 
   return (
 
@@ -37,6 +42,7 @@ const ActiveLaboriousness = () => {
           <div className={styles.buttonBar}>
           <Button click={()=>onClickCancelButton(true)} label={'Отмена'}/>
           <Button click={()=>onClickSaveButton(true)} label={'Сохранить'}/> 
+          <Button click={()=>onClickReset(true)} label={'Сброс значений'}/> 
       
           </div>
     ) :(  
@@ -52,18 +58,26 @@ const ActiveLaboriousness = () => {
 </div>
 
 <div className={styles.headRow} >
-
+<div>Арт.</div>
 <div>Наименование</div>
 
 
 <div>Документация</div>
-<div>Документация САУ</div>
-<div>Заготовка</div>
-<div>Гибка</div>
-<div>Сборка №1</div>
-<div>Сборка №2</div>
-<div>Сборка №3</div>
-<div>Сборка САУ</div>
+    <div>Снабжение</div>
+    <div>Рубка</div>
+    <div>Гибка</div>
+    <div>Сварка</div>
+    <div>Покраска</div>
+    <div>Прокатка</div>
+    <div>Балансировка</div>
+    <div>Сборка ОП</div>
+    <div>Сборка БВ</div>
+    <div>Сборка МТФ</div>
+    <div>Сборка УПКП</div>
+
+    <div>Документация САУ</div>
+    <div>Снабжение САУ</div>
+    <div>Сборка САУ</div>
 
 </div>
 

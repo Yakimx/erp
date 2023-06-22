@@ -11,6 +11,7 @@ const ProductionTasks = () => {
   //const [activeTab, setActiveTab] = useState(0);
   const dispatch = useDispatch();
   const {activeTabTask} = useSelector((state)=>state.menu);
+  const {areas} = useSelector((state)=>state.contracts);
 
   const setActiveTab = (i)=>{
     dispatch(setActiveTabTask(i))
@@ -18,51 +19,40 @@ const ProductionTasks = () => {
   }
   
 
-  const {documentation, 
-    automation,
-    cutting,
-    sheetBender,
-    assemblingA,
-    assemblingB,
-    assemblingC,
-    assemblingSau,
-    } = useSelector((state)=>state.plan);
+  const {areasPlan} = useSelector((state)=>state.plan);
+  
     
 
-const listTab = ['Документация', 'Документация САУ',
-  'Заготовка', 
+const listTab = [
+  'Документация',
+  'Снабжение',
+  'Рубка', 
   'Гибка', 
-  'Сборка №1',
-  'Сборка №2',
-  'Сборка №3',
-  'Сборка САУ'
+  'Сварка',
+  'Покраска',
+  'Прокатка',
+  'Балансировка',
+  'Сборка ОП',
+  'Сборка БВ',
+  'Сборка МТФ',
+  'Сборка УПКП',
+  'Документация САУ',
+  'Снабжение САУ',
+  'Сборка САУ',
 ]
+
+
 
 
   return (
     <div className={styles.root}>  
 
     <TabBarTask listTab={listTab} setActiveTab={(i)=>setActiveTab(i)} activeTab={activeTabTask}/>
-
-    {/* setInputValueDocumentation,
-  setInputValueCutting,
-  setInputValueSheetBender,
-  setInputValueAssembling,
-  setInputValueAutomation, */}
-    {activeTabTask==0 && <Plan plan={documentation} type={'documentation'}/>}
-    {activeTabTask==1 && <Plan plan={automation} type={'automation'}/>}
-    {activeTabTask==2 && <Plan plan={cutting} type={'cutting'}/>}
-    {activeTabTask==3 && <Plan plan={sheetBender} type={'sheetBender'}/>}
-    {activeTabTask==4 && <Plan plan={assemblingA} type={'assemblingA'}/>}
-    {activeTabTask==5 && <Plan plan={assemblingB} type={'assemblingB'}/>}
-    {activeTabTask==6 && <Plan plan={assemblingC} type={'assemblingC'}/>}
-    {activeTabTask==7 && <Plan plan={assemblingSau} type={'assemblingSau'}/>}
     
 
-
-
-
-
+     
+        <Plan plan={areasPlan[areas[activeTabTask]]} type={areas[activeTabTask]}/>
+    
         </div>
   )
 }

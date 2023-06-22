@@ -4,14 +4,9 @@ import { calcPlan } from "../../utils/calcPlan";
 const initialState = {
   active: -1,
   disabledInput: true,
-  documentation: [],
-  cutting: [],
-  sheetBender: [],
-  assemblingA: [],
-  assemblingB: [],
-  assemblingC: [],
-  assemblingSau: [],
-  automation: [],
+  areasPlan: {
+
+  }
 };
 
 export const planSlice = createSlice({
@@ -29,98 +24,43 @@ export const planSlice = createSlice({
       state.active = 0;
     },
 
-    // setValueNotConfirmed: (state, action) => {
-    //   let { value, indexDay, contractNumber, indexProduct, type, maxValue } =
-    //     action.payload;
-    //   value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
-      
-    //   state[type][indexDay].list[indexProduct].quantityMadeToday = +value;
-    // },
-
     setPlan: (state, action) => {      
-      const { allContracts, objResources } = action.payload;
-      state.documentation = calcPlan(
-        allContracts,
-        objResources,
-        "documentation"
-      );
+      const { allContracts, objResources, areas } = action.payload;     
+
+    
+    let documentation = calcPlan(allContracts, objResources,'documentation');
+    let delivery = calcPlan(allContracts, objResources,'delivery', documentation);
+    let cutting = calcPlan(allContracts, objResources,'cutting', delivery);
+    let sheetBender = calcPlan(allContracts, objResources,'sheetBender', cutting);
+    let welding = calcPlan(allContracts, objResources,'welding', sheetBender);
+    let painting = calcPlan(allContracts, objResources,'painting', welding);
+    let rolling = calcPlan(allContracts, objResources,'rolling', painting);
+    let balancing = calcPlan(allContracts, objResources,'balancing', rolling);
+    let assemblingOP = calcPlan(allContracts, objResources,'assemblingOP', balancing);
+    let assemblingBV = calcPlan(allContracts, objResources,'assemblingBV', assemblingOP);
+    let assemblingMTF = calcPlan(allContracts, objResources,'assemblingMTF', assemblingBV);
+    let assemblingUPKP = calcPlan(allContracts, objResources,'assemblingUPKP', assemblingMTF);
+    let documentationSAU = calcPlan(allContracts, objResources,'documentationSAU');
+    let deliverySAU = calcPlan(allContracts, objResources,'deliverySAU', documentationSAU );
+    let assemblingSAU = calcPlan(allContracts, objResources,'assemblingSAU', deliverySAU);
       
-      state.cutting = calcPlan(allContracts, objResources, "cutting");
-      state.sheetBender = calcPlan(
-        allContracts,
-        objResources,
-        "sheetBender"
-      );
-      state.assemblingA = calcPlan(
-        allContracts,
-        objResources,
-        "assemblingA"
-      );
-      state.assemblingB = calcPlan(
-        allContracts,
-        objResources,
-        "assemblingB"
-      );
-      state.assemblingC = calcPlan(
-        allContracts,
-        objResources,
-        "assemblingC"
-      );
-      state.assemblingSau = calcPlan(
-        allContracts,
-        objResources,
-        "assemblingSau"
-      );
-      state.automation = calcPlan(allContracts, objResources, "automation");
+    state.areasPlan['documentation'] = documentation;
+    state.areasPlan['delivery'] = delivery;
+    state.areasPlan['cutting'] = cutting;
+    state.areasPlan['sheetBender'] = sheetBender;
+    state.areasPlan['welding'] = welding;
+    state.areasPlan['painting'] = painting;
+    state.areasPlan['rolling'] = rolling;
+    state.areasPlan['balancing'] = balancing;
+    state.areasPlan['assemblingOP'] = assemblingOP;
+    state.areasPlan['assemblingBV'] = assemblingBV;
+    state.areasPlan['assemblingMTF'] = assemblingMTF;
+    state.areasPlan['assemblingUPKP'] = assemblingUPKP;
+    state.areasPlan['documentationSAU'] = documentationSAU;
+    state.areasPlan['deliverySAU'] = deliverySAU;
+    state.areasPlan['assemblingSAU'] = assemblingSAU;
     },
-    // setValueDocumentationInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.documentationPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueCuttingInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.cuttingPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueSheetBenderInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.sheetBenderPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueAssemblingAInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.assemblingAPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueAssemblingBInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.assemblingBPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueAssemblingCInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.assemblingCPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueAssemblingSauInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.assemblingSauPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
-    // setValueAutomationInput: (state, action) => {
-    //   const { value, indexProduct, indexContract, indexDay } = action.payload;
-    //   state.automationPlan[indexDay].listPlan[indexContract].products[
-    //     indexProduct
-    //   ].quantityMadeToday = value;
-    // },
+
 
     saveValue: (state, action) => {},
     updateValue: (state, action) => {},
@@ -135,15 +75,7 @@ export const {
   setValueInput,
   setActive,
   resetActive,
-  //setValueNotConfirmed,
-  // setValueDocumentationInput,
-  // setValueCuttingInput,
-  // setValueSheetBenderInput,
-  // setValueAssemblingAInput,
-  // setValueAssemblingBInput,
-  // setValueAssemblingCInput,
-  // setValueAssemblingSauInput,
-  // setValueAutomationInput,
+
 } = planSlice.actions;
 
 export default planSlice.reducer;

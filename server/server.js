@@ -19,13 +19,19 @@ app.use(
 );
 app.use(bodyParser.json({ limit: "1mb" }));
 
+
+
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use("/list", contractRouter);
 app.use("/resource", resourceRouter);
 app.use("/laboriousness", laboriousnessRouter);
 
-const port = 8000;
+const hostname = '10.10.16.2';
+const port = 8008;
+
+
+
 const urlDb = "mongodb://127.0.0.1:27017/erp";
 //const urlDb = "mongodb://6.tcp.eu.ngrok.io:13786/erp";
 
@@ -33,7 +39,7 @@ const urlDb = "mongodb://127.0.0.1:27017/erp";
   try {
     mongoose.set("strictQuery", false);
     await mongoose.connect(urlDb);
-    app.listen(port);
+    app.listen(port, hostname);
     console.log("Сервер ожидает подключения...");
   } catch (err) {
     return console.log(err);

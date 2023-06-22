@@ -24,6 +24,15 @@ export const addLaboriousness = createAsyncThunk(
   }
 );
 
+export const copyLaboriousness = createAsyncThunk(
+  "laboriousnessSlice/copyLaboriousness",
+  async (laboriousnes) => {
+    const data = await axios.post(url + routes.copyLaboriousness, laboriousnes);
+    if(data.data == "Dublicat") alert("Артикль уже есть в базе")
+  }
+ 
+);
+
 export const deleteLaboriousness = createAsyncThunk(
   "laboriousnessSlice/deleteLaboriousness",
   async (id) => {
@@ -52,23 +61,7 @@ export const laboriousnessSlice = createSlice({
     setDisabledInput: (state, action) => {
       state.disabledInput = action.payload;
     },
-    // setActiveItem: (state, action) => {
-    //   state.activeItem = action.payload;
-    // },
-
-    // addLaboriousnes: (state, action) => {
-    //   let newItem = { ...state.laboriousness[0] };
-    //   for (let key in newItem) {
-    //     newItem[key] = 0;
-    //   }
-    //   newItem.name = "Новая позиция";
-
-    //   state.laboriousness.push(newItem);
-    // },
-
-    // delLaboriousnes: (state, action) => {
-    //   state.laboriousness.splice(action.payload, 1);
-    // },
+   
     brakeChanges: (state, action) => {
       state.laboriousness.splice(action.payload, 1);
     },
@@ -76,38 +69,21 @@ export const laboriousnessSlice = createSlice({
     setName: (state, action) => {
       state.laboriousness[action.payload.index].name = action.payload.value;
     },
-    setDocValue: (state, action) => {
-      state.laboriousness[action.payload.index].documentation =
-        +action.payload.value;
-    },
-    setCutValue: (state, action) => {
-      state.laboriousness[action.payload.index].cutting = +action.payload.value;
-    },
-    setSheetValue: (state, action) => {
-      state.laboriousness[action.payload.index].sheetBender =
-        +action.payload.value;
-    },
-    setAssemAValue: (state, action) => {
-      state.laboriousness[action.payload.index].assemblingA =
-        +action.payload.value;
-    },
-    setAssemBValue: (state, action) => {
-      state.laboriousness[action.payload.index].assemblingB =
-        +action.payload.value;
-    },
-    setAssemCValue: (state, action) => {
-      state.laboriousness[action.payload.index].assemblingC =
-        +action.payload.value;
-    },
-    setAssemSauValue: (state, action) => {
-      state.laboriousness[action.payload.index].assemblingSau =
-        +action.payload.value;
-    },
+    
+    setValue: (state, action) => {
+     let {value, index, key} = action.payload;
+      
+      let maxValue = 20;
+      value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
 
-    setAutoValue: (state, action) => {
-      state.laboriousness[action.payload.index].automation =
-        +action.payload.value;
+      state.laboriousness[index].areas[key] = value;
+        
     },
+    setCode: (state, action) => {
+      state.laboriousness[action.payload.index].code = action.payload.value;
+    },
+    
+    
   },
   extraReducers: {
     [fetchLaboriousness.pending]: (state, action) => {
@@ -122,6 +98,7 @@ export const laboriousnessSlice = createSlice({
       state.status = "error";
       state.laboriousness = [];
     },
+
   },
 });
 
@@ -131,14 +108,8 @@ export const {
   delLaboriousnes,
   setDisabledInput,
   setName,
-  setDocValue,
-  setCutValue,
-  setSheetValue,
-  setAssemAValue,
-  setAssemBValue,
-  setAssemCValue,
-  setAssemSauValue,
-  setAutoValue,
+  setValue,
+  setCode,
 } = laboriousnessSlice.actions;
 
 export default laboriousnessSlice.reducer;

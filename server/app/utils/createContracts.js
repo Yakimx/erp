@@ -1,8 +1,11 @@
 const Contract = require("./../models/contract");
 const Product = require("./../models/product");
 const  isUpkp  = require("./isUpkp");
+const  findLaboriousness  = require("./findLaboriousness");
 
-const createContracts = (objData) => {
+
+const createContracts = (objData, laboriousness) => {
+  
   let contracts = objData.map((contract) => {
     let { number, date, status, statusdate, deliverydays, commitmentdate } =
       contract.invoice[0].$;
@@ -12,7 +15,7 @@ const createContracts = (objData) => {
       deliverydays > 0
         ? new Date(
             deliverydays * 24 * 60 * 60 * 1000 +
-              Date.parse(date.split('.').reverse().join('.'))
+              Date.parse(statusdate.split('.').reverse().join('.'))
           )
             .toLocaleDateString()
         : commitmentdate;
@@ -35,6 +38,7 @@ const createContracts = (objData) => {
           quantity: +item.$.amount,
           code: item.$.id,
           sum: +item.$.sum,
+          resourcesRequired: findLaboriousness(laboriousness, item.$.id),
         });
       }),
     });

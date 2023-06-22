@@ -24,7 +24,7 @@ const UploadXml = () => {
   }
 
   const onClickSubmitButton = (file)=>{   
-    setModalActive(true); 
+   // setModalActive(true); 
     dispatch(submitFile(file));
     
   }

@@ -102,9 +102,11 @@ src={sortPNG}/>
   <td>{contract.customer}</td>
   <td>{contract.completionDateContract}</td>  
   <td>{contract.completionDatePlan == '01.01.1970' ? "" : contract.completionDatePlan}</td>
-  <td className={contract.shipped ? styles.statusShipped 
+  <td className={ 
+     contract.shipped ? styles.statusShipped 
     : contract.ready == true ? styles.statusReady 
     : contract.pause == true ? styles.statusPause
+    : contract.errLab ? styles.statusErr 
     : Date.parse(contract.completionDateContract.split('.').reverse().join('.')) < Date.parse(contract.completionDatePlan.split('.').reverse().join('.')) ? styles.statusOverdue 
     : styles.statusPending}>{contract.status}</td>
 

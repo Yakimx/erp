@@ -4,6 +4,7 @@ const controller = require("../controllers/laboriousnessController");
 
 router.get("/get", controller.getLaboriousness);
 router.post("/add", controller.addLaboriousness);
+router.post("/copy", controller.copyLaboriousness);
 router.delete("/delete/:id", controller.deleteLaboriousness);
 router.post("/update", controller.updateLaboriousness);
 

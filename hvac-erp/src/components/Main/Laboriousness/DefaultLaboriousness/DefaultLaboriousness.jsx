@@ -69,17 +69,26 @@ const DefaultLaboriousness = () => {
 
 <div className={styles.headRow} >
 
+<div>Арт.</div>
 <div>Наименование</div>
 
 
-<div>Документация</div>
-<div>Документация САУ</div>
-<div>Заготовка</div>
-<div>Гибка</div>
-<div>Сборка №1</div>
-<div>Сборка №2</div>
-<div>Сборка №3</div>
-<div>Сборка САУ</div>
+<div>Док.</div>
+    <div>Снаб.</div>
+    <div>Рубка</div>
+    <div>Гибка</div>
+    <div>Сварка</div>
+    <div>Покрас.</div>
+    <div>Прокатка</div>
+    <div>Балансир.</div>
+    <div>Сборка ОП</div>
+    <div>Сборка БВ</div>
+    <div>Сборка МТФ</div>
+    <div>Сборка УПКП</div>
+
+    <div>Док. САУ</div>
+    <div>Снаб. САУ</div>
+    <div>Сборка САУ</div>
 
 </div>
 

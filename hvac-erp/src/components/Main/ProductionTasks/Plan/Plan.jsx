@@ -33,7 +33,7 @@ const Plan = ({ plan, type }) => {
   const planState = useSelector((state) => state.plan);
   const { disabledInput } = planState;
   const { objResources } = useSelector((state) => state.resources);
-  const { allContracts } = useSelector((state) => state.contracts);
+  const { allContracts, areas } = useSelector((state) => state.contracts);
   const { startPlanDate, checkBoxStartDate } = objResources.config;
 
   //const [highlight, setHighlight] = useState(startPlanDate);
@@ -59,7 +59,7 @@ const Plan = ({ plan, type }) => {
     
   };
   const onClickCancelButton = () => {
-    dispatch(setPlan({ allContracts, objResources }));
+    dispatch(setPlan({ allContracts, objResources, areas }));
     dispatch(fetchContracts());
     dispatch(setDisabledInput(true));
   };

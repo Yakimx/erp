@@ -1,5 +1,5 @@
 const Contract = require("./../models/contract");
-const Resource = require("./../models/resource");
+const Laboriousness = require("./../models/laboriousness");
 const fs = require("fs");
 const xmlToJson = require("../utils/parseXml");
 const createContracts = require("../utils/createContracts");
@@ -52,29 +52,16 @@ class contractsController {
       const contracts = await Contract.find({});
       const newContracts = contracts.map((contract) => {
         let newProducts = contract.products.map((product) => {
-          product.quantityMade.documentation +=
-            +product.quantityNotConfirmed.documentation;
-          product.quantityMade.automation +=
-            +product.quantityNotConfirmed.automation;
-          product.quantityMade.cutting += +product.quantityNotConfirmed.cutting;
-          product.quantityMade.sheetBender +=
-            +product.quantityNotConfirmed.sheetBender;
-          product.quantityMade.assemblingA +=
-            +product.quantityNotConfirmed.assemblingA;
-          product.quantityMade.assemblingB +=
-            +product.quantityNotConfirmed.assemblingB;
-          product.quantityMade.assemblingC +=
-            +product.quantityNotConfirmed.assemblingC;
-          product.quantityMade.assemblingSau +=
-            +product.quantityNotConfirmed.assemblingSau;
-          product.quantityNotConfirmed.documentation = 0;
-          product.quantityNotConfirmed.automation = 0;
-          product.quantityNotConfirmed.cutting = 0;
-          product.quantityNotConfirmed.sheetBender = 0;
-          product.quantityNotConfirmed.assemblingA = 0;
-          product.quantityNotConfirmed.assemblingB = 0;
-          product.quantityNotConfirmed.assemblingC = 0;
-          product.quantityNotConfirmed.assemblingSau = 0;
+
+          for(let key in product.quantityMade){
+          
+            product.quantityMade[key] += +product.quantityNotConfirmed[key];
+          }
+
+          for(let key in product.quantityNotConfirmed){
+            product.quantityNotConfirmed[key] = 0;
+          }
+
           return product;
         });
         contract.products = newProducts;
@@ -120,11 +107,14 @@ class contractsController {
 
   async xmlParse(req, res) {
     try {
+      const laboriousness = await Laboriousness.find({});
+      
       //res.header("Access-Control-Allow-Origin", "*");
       let filedata = req.file.buffer;
-      let contracts = createContracts(xmlToJson(filedata));
+      let contracts = createContracts(xmlToJson(filedata),laboriousness);
+      
 
-      contracts.map(async (contractXml) => {
+      let a = await contracts.map(async (contractXml) => {
         let contractDb = await Contract.findOne({
           contractNumber: contractXml.contractNumber,
         });
@@ -134,10 +124,11 @@ class contractsController {
             updateXml(contractDb, contractXml)
           );
         } else {
-          await contractXml.save();
+         
+         await contractXml.save();         
         }
       });
-
+     
       res.send("OK");
       // res.send(contracts);
       //res.send(xmlToJson(filedata));

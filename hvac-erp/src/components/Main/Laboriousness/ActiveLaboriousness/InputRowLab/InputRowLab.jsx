@@ -1,61 +1,39 @@
 import React from 'react'
 import Input from './Input/Input'
 import styles from './InputRowLab.module.scss'
+import addPNG from './../../../../../assets/img/add.png'
 import { useDispatch, useSelector } from 'react-redux';
-import {setDocValueLab, 
-  setCutValueLab, 
-  setSheetValueLab, 
-  setAssemAValueLab,
-  setAssemBValueLab,
-  setAssemCValueLab,
-  setAssemSauValueLab,
-  setAutoValueLab} from './../../../../../redux/slices/contractsSlice'
+import {setValueLab} from './../../../../../redux/slices/contractsSlice'
+import {copyLaboriousness, fetchLaboriousness} from './../../../../../redux/slices/laboriousnessSlice'
 
 const InputRowLab = ({disabledInput, product, index}) => {
 
 const dispatch = useDispatch();
 const {contract} = useSelector((state)=>state.contracts.activeContract);
+const {areas} = useSelector((state)=>state.contracts);
 
-const onChangeDocInput = (value)=>{  
-  dispatch(setDocValueLab({value, index}))
+const onChangeInput = (value, key)=>{  
+  dispatch(setValueLab({value, index, key}))
 }
-const onChangeCutInput = (value)=>{
-  dispatch(setCutValueLab({value, index}))
-}
-const onChangeSheetInput = (value)=>{
-  dispatch(setSheetValueLab({value, index}))
-}
-const onChangeAssemAInput = (value)=>{
-  dispatch(setAssemAValueLab({value, index}))
-}
-const onChangeAssemBInput = (value)=>{
-  dispatch(setAssemBValueLab({value, index}))
-}
-const onChangeAssemCInput = (value)=>{
-  dispatch(setAssemCValueLab({value, index}))
-}
-const onChangeAssemSauInput = (value)=>{
-  dispatch(setAssemSauValueLab({value, index}))
+const onClickAddButton = (product)=>{  
+  dispatch(copyLaboriousness({name: product.name, code: product.code, areas: product.resourcesRequired})); 
+  dispatch(fetchLaboriousness()); 
 }
 
-const onChangeAutoInput = (value)=>{
-  dispatch(setAutoValueLab({value, index}))
-}
 
 
   return (
     <div className={styles.inputRow}>
+      <div>{product.code}</div>
       <div>{product.name}</div>
       
+      {
+        areas.map((key, i)=>{
+          return <Input key={key} setValue={(e)=>onChangeInput(e,key)} disabled={disabledInput} inputValue={product.resourcesRequired[key]} index={index}/>
+        })
+      }
 
-      <Input setValue={(e)=>onChangeDocInput(e)} disabled={disabledInput} inputValue={product.resourcesRequired.documentation} index={index}/>
-      <Input setValue={(e)=>onChangeAutoInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.automation} index={index}/> 
-      <Input setValue={(e)=>onChangeCutInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.cutting} index={index}/>      
-      <Input setValue={(e)=>onChangeSheetInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.sheetBender} index={index}/>      
-      <Input setValue={(e)=>onChangeAssemAInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.assemblingA} index={index}/>
-      <Input setValue={(e)=>onChangeAssemBInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.assemblingB} index={index}/>
-      <Input setValue={(e)=>onChangeAssemCInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.assemblingC} index={index}/>
-      <Input setValue={(e)=>onChangeAssemSauInput(e)}disabled={disabledInput} inputValue={product.resourcesRequired.assemblingSau} index={index}/>      
+    {!disabledInput && <img onClick={()=>onClickAddButton(product)} src={addPNG}/>}
       
       </div>
   )

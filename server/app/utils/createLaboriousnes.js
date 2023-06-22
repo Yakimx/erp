@@ -1,8 +1,10 @@
 const Laboriousness = require("../models/laboriousness");
 
-const createLaboriousnes = (name) => {
+const createLaboriousnes = (item) => {
   return new Laboriousness({
-    name: name,
+    name: item.name,
+    code: item.code,
+    areas: item.areas,
   });
 };
 

@@ -1,5 +1,5 @@
-export const url = "http://127.0.0.1:8000";
-//export const url = "https://2b96-178-120-0-214.ngrok-free.app";
+export const url = "http://10.10.16.2:8008";
+//export const url = "https://d199-178-120-50-67.ngrok-free.app";
 
 export const routes = {
   updateContract: "/list/update",
@@ -15,4 +15,5 @@ export const routes = {
   updateLaboriousness: "/laboriousness/update",
   deleteLaboriousness: "/laboriousness/delete",
   addLaboriousness: "/laboriousness/add",
+  copyLaboriousness: "/laboriousness/copy",
 };

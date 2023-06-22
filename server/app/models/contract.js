@@ -25,13 +25,27 @@ const Contract = new Schema({
   //errorData: true,
   resourcesAllProducts: {
     documentation: { type: Number, default: 0 },
-    automation: { type: Number, default: 0 },
+    delivery: { type: Number, default: 0 },
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
-    assemblingA: { type: Number, default: 0 },
-    assemblingB: { type: Number, default: 0 },
-    assemblingC: { type: Number, default: 0 },
-    assemblingSau: { type: Number, default: 0 },
+    welding: { type: Number, default: 0 },
+    painting: { type: Number, default: 0 },
+    rolling: { type: Number, default: 0 },
+    balancing: { type: Number, default: 0 },
+    
+    assemblingOP: { type: Number, default: 0 },
+    assemblingBV: { type: Number, default: 0 },
+    assemblingMTF: { type: Number, default: 0 },
+    assemblingUPKP: { type: Number, default: 0 },
+
+    documentationSAU: { type: Number, default: 0 },
+    deliverySAU: { type: Number, default: 0 },
+    assemblingSAU: { type: Number, default: 0 },
+    
+    
+    
+    
+    
   },
 
   products: [],

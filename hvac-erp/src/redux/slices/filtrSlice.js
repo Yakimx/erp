@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { calcEndDatePlan } from "../../utils/calcEndDatePlan";
 import { calcStartDatePlan } from "../../utils/calcStartDatePlan";
+import { isErrorLab } from "../../utils/isErrorLab";
 import ProductRow from "../../components/Main/ProductionTasks/ProductRow/ProductRow";
 
 
@@ -20,6 +21,7 @@ const initialState = {
   ready: true,
   pending : true,
   shipped : true,
+  errLab : false,
 }
 },
 qtyAllContracts: 0,
@@ -49,9 +51,11 @@ const Matches = ({allContracts, plan}, filtrState) => {
     });
     filtrContract = checkReady(filtrContract);
     
-    if(plan.documentation.length != 0)filtrContract = calcEndDatePlan(filtrContract, plan)
-    if(plan.documentation.length != 0)filtrContract = calcStartDatePlan(filtrContract, plan)
-    
+    if(Object.keys(plan.areasPlan) != 0) {
+      
+      filtrContract = calcEndDatePlan(filtrContract, plan);
+      filtrContract = calcStartDatePlan(filtrContract, plan);
+    }    
     
 
     if(filtrState.activeSortPlanDate){
@@ -85,10 +89,15 @@ const Matches = ({allContracts, plan}, filtrState) => {
     qty.qtyPauseContracts = allContracts.reduce((prev, cur)=> cur.pause ? prev + 1 : prev, 0)
     qty.qtyReadyContracts = filtrContract.reduce((prev, cur)=> cur.ready ? prev + 1 : prev, 0)
 
+
+    filtrContract = isErrorLab(filtrContract);
+
     filtrContract = filtrContract.map((contract)=>{
-      let status = contract.shipped ? 'Отгружен'      
+      let status = 
+        contract.shipped ? 'Отгружен'      
       : contract.pause ? 'Пауза'
       : contract.ready ? 'Готов' 
+      : contract.errLab ? 'Ошибка'
       : 'Работа'
       
       return {...contract, status: status}
@@ -117,13 +126,20 @@ return filtrContract.map(contract=>{
     
     return (
     ((product.resourcesRequired.documentation == 0) || (product.quantityMade.documentation == product.quantity)) &&
-    ((product.resourcesRequired.automation == 0) || (product.quantityMade.automation == product.quantity)) &&
+    ((product.resourcesRequired.delivery == 0) || (product.quantityMade.delivery == product.quantity)) &&
     ((product.resourcesRequired.cutting == 0) || (product.quantityMade.cutting == product.quantity)) &&
     ((product.resourcesRequired.sheetBender == 0) || (product.quantityMade.sheetBender == product.quantity)) &&
-    ((product.resourcesRequired.assemblingA == 0) || (product.quantityMade.assemblingA == product.quantity)) &&
-    ((product.resourcesRequired.assemblingB == 0) || (product.quantityMade.assemblingB == product.quantity)) &&
-    ((product.resourcesRequired.assemblingC == 0) || (product.quantityMade.assemblingC == product.quantity)) &&
-    ((product.resourcesRequired.assemblingSau == 0) || (product.quantityMade.assemblingSau == product.quantity))
+    ((product.resourcesRequired.welding == 0) || (product.quantityMade.welding == product.quantity)) &&
+    ((product.resourcesRequired.painting == 0) || (product.quantityMade.painting == product.quantity)) &&
+    ((product.resourcesRequired.rolling == 0) || (product.quantityMade.rolling == product.quantity)) &&
+    ((product.resourcesRequired.balancing == 0) || (product.quantityMade.balancing == product.quantity)) &&
+    ((product.resourcesRequired.assemblingOP == 0) || (product.quantityMade.assemblingOP == product.quantity)) &&
+    ((product.resourcesRequired.assemblingBV == 0) || (product.quantityMade.assemblingBV == product.quantity)) &&
+    ((product.resourcesRequired.assemblingMTF == 0) || (product.quantityMade.assemblingMTF == product.quantity)) &&
+    ((product.resourcesRequired.assemblingUPKP == 0) || (product.quantityMade.assemblingUPKP == product.quantity)) &&
+    ((product.resourcesRequired.documentationSAU == 0) || (product.quantityMade.documentationSAU == product.quantity)) &&
+    ((product.resourcesRequired.deliverySAU == 0) || (product.quantityMade.deliverySAU == product.quantity)) &&
+    ((product.resourcesRequired.assemblingSAU == 0) || (product.quantityMade.assemblingSAU == product.quantity))
     ) ? false : true}) == undefined ? true : false
 
 return {...contract, ready: ready};

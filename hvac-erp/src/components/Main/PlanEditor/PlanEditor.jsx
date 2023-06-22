@@ -160,17 +160,27 @@ const PlanEditor = () => {
 
     <div className={styles.headRow} >
 
-    <div>Наименование</div>
-    
+    <div>Наименование</div>    
     <div>Кол-во</div>
+    
     <div>Документация</div>
-    <div>Документация САУ</div>
-    <div>Заготовка</div>
+    <div>Снабжение</div>
+    <div>Рубка</div>
     <div>Гибка</div>
-    <div>Сборка №1</div>
-    <div>Сборка №2</div>
-    <div>Сборка №3</div>
+    <div>Сварка</div>
+    <div>Покраска</div>
+    <div>Прокатка</div>
+    <div>Балансировка</div>
+    <div>Сборка ОП</div>
+    <div>Сборка БВ</div>
+    <div>Сборка МТФ</div>
+    <div>Сборка УПКП</div>
+
+    <div>Документация САУ</div>
+    <div>Снабжение САУ</div>
     <div>Сборка САУ</div>
+ 
+
     
     </div>
    

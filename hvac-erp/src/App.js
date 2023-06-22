@@ -11,7 +11,7 @@ import styles from "./App.module.scss";
 
 function App() {
   const dispatch = useDispatch();
-  const { status, allContracts } = useSelector((state) => state.contracts);
+  const { status, allContracts, areas } = useSelector((state) => state.contracts);
   const { objResources } = useSelector((state) => state.resources);
   const { statusSubmitFile } = useSelector((state) => state.resources);
   const statusResources = useSelector((state) => state.resources.status);
@@ -39,7 +39,7 @@ function App() {
 //const { objResources } = useSelector((state) => state.resources);
 //const { allContracts } = useSelector((state) => state.contracts);
 React.useEffect(() => { 
-  if (status == "success" && statusResources == "success") dispatch(setPlan({ allContracts, objResources }));
+  if (status == "success" && statusResources == "success") dispatch(setPlan({ allContracts, objResources, areas }));
 }, [allContracts]);
 
   return (

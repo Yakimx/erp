@@ -13,13 +13,25 @@ class laboriousnessController {
 
   async addLaboriousness(req, res) {
     try {
-      let name = req.body.name;
-      let laboriousnes = createLaboriousnes(name);
+      
+      let laboriousnes = createLaboriousnes(req.body);
       laboriousnes.save(function (err) {
         console.log(err);
       });
       res.send("OK");
     } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async copyLaboriousness(req, res) {
+    try {
+      let laboriousnes = createLaboriousnes(req.body);
+      let response = await laboriousnes.save();      
+      res.send("OK");
+    } catch (e) { 
+      if (e.code == 11000) {res.send("Dublicat")} 
+      else{res.send("ERR")};          
       console.log(e);
     }
   }
@@ -44,15 +56,9 @@ class laboriousnessController {
         });
         if (laboriousnesDb) {
           await Laboriousness.findByIdAndUpdate(laboriousnesDb.id, {
-            name: item.name,
-            documentation: item.documentation,
-            automation: item.automation,
-            cutting: item.cutting,
-            sheetBender: item.sheetBender,
-            assemblingA: item.assemblingA,
-            assemblingB: item.assemblingB,
-            assemblingC: item.assemblingC,
-            assemblingSau: item.assemblingSau,
+            name: item.name, 
+            code: item.code, 
+             areas: {...item.areas},          
           });
         }
       });
