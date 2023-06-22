@@ -1,9 +1,10 @@
 import { sortDateUp, sortDateDown } from "./sortDate";
 import { getWorkDay } from "./../utils/calcWorkDay";
+import { isErrorLab } from "./../utils/isErrorLab";
 
-export const calcPlan = (contracts, objResources, sector) => {
+export const calcPlan = (contracts, objResources, sector, prev) => {
   let startPlanDate = objResources.config.startPlanDate;
-  let resources = objResources.resources;
+  let resources = objResources.resources.areas;
   let weekend = objResources.config.weekend;
   
   let plan = 
@@ -14,11 +15,13 @@ export const calcPlan = (contracts, objResources, sector) => {
   
   //contracts = contracts.slice().sort(sortDateUp);
 
-  plan.itemsPlan = contracts.map((contract, indexContract)=>{
+  //isErrorLab
+
+  plan.itemsPlan = isErrorLab(contracts).map((contract, indexContract)=>{
     
     return contract.products
     .map((product, indexProduct)=>{    
-      if((product.resourcesRequired[sector] > 0) && (product.quantityMade[sector] < product.quantity) && !contract.pause && !contract.shipped){
+      if((product.resourcesRequired[sector] > 0) && (product.quantityMade[sector] < product.quantity) && !contract.pause && !contract.shipped && !contract.errLab){
         return {
           contractNumber: contract.contractNumber,
           name: product.name,
@@ -33,7 +36,8 @@ export const calcPlan = (contracts, objResources, sector) => {
           completionDateDesired: contract.completionDateDesired,
           shift: product.shift[sector],
           resourcesRequired:Math.round(product.resourcesRequired[sector] * (product.quantity - product.quantityMade[sector])*1000) / 1000,
-                    
+          timeCodeStart: 0,
+          timeCodeEnd: 0,   
            planItem : [
             //{
           //   startDate: '',
@@ -52,76 +56,51 @@ export const calcPlan = (contracts, objResources, sector) => {
   .filter((el)=>el.length != 0)
   .flat()
   .filter((el)=>el != undefined)
-  .slice().sort(sortDateUp)
+  .sort(sortDateUp)
 
-  //calc date
-  let startDate = startPlanDate;
-  let resourcesRem = resources[sector].dayResources; 
-  let remPerc = 1; 
-  plan.itemsPlan = plan.itemsPlan.map((item)=>{    
-    if(resourcesRem >= item.resourcesRequired){
-      item.planItem[0]={
-       startDate: startDate,
-       endDate: startDate,
-       remPerc: resourcesRem/resources[sector].dayResources,
-       partDay: item.resourcesRequired/resources[sector].dayResources,
-      }
-      
-      resourcesRem = resourcesRem - item.resourcesRequired;      
-      if(resourcesRem == 0) {
-        
-        let i = 1;
-        while(getWorkDay(new Date(Date.parse(startDate.split(".").reverse().join(".")) + 1*1000*60*60*24).toLocaleDateString(), new Date(Date.parse(startDate.split(".").reverse().join(".")) + i*1000*60*60*24).toLocaleDateString(), weekend)==0){
-          i++;
-        }
-        
-        startDate = new Date(Date.parse(startDate.split(".").reverse().join(".")) + (i)*1000*60*60*24).toLocaleDateString();
-        resourcesRem = resources[sector].dayResources; 
-      };
-    }else{      
-      
-      let day = Math.round((item.resourcesRequired - resourcesRem)/ (resources[sector].dayResources ));
-      item.planItem = new Array(day + 2)
-      let a = item.resourcesRequired;
-      //resourcesRem = resourcesRem + item.resourcesRequired;
 
-      for(let i = 0 ; i < item.planItem.length; i++){
-        if(a > resourcesRem){
-          item.planItem[i] = {
-           startDate: startDate,
-           endDate: startDate,
-           remPerc: resourcesRem/resources[sector].dayResources,
-           partDay: resourcesRem/resources[sector].dayResources,
-          }          
-          a = a - resourcesRem;
-          resourcesRem = resources[sector].dayResources;
-        
-          let j = 1;
-          while(getWorkDay(new Date(Date.parse(startDate.split(".").reverse().join(".")) + 1*1000*60*60*24).toLocaleDateString(), new Date(Date.parse(startDate.split(".").reverse().join(".")) + j*1000*60*60*24).toLocaleDateString(), weekend)==0){
-          j++;
-        }
-          startDate = new Date(Date.parse(startDate.split(".").reverse().join(".")) + (j) *1000*60*60*24).toLocaleDateString();
-        }else{          
-          item.planItem[i] = {
-          startDate: startDate,
-          endDate: startDate,
-          remPerc: 1,
-          partDay: a/resources[sector].dayResources,      
-        }          
-          resourcesRem = resourcesRem - a;
-          
-        }       
-   
-      }
+  //расчет временных меток
+for(let i=0; i < plan.itemsPlan.length; i++){
 
+  let timeCodeStart = 0;
+  if(prev) {
+    let result = prev.itemsPlan.find((item)=> item.id == plan.itemsPlan[i].id);
+    if (result) {
+      timeCodeStart = result.timeCodeEnd;
+     }
+  }
+  
+  if (i==0){
+    plan.itemsPlan[i].timeCodeStart = timeCodeStart > 0 ? timeCodeStart : 0;
+    plan.itemsPlan[i].timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+  } else{
+
+    timeCodeStart = timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd 
+    ? timeCodeStart
+    : plan.itemsPlan[i-1].timeCodeEnd
     
-      // item.remPerc = resourcesRem/resources[sector].dayResources;
-      // resourcesRem = ((day+1)*resources[sector].dayResources) - (item.resourcesRequired - resourcesRem);
-      // item.endDate = new Date(Date.parse(startDate.split(".").reverse().join(".")) + (day + 1) *1000*60*60*24).toLocaleDateString();
-      // startDate = item.endDate; //new Date(Date.parse(startDate.split(".").reverse().join(".")) + day*1000*60*60*24).toLocaleDateString();
-    }    
-    return item;
-  })
+    plan.itemsPlan[i].timeCodeStart = timeCodeStart ;   
+    plan.itemsPlan[i].timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+  }
+
+}
+
+//добавление окон
+
+
+
+plan.itemsPlan = plan.itemsPlan.map((item)=>{    
+
+    item.planItem[0]={
+    startDate: new Date(Date.parse(startPlanDate.split(".").reverse().join(".")) + item.timeCodeStart*24).toLocaleDateString(),
+    endDate: new Date(Date.parse(startPlanDate.split(".").reverse().join(".")) + item.timeCodeEnd*24).toLocaleDateString(),
+    remPerc: item.timeCodeEnd,
+    partDay: item.timeCodeStart,
+   }
+   return item;
+})
+
+
 
   
   //console.log(plan)
