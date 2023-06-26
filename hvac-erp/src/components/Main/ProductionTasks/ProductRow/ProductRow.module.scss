@@ -63,24 +63,31 @@
 
 
    .highlight{
+    
     width: 100%;
     display: grid;
     background-color: rgba(217, 255, 79, 0.4);
-    grid-template-columns: repeat(3,1fr);
-    grid-template-rows: auto;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(2,1fr);;
     justify-items: center;
     align-items: center;
     align-items: center;
    }
    .nohighlight{
+   
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-rows: auto;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(2,1fr);;
     justify-items: center;
     align-items: center;
     align-items: center;
    }
    .planDate{
+    
 width: 100%;
    }
+   .date{
+    border-bottom: 2px groove rgb(230, 230, 230);
+        font-size: 16px;
+       }

@@ -29,20 +29,20 @@ export const planSlice = createSlice({
 
     
     let documentation = calcPlan(allContracts, objResources,'documentation');
-    let delivery = calcPlan(allContracts, objResources,'delivery', documentation);
-    let cutting = calcPlan(allContracts, objResources,'cutting', delivery);
-    let sheetBender = calcPlan(allContracts, objResources,'sheetBender', cutting);
-    let welding = calcPlan(allContracts, objResources,'welding', sheetBender);
-    let painting = calcPlan(allContracts, objResources,'painting', welding);
-    let rolling = calcPlan(allContracts, objResources,'rolling', painting);
-    let balancing = calcPlan(allContracts, objResources,'balancing', rolling);
-    let assemblingOP = calcPlan(allContracts, objResources,'assemblingOP', balancing);
-    let assemblingBV = calcPlan(allContracts, objResources,'assemblingBV', assemblingOP);
-    let assemblingMTF = calcPlan(allContracts, objResources,'assemblingMTF', assemblingBV);
-    let assemblingUPKP = calcPlan(allContracts, objResources,'assemblingUPKP', assemblingMTF);
+    let delivery = calcPlan(allContracts, objResources,'delivery', [documentation]);
+    let cutting = calcPlan(allContracts, objResources,'cutting', [delivery, documentation]);
+    let sheetBender = calcPlan(allContracts, objResources,'sheetBender', [cutting, delivery, documentation]);
+    let welding = calcPlan(allContracts, objResources,'welding', [sheetBender, cutting, delivery, documentation]);
+    let painting = calcPlan(allContracts, objResources,'painting', [welding, sheetBender, cutting, delivery, documentation]);
+    let rolling = calcPlan(allContracts, objResources,'rolling', [painting, welding, sheetBender, cutting, delivery, documentation]);
+    let balancing = calcPlan(allContracts, objResources,'balancing', [rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingOP = calcPlan(allContracts, objResources,'assemblingOP', [balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingBV = calcPlan(allContracts, objResources,'assemblingBV', [assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingMTF = calcPlan(allContracts, objResources,'assemblingMTF', [assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingUPKP = calcPlan(allContracts, objResources,'assemblingUPKP', [assemblingMTF, assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
     let documentationSAU = calcPlan(allContracts, objResources,'documentationSAU');
-    let deliverySAU = calcPlan(allContracts, objResources,'deliverySAU', documentationSAU );
-    let assemblingSAU = calcPlan(allContracts, objResources,'assemblingSAU', deliverySAU);
+    let deliverySAU = calcPlan(allContracts, objResources,'deliverySAU', [documentationSAU] );
+    let assemblingSAU = calcPlan(allContracts, objResources,'assemblingSAU', [deliverySAU, documentationSAU]);
       
     state.areasPlan['documentation'] = documentation;
     state.areasPlan['delivery'] = delivery;

@@ -148,9 +148,9 @@ const Plan = ({ plan, type }) => {
         <div className={styles.datePlan}>        
         <div>Начало по плану</div>
         <div>Готовность по плану</div>
-        <div>Ресурсы требуется/ остаток </div>
+        <div>Ресурс дня</div>
         </div>
-        <div>Желаемая дата</div>
+        <div>Договор/Желаемая</div>
         
       </div>
 
