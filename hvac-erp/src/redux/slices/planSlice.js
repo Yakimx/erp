@@ -28,21 +28,21 @@ export const planSlice = createSlice({
       const { allContracts, objResources, areas } = action.payload;     
 
     
-    let documentation = calcPlan(allContracts, objResources,'documentation');
-    let delivery = calcPlan(allContracts, objResources,'delivery', [documentation]);
-    let cutting = calcPlan(allContracts, objResources,'cutting', [delivery, documentation]);
-    let sheetBender = calcPlan(allContracts, objResources,'sheetBender', [cutting, delivery, documentation]);
-    let welding = calcPlan(allContracts, objResources,'welding', [sheetBender, cutting, delivery, documentation]);
-    let painting = calcPlan(allContracts, objResources,'painting', [welding, sheetBender, cutting, delivery, documentation]);
-    let rolling = calcPlan(allContracts, objResources,'rolling', [painting, welding, sheetBender, cutting, delivery, documentation]);
-    let balancing = calcPlan(allContracts, objResources,'balancing', [rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
-    let assemblingOP = calcPlan(allContracts, objResources,'assemblingOP', [balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
-    let assemblingBV = calcPlan(allContracts, objResources,'assemblingBV', [assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
-    let assemblingMTF = calcPlan(allContracts, objResources,'assemblingMTF', [assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
-    let assemblingUPKP = calcPlan(allContracts, objResources,'assemblingUPKP', [assemblingMTF, assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
-    let documentationSAU = calcPlan(allContracts, objResources,'documentationSAU');
-    let deliverySAU = calcPlan(allContracts, objResources,'deliverySAU', [documentationSAU] );
-    let assemblingSAU = calcPlan(allContracts, objResources,'assemblingSAU', [deliverySAU, documentationSAU]);
+    let documentation = calcPlan(false, allContracts, objResources,'documentation');
+    let delivery = calcPlan(true, allContracts, objResources,'delivery');
+    let cutting = calcPlan(false, allContracts, objResources,'cutting', [delivery, documentation]);
+    let sheetBender = calcPlan(false, allContracts, objResources,'sheetBender', [cutting, delivery, documentation]);
+    let welding = calcPlan(false, allContracts, objResources,'welding', [sheetBender, cutting, delivery, documentation]);
+    let painting = calcPlan(false, allContracts, objResources,'painting', [welding, sheetBender, cutting, delivery, documentation]);
+    let rolling = calcPlan(false, allContracts, objResources,'rolling', [painting, welding, sheetBender, cutting, delivery, documentation]);
+    let balancing = calcPlan(false, allContracts, objResources,'balancing', [rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingOP = calcPlan(false, allContracts, objResources,'assemblingOP', [balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingBV = calcPlan(false, allContracts, objResources,'assemblingBV', [assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingMTF = calcPlan(false, allContracts, objResources,'assemblingMTF', [assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let assemblingUPKP = calcPlan(false, allContracts, objResources,'assemblingUPKP', [assemblingMTF, assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
+    let documentationSAU = calcPlan(false, allContracts, objResources,'documentationSAU');
+    let deliverySAU = calcPlan(true, allContracts, objResources,'deliverySAU');
+    let assemblingSAU = calcPlan(false, allContracts, objResources,'assemblingSAU', [deliverySAU, documentationSAU]);
       
     state.areasPlan['documentation'] = documentation;
     state.areasPlan['delivery'] = delivery;

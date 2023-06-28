@@ -22,7 +22,7 @@ const Resource = new Schema({
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    delivery: { 
+    delivery: {   
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
@@ -108,7 +108,7 @@ const Resource = new Schema({
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    deliverySAU: { 
+    deliverySAU: {     
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },

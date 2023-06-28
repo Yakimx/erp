@@ -159,6 +159,15 @@ export const contractsSlice = createSlice({
       
     },
 
+    setDeliveryDate: (state, action) => {      
+      let {value, index, target} = action.payload;
+      let date = value == "" ? 0 : Date.parse(value.split(".").reverse().join("."));
+      
+      
+      state.activeContract.contract.products[index].delivery[target] = date;
+
+    },
+
     setValueLab: (state, action) => {
       let {value, index, key} = action.payload;
 
@@ -229,6 +238,7 @@ export const {
   brakeChanges,
   setNotConfirmed,
   setValueQuantityMade,
+  setDeliveryDate,
   setValueLab,
   setDatePlan,
   setTypeUpkp,

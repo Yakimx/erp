@@ -7,6 +7,10 @@ const Product = new Schema({
   sum: { type: Number, default: 0 },
 
   type: { type: String, default: "0" },
+  delivery: {   
+    op: { type: Number, default: 0 },    
+    sau: { type: Number, default: 0 },    
+  },
   quantityMade: {
     documentation: { type: Number, default: 0 },
     delivery: { type: Number, default: 0 },

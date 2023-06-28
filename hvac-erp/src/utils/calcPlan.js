@@ -2,7 +2,7 @@ import { sortDateUp, sortDateDown } from "./sortDate";
 import { getWorkDay } from "./../utils/calcWorkDay";
 import { isErrorLab } from "./../utils/isErrorLab";
 
-export const calcPlan = (contracts, objResources, sector, prev) => {
+export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) => {
   let startPlanDate = objResources.config.startPlanDate;
   let resourcesDay = objResources.resources.areas[sector].dayResources;
   let weekend = objResources.config.weekend;
@@ -15,7 +15,7 @@ export const calcPlan = (contracts, objResources, sector, prev) => {
   
 
   class Item {
-    
+    typeDelivery = typeDelivery;
     contractNumber = 0;
     name = "Окно";
     window = false;
@@ -31,7 +31,9 @@ export const calcPlan = (contracts, objResources, sector, prev) => {
     shift = 0;
     resourcesRequired = 0;
     timeCodeStart = 0;
-    timeCodeEnd = 0;   
+    timeCodeEnd = 0;
+    deliveryOp = 0;
+    deliverySau = 0;
     planItem  = [
       {
       newDay:  false,
@@ -67,7 +69,10 @@ export const calcPlan = (contracts, objResources, sector, prev) => {
           shift: objPrev.shift,
           resourcesRequired:Math.round(product.resourcesRequired[sector] * (product.quantity - product.quantityMade[sector])*1000) / 1000,
           timeCodeStart: 0,
-          timeCodeEnd: 0,         
+          timeCodeEnd: 0,
+          deliveryOp: product.delivery.op,
+          deliverySau: product.delivery.sau, 
+
        }} 
 
     })
@@ -78,14 +83,14 @@ export const calcPlan = (contracts, objResources, sector, prev) => {
   .filter((el)=>el != undefined)
   .sort((a,b)=>sortDateUp(a,b));
 
-  console.log(plan.itemsPlan)
+  
  
   //расчет временных меток
 for(let i=0; i < plan.itemsPlan.length; i++){
 
   let timeCodeStart = 0;
-  let completionDateDesired = '';
-  let shift = 0;
+  let timeCodeEnd = 0;
+ 
 
 
   let result;
@@ -104,17 +109,32 @@ for(let i=0; i < plan.itemsPlan.length; i++){
   }
   
   if (i==0){
-    plan.itemsPlan[i].timeCodeStart = timeCodeStart > 0 ? timeCodeStart : 0;
-    plan.itemsPlan[i].timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+
+    if(typeDelivery){
+    timeCodeStart = 0;
+    timeCodeEnd = 2;
+    }else{    
+    timeCodeStart = timeCodeStart > 0 ? timeCodeStart : 0;
+    timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+    }
+    
   } else{
 
+    if(typeDelivery){
+      timeCodeStart = 0;
+      timeCodeEnd = 2;
+    }else{    
     timeCodeStart = timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd 
     ? timeCodeStart
-    : plan.itemsPlan[i-1].timeCodeEnd
-    
-    plan.itemsPlan[i].timeCodeStart = timeCodeStart ;   
-    plan.itemsPlan[i].timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+    : plan.itemsPlan[i-1].timeCodeEnd     
+    timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+    }
+
   }
+
+  plan.itemsPlan[i].timeCodeStart = timeCodeStart;   
+  plan.itemsPlan[i].timeCodeEnd = timeCodeEnd;
+
 
 }
 
