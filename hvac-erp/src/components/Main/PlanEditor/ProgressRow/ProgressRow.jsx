@@ -7,7 +7,8 @@ import styles from './ProgressRow.module.scss'
 
 const ProgressRow = ({disabledInput, product}) => {
 
-  const {areas} = useSelector((state)=>state.contracts);
+  const {areas, delivery} = useSelector((state)=>state.contracts);
+  let list = [...areas, ...delivery];
 
   return (
     <div className={styles.progressRow}>
@@ -15,11 +16,11 @@ const ProgressRow = ({disabledInput, product}) => {
       <div>{product.quantity}</div>
 
       {
-        areas.map((key, i)=>{
+        list.map((key, i)=>{
           key = (key == 'delivery') ? 'op' : (key == 'deliverySAU') ? 'sau' : key;
           return (key != 'op' && key != 'sau') 
           ? <Progress key={i} max={product.quantity} value={product.quantityMade[key]} required={product.resourcesRequired[key]}/>
-          : <DeliveryDate date = {product.delivery[key]} />;
+          : <DeliveryDate key={i} date = {product.delivery[key]} />;
         })
       }
 

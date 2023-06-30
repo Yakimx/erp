@@ -107,6 +107,7 @@ src={sortPNG}/>
     : contract.ready == true ? styles.statusReady 
     : contract.pause == true ? styles.statusPause
     : contract.errLab ? styles.statusErr 
+    : contract.completionDateContract == '' ? styles.statusErr 
     : Date.parse(contract.completionDateContract.split('.').reverse().join('.')) < Date.parse(contract.completionDatePlan.split('.').reverse().join('.')) ? styles.statusOverdue 
     : styles.statusPending}>{contract.status}</td>
 
@@ -121,7 +122,7 @@ src={sortPNG}/>
 
 {
   filtrContract.length == 0 && (
-    <div className={styles.notfound}>Упс! Не удалось ничего найти(((  &#128557;
+    <div className={styles.notfound}>Не удалось ничего найти(((  &#128557;
      
       </div>
   )

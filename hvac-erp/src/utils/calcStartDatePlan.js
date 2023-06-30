@@ -9,17 +9,17 @@ export const calcStartDatePlan = (filtrContract, plan) => {
       }  
 
 
-    dates = dates.map((el) => new Date(el.planItem[el.planItem.length-1].startDate.split(".").reverse().join(".")))
-    .sort((a, b) => +a - +b )
-    dates = dates.length == 0 ? [new Date(0)] : dates
+    dates = dates.sort((a, b) => +a.timeCodeStart - +b.timeCodeStart )
+    dates = dates.length == 0 ? [{timeCodeStart: new Date(0)}] : dates
    
     //.map(el => el === undefined ? 0 : el)
     
     // return {contract, completionDatePlan: lastDate[0].toLocaleDateString()}
      
-    return {...contract, startDatePlan: new Date(dates[0]).toLocaleDateString()}
+    return {...contract, startDatePlan: new Date(dates[0].timeCodeStart).toLocaleDateString()}
   })
   
  
 
 }
+

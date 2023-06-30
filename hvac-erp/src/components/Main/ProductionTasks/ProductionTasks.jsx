@@ -11,7 +11,8 @@ const ProductionTasks = () => {
   //const [activeTab, setActiveTab] = useState(0);
   const dispatch = useDispatch();
   const {activeTabTask} = useSelector((state)=>state.menu);
-  const {areas} = useSelector((state)=>state.contracts);
+  const {areas, delivery} = useSelector((state)=>state.contracts);
+  let list = [...areas, ...delivery];
 
   const setActiveTab = (i)=>{
     dispatch(setActiveTabTask(i))
@@ -24,8 +25,7 @@ const ProductionTasks = () => {
     
 
 const listTab = [
-  'Документация',
-  'Снабжение',
+  'Документация',  
   'Рубка', 
   'Гибка', 
   'Сварка',
@@ -36,9 +36,10 @@ const listTab = [
   'Сборка БВ',
   'Сборка МТФ',
   'Сборка УПКП',
-  'Документация САУ',
-  'Снабжение САУ',
+  'Документация САУ',  
   'Сборка САУ',
+  'Снабжение',
+  'Снабжение САУ',
 ]
 
 
@@ -51,7 +52,7 @@ const listTab = [
     
 
      
-        <Plan plan={areasPlan[areas[activeTabTask]]} type={areas[activeTabTask]}/>
+        <Plan plan={areasPlan[list[activeTabTask]]} type={list[activeTabTask]}/>
     
         </div>
   )

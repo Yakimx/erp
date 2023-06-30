@@ -97,7 +97,7 @@ const Matches = ({allContracts, plan}, filtrState) => {
         contract.shipped ? 'Отгружен'      
       : contract.pause ? 'Пауза'
       : contract.ready ? 'Готов' 
-      : contract.errLab ? 'Ошибка'
+      : (contract.errLab || contract.completionDateContract == '' ) ? 'Ошибка'
       : 'Работа'
       
       return {...contract, status: status}
@@ -126,7 +126,7 @@ return filtrContract.map(contract=>{
     
     return (
     ((product.resourcesRequired.documentation == 0) || (product.quantityMade.documentation == product.quantity)) &&
-    ((product.resourcesRequired.delivery == 0) || (product.quantityMade.delivery == product.quantity)) &&
+    //((product.resourcesRequired.delivery == 0) || (product.quantityMade.delivery == product.quantity)) &&
     ((product.resourcesRequired.cutting == 0) || (product.quantityMade.cutting == product.quantity)) &&
     ((product.resourcesRequired.sheetBender == 0) || (product.quantityMade.sheetBender == product.quantity)) &&
     ((product.resourcesRequired.welding == 0) || (product.quantityMade.welding == product.quantity)) &&
@@ -138,7 +138,7 @@ return filtrContract.map(contract=>{
     ((product.resourcesRequired.assemblingMTF == 0) || (product.quantityMade.assemblingMTF == product.quantity)) &&
     ((product.resourcesRequired.assemblingUPKP == 0) || (product.quantityMade.assemblingUPKP == product.quantity)) &&
     ((product.resourcesRequired.documentationSAU == 0) || (product.quantityMade.documentationSAU == product.quantity)) &&
-    ((product.resourcesRequired.deliverySAU == 0) || (product.quantityMade.deliverySAU == product.quantity)) &&
+    //((product.resourcesRequired.deliverySAU == 0) || (product.quantityMade.deliverySAU == product.quantity)) &&
     ((product.resourcesRequired.assemblingSAU == 0) || (product.quantityMade.assemblingSAU == product.quantity))
     ) ? false : true}) == undefined ? true : false
 

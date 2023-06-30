@@ -3,13 +3,15 @@ import { getWorkDay } from "./../utils/calcWorkDay";
 import { isErrorLab } from "./../utils/isErrorLab";
 
 export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) => {
-  let startPlanDate = objResources.config.startPlanDate;
+  let startPlanDate = +new Date(Date.parse(objResources.config.startPlanDate.split(".").reverse().join(".")) + new Date().getTimezoneOffset()*60*1000);  
+  let startTime = +objResources.resources.areas[sector].startTime.split(':')[0]*60*60*1000 + +objResources.resources.areas[sector].startTime.split(':')[1]*60*1000;
+  
   let resourcesDay = objResources.resources.areas[sector].dayResources;
   let weekend = objResources.config.weekend;
   
   let plan = 
     {
-      dateStart: Date.parse(startPlanDate.split(".").reverse().join(".")),
+      dateStart: startPlanDate,
       itemsPlan: [],
     };
   
@@ -27,7 +29,7 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
     quantityNotConfirmed = 0;
     indexContract = 0;
     indexItem = 0;
-    completionDateDesired = "30.10.1991";
+    completionDateDesired = "";
     shift = 0;
     resourcesRequired = 0;
     timeCodeStart = 0;
@@ -50,9 +52,10 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
     
     return contract.products
     .map((product, indexProduct)=>{    
-      if((product.resourcesRequired[sector] > 0) && (product.quantityMade[sector] < product.quantity) && !contract.pause && !contract.shipped && !contract.errLab){
+      if((product.resourcesRequired[sector] > 0) && (product.quantityMade[sector] < product.quantity) 
+      && !contract.pause && !contract.shipped && !contract.errLab && contract.completionDateContract != '' ){
        
-        let objPrev = getDateDesired (product, prev, contract.completionDateDesired, product.shift[sector])
+        let objPrev = getDateDesired (product, prev, contract.completionDateContract, product.shift[sector])
 
         return {...new Item, 
           contractNumber: contract.contractNumber,
@@ -70,9 +73,10 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
           resourcesRequired:Math.round(product.resourcesRequired[sector] * (product.quantity - product.quantityMade[sector])*1000) / 1000,
           timeCodeStart: 0,
           timeCodeEnd: 0,
-          deliveryOp: product.delivery.op,
-          deliverySau: product.delivery.sau, 
-
+          sector: sector,
+          startTime: startTime,
+          prevSector: sector,
+          prevStartTime: startTime,
        }} 
 
     })
@@ -87,11 +91,15 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
  
   //расчет временных меток
 for(let i=0; i < plan.itemsPlan.length; i++){
+  
+  let day = Math.floor((startPlanDate)/(24*60*60*1000)) + 1 ; 
+  let time = startTime;
+  let timeCodeStart = day*24*60*60*1000 + time;
+  let endDayTime = startTime + resourcesDay*60*60*1000;
 
-  let timeCodeStart = 0;
-  let timeCodeEnd = 0;
- 
-
+  
+  //let timeCodeStart = day*24*60*60*1000 + startTime;
+  //let timeCodeEnd = 0;
 
   let result;
   if(prev) {
@@ -99,63 +107,96 @@ for(let i=0; i < plan.itemsPlan.length; i++){
       result = prev[j].itemsPlan.find((item)=> item.id == plan.itemsPlan[i].id);
     if (result){
       break;
-    }
-    
+    }    
     }
    
     if (result) {
       timeCodeStart = result.timeCodeEnd;
-     }
+      day = Math.floor(result.timeCodeEnd / (24*60*60*1000));
+      time = result.timeCodeEnd % (24*60*60*1000);      
+      plan.itemsPlan[i].prevSector = result.sector;
+      plan.itemsPlan[i].prevStartTime = result.startTime;
+    }
+     
+
   }
+  
+  
   
   if (i==0){
 
-    if(typeDelivery){
-    timeCodeStart = 0;
-    timeCodeEnd = 2;
-    }else{    
-    timeCodeStart = timeCodeStart > 0 ? timeCodeStart : 0;
-    timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
-    }
+    if(time >= endDayTime) {
+      day = day + 1;
+      time = startTime;
+    } 
     
   } else{
-
-    if(typeDelivery){
-      timeCodeStart = 0;
-      timeCodeEnd = 2;
-    }else{    
-    timeCodeStart = timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd 
-    ? timeCodeStart
-    : plan.itemsPlan[i-1].timeCodeEnd     
-    timeCodeEnd = timeCodeStart + plan.itemsPlan[i].resourcesRequired;
+    if(timeCodeStart < plan.itemsPlan[i-1].timeCodeEnd){
+      day =  Math.floor(plan.itemsPlan[i-1].timeCodeEnd/(24*60*60*1000))
+      time = plan.itemsPlan[i-1].timeCodeEnd % (24*60*60*1000);
     }
-
+    
+    if(time >= endDayTime) {
+      day = day + 1;
+      time = startTime;
+    }         
   }
 
-  plan.itemsPlan[i].timeCodeStart = timeCodeStart;   
-  plan.itemsPlan[i].timeCodeEnd = timeCodeEnd;
+  plan.itemsPlan[i].day = day; 
+  plan.itemsPlan[i].time = time; 
+  plan.itemsPlan[i].timeCodeStart = day*24*60*60*1000 + time; 
+
+  let dayEnd = day + Math.floor(plan.itemsPlan[i].resourcesRequired/resourcesDay);
+  let timeEnd = time + (plan.itemsPlan[i].resourcesRequired % resourcesDay)*60*60*1000;
+ 
+  
+  if(timeEnd > (endDayTime)) {
+    dayEnd = dayEnd + 1;
+    timeEnd = timeEnd - startTime;
+  }else{
+    if( (timeEnd - time) == 0 ){
+      timeEnd =  endDayTime;
+      dayEnd = dayEnd - 1;
+    }else{
+      timeEnd = timeEnd;
+    }
+    
+  } 
+
+  plan.itemsPlan[i].timeCodeEnd = dayEnd*24*60*60*1000 + timeEnd;
 
 
-}
-
-
-
-// //сортировка по дате
-//plan.itemsPlan.sort((a,b)=>sortDateUp(a,b));
-
+  }
 
 //добавление окон
 let windows = [];
 for(let i=0; i < plan.itemsPlan.length; i++){
+
+  let day = Math.floor((startPlanDate + startTime)/(24*60*60*1000)); 
+  let time = startTime;
+  let timeCodeStart = day*24*60*60*1000 + time;
+  let endDayTime = startTime + resourcesDay*60*60*1000;
+
   if (i==0){
-    if(plan.itemsPlan[i].timeCodeStart > 0) windows.push({...new Item, 
+    
+    let timeCodeEnd = plan.itemsPlan[i].timeCodeStart % (24*60*60*1000) == startTime 
+    ? (Math.floor(plan.itemsPlan[i].timeCodeStart/(24*60*60*1000)) - 1) *24*60*60*1000 + endDayTime
+    : plan.itemsPlan[i].timeCodeStart;
+
+    if(plan.itemsPlan[i].timeCodeStart > timeCodeStart) windows.push({...new Item, 
       window: true,
       id: i + sector,
       completionDateDesired: plan.itemsPlan[i].completionDateDesired,
-      timeCodeStart:0, 
-      timeCodeEnd: plan.itemsPlan[i].timeCodeStart});
+      timeCodeStart: timeCodeStart, 
+      timeCodeEnd: timeCodeEnd});
   } else{
-    if(plan.itemsPlan[i].timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd) windows.push({...new Item, 
+
+    let end = plan.itemsPlan[i-1].timeCodeEnd - startTime - (resourcesDay)*60*60*1000; 
+    let start = plan.itemsPlan[i].timeCodeStart - startTime - 24*60*60*1000; 
+    
+    let isWind = end == start ? false : true
+
+    if((plan.itemsPlan[i].timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd) && isWind) windows.push({...new Item, 
       window: true,
       id: i + sector,
       completionDateDesired: plan.itemsPlan[i-1].completionDateDesired,
@@ -168,25 +209,24 @@ plan.itemsPlan = [...plan.itemsPlan, ...windows].sort((a, b) => a.timeCodeStart 
 
 
 
-plan.itemsPlan = plan.itemsPlan.map((item, index)=>{
-    
-    let timeStarDay = Math.round((item.timeCodeStart / resourcesDay - Math.trunc(item.timeCodeStart / resourcesDay))*1000)/1000;
-    let timeEndDay = Math.round((item.timeCodeEnd / resourcesDay - Math.trunc(item.timeCodeEnd / resourcesDay))*1000)/1000;
-    
-    timeEndDay = timeEndDay == 0 ? 1 : timeEndDay;
-    let days = Math.trunc(item.timeCodeEnd/resourcesDay) - Math.trunc(item.timeCodeStart/resourcesDay);
-    days = item.timeCodeEnd % resourcesDay == 0 ? days-1 : days;
-    let startDay = Math.trunc(item.timeCodeStart/resourcesDay)
+plan.itemsPlan = plan.itemsPlan.map((item, index)=>{    
+
+    let days = Math.trunc(item.timeCodeEnd/(24*60*60*1000)) - Math.trunc(item.timeCodeStart/(24*60*60*1000));  
+    let startDay = Math.trunc(item.timeCodeStart/(24*60*60*1000));
+    var timeZone = new Date().getTimezoneOffset()*60*1000;
 
     for (let j=0; j <= days; j++){      
       
         item.planItem[j]={      
         day: startDay + j,
         days: days,
-        startDate: new Date(Date.parse(startPlanDate.split(".").reverse().join(".")) + (startDay  + j )*60*60*1000*24).toLocaleDateString(),
-        endDate: new Date(Date.parse(startPlanDate.split(".").reverse().join(".")) + (startDay + j)*60*60*1000*24).toLocaleDateString(),        
-        partDay: j==0 ? timeStarDay : 0,
-        remPerc: j==days ? timeEndDay : 1,
+        startDate: j==0 
+        ? item.timeCodeStart + timeZone
+        : startTime + (startDay + j)*24*60*60*1000 + timeZone,
+        endDate: j==days 
+        ? item.timeCodeEnd + timeZone
+        : startTime + resourcesDay*60*60*1000 + (startDay + j)*24*60*60*1000  + timeZone,
+        
        }
 
     }   

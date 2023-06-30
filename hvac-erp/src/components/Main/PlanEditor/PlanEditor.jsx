@@ -7,7 +7,10 @@ import {brakeChanges, updateContract, setDatePlan,
   setPause,
   setEquipment,
   setEquipmentDate,
-  setShipped,} from './../../../redux/slices/contractsSlice'
+  setShipped,
+  setCompletionDateContract,
+  setStartDate,
+} from './../../../redux/slices/contractsSlice'
 import Button from '../../../elementsUI/Button/Button';
 
 import ContractInfo from './ContractInfo/ContractInfo';
@@ -50,6 +53,14 @@ const PlanEditor = () => {
   const onChangeCheckBoxShipped = (bool)=>{
     dispatch(setShipped(bool));
   }
+  const onChangeStartDate = (value)=>{
+    dispatch(setStartDate(value));
+  }
+  const onChangeCompletionDateContract = (value)=>{
+    dispatch(setCompletionDateContract(value));
+  }
+  
+  
   
 
   return (
@@ -76,22 +87,21 @@ const PlanEditor = () => {
     <div className={styles.notChange}>
       <div>Заказчик: </div>
       <div className={styles.value}>{contract.customer}</div>
-      {/* <div> Статус: </div>
-      <div className={styles.value}>{contract.status} </div> */}
+     
       <div>Дата подписания:</div>
-      <div className={styles.value}>{contract.startDate}</div>
-      <div>Срок по договору:</div>
-      <div className={styles.value}>{contract.completionDateContract}</div>
-      {/* <div>Дата по плану:</div>
-      <div className={styles.value}>
       <input    className={styles.inputDate}
                 type="date"
-                //max={contract.completionDateContract.split('.').join('-')}
-                disabled={true}
-                onChange={(e) => onChangePlanDate(e.target.value.split('-').join('.'))}
-                value={contract.completionDatePlan.split('.').reverse().join('-')} />       
-      </div> */}
-    
+                disabled={disabledInput}
+                onChange={(e) => onChangeStartDate(e.target.value.split('-').reverse().join('.'))}
+                value={contract.startDate.split('.').reverse().join('-')} />   
+      {/* <div className={styles.value}>{contract.startDate}</div> */}
+      <div>Срок по договору:</div>
+      {/* <div className={styles.value}>{contract.completionDateContract}</div> */}
+      <input    className={styles.inputDate}
+                type="date"
+                disabled={disabledInput}
+                onChange={(e) => onChangeCompletionDateContract(e.target.value.split('-').reverse().join('.'))}
+                value={contract.completionDateContract.split('.').reverse().join('-')} />   
     </div>
 
     <div className={styles.change}>
@@ -164,7 +174,7 @@ const PlanEditor = () => {
     <div>Кол-во</div>
     
     <div>Документация</div>
-    <div>Снабжение</div>
+    
     <div>Рубка</div>
     <div>Гибка</div>
     <div>Сварка</div>
@@ -175,11 +185,10 @@ const PlanEditor = () => {
     <div>Сборка БВ</div>
     <div>Сборка МТФ</div>
     <div>Сборка УПКП</div>
-
-    <div>Документация САУ</div>
-    <div>Снабжение САУ</div>
+    <div>Документация САУ</div>    
     <div>Сборка САУ</div>
- 
+    <div>Снабжение</div>
+    <div>Снабжение САУ</div>
 
     
     </div>

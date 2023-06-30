@@ -13,7 +13,7 @@ const Product = new Schema({
   },
   quantityMade: {
     documentation: { type: Number, default: 0 },
-    delivery: { type: Number, default: 0 },
+    
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
     welding: { type: Number, default: 0 },
@@ -27,12 +27,12 @@ const Product = new Schema({
     assemblingUPKP: { type: Number, default: 0 },
 
     documentationSAU: { type: Number, default: 0 },
-    deliverySAU: { type: Number, default: 0 },
+    
     assemblingSAU: { type: Number, default: 0 },
   },
   resourcesRequired: {
     documentation: { type: Number, default: 0.3 },
-    delivery: { type: Number, default: 0.3 },
+    
     cutting: { type: Number, default: 0.3 },
     sheetBender: { type: Number, default: 0.3 },
     welding: { type: Number, default: 0.3 },
@@ -46,12 +46,12 @@ const Product = new Schema({
     assemblingUPKP: { type: Number, default: 0.3 },
 
     documentationSAU: { type: Number, default: 0.3 },
-    deliverySAU: { type: Number, default: 0.3 },
+    
     assemblingSAU: { type: Number, default: 0.3 },
   },
   resourcesAllQuantity: {
     documentation: { type: Number, default: 0 },
-    delivery: { type: Number, default: 0 },
+    
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
     welding: { type: Number, default: 0 },
@@ -65,12 +65,12 @@ const Product = new Schema({
     assemblingUPKP: { type: Number, default: 0 },
 
     documentationSAU: { type: Number, default: 0 },
-    deliverySAU: { type: Number, default: 0 },
+    
     assemblingSAU: { type: Number, default: 0 },
   },
   quantityNotConfirmed: {
     documentation: { type: Number, default: 0 },
-    delivery: { type: Number, default: 0 },
+    
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
     welding: { type: Number, default: 0 },
@@ -84,12 +84,12 @@ const Product = new Schema({
     assemblingUPKP: { type: Number, default: 0 },
 
     documentationSAU: { type: Number, default: 0 },
-    deliverySAU: { type: Number, default: 0 },
+    
     assemblingSAU: { type: Number, default: 0 },
   },
   shift: {
     documentation: { type: Number, default: 0 },
-    delivery: { type: Number, default: 0 },
+    
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
     welding: { type: Number, default: 0 },
@@ -103,7 +103,7 @@ const Product = new Schema({
     assemblingUPKP: { type: Number, default: 0 },
 
     documentationSAU: { type: Number, default: 0 },
-    deliverySAU: { type: Number, default: 0 },
+    
     assemblingSAU: { type: Number, default: 0 },
   }
 });

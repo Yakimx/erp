@@ -10,9 +10,11 @@ import {setDisabledInput, saveValue, updateValue,
     setAdjustment,
     submitResource,
     fetchResource,
+    setStartTime,
    } from './../../../redux/slices/resourcesSlice'
 import Button from '../../../elementsUI/Button/Button';
 import UploadXml from './UploadXml/UploadXml';
+import InputTime from './InputTime/InputTime';
 
 const Resource = () => {
 
@@ -46,6 +48,10 @@ const Resource = () => {
     const onChangeDayResources = (value,target)=>{
         dispatch(setDayResources({value,target}));
     }
+    const onChangeStartTime = (value,target)=>{
+      dispatch(setStartTime({value,target}));
+  }
+    
     const onChangeAdjustment= (value,target)=>{
       dispatch(setAdjustment({value,target}));
   }
@@ -99,7 +105,7 @@ const Resource = () => {
        <div className={styles.headRow}>   
        <div></div>       
        <div>Документация</div>
-    <div>Снабжение</div>
+    
     <div>Рубка</div>
     <div>Гибка</div>
     <div>Сварка</div>
@@ -112,12 +118,24 @@ const Resource = () => {
     <div>Сборка УПКП</div>
 
     <div>Документация САУ</div>
-    <div>Снабжение САУ</div>
+    
     <div>Сборка САУ</div>
        
        </div>
       
     <div className={styles.rows}> 
+
+    <div className={styles.row}>
+    <div>Время начала</div>      
+
+    {   
+      areas.map((area,index)=>{
+      return <InputTime key={index} setValue={(e)=>onChangeStartTime(e,area)} disabled={disabledInput} inputValue={resources.areas[area].startTime}/>
+      })
+    }      
+
+    </div>
+
 
     <div className={styles.row}>
     <div>Доступно в день</div>      
@@ -136,7 +154,7 @@ const Resource = () => {
 
     {   
       areas.map((area,index)=>{
-      return <Input setValue={(e)=>onChangeAdjustment(e,area)} disabled={disabledInput} inputValue={resources.areas[area].adjustment}/>
+      return <Input key = {index} setValue={(e)=>onChangeAdjustment(e,area)} disabled={disabledInput} inputValue={resources.areas[area].adjustment}/>
       })
     }   
 
@@ -147,7 +165,7 @@ const Resource = () => {
 
     {   
       areas.map((area,index)=>{
-      return <div>{resources.areas[area].allWorkDays}</div>
+      return <div key = {index}>{resources.areas[area].allWorkDays}</div>
       })
     }   
     
@@ -158,7 +176,7 @@ const Resource = () => {
 
     {   
       areas.map((area,index)=>{
-      return <div>{resources.areas[area].totalResources}</div>
+      return <div key = {index}>{resources.areas[area].totalResources}</div>
       })
     }   
     
@@ -169,7 +187,7 @@ const Resource = () => {
 
     {   
       areas.map((area,index)=>{
-      return <div>{resources.areas[area].requiredResources}</div>
+      return <div key = {index}>{resources.areas[area].requiredResources}</div>
       })
     } 
     

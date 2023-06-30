@@ -74,7 +74,7 @@ const DefaultLaboriousness = () => {
 
 
 <div>Док.</div>
-    <div>Снаб.</div>
+    
     <div>Рубка</div>
     <div>Гибка</div>
     <div>Сварка</div>
@@ -87,7 +87,7 @@ const DefaultLaboriousness = () => {
     <div>Сборка УПКП</div>
 
     <div>Док. САУ</div>
-    <div>Снаб. САУ</div>
+    
     <div>Сборка САУ</div>
 
 </div>

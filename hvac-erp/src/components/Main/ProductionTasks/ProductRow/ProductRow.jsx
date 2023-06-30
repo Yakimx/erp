@@ -31,7 +31,7 @@ const dispatch = useDispatch();
     ? <Progress max={product.quantityAll} value={product.quantityMade}/>
     : <div></div>
     }
-    
+     
     
     {(disabledInput && !product.window) 
        ? <Progress max={product.planQuantityRequired} value={product.quantityMadeToday} />
@@ -42,6 +42,7 @@ const dispatch = useDispatch();
        :<div></div>
     }
     
+    <div>{product.prevSector == 0 ? 'нет' : product.prevSector }</div>
     <div  className = {styles.planDate}>      
     
          
@@ -50,16 +51,9 @@ const dispatch = useDispatch();
         
         return (         
         <div key = {index} className = {highlight==item.startDate ? styles.highlight : styles.nohighlight}> 
-        {/* {item.newDay == true ? <div></div> : <div></div>} */}
-        
-        {/* <div >{item.newDay == true ? item.startDate : ""}</div>
-        <div >{item.endDate}</div>  */}
-        <div className = {styles.date}>{item.newDay == true ? item.startDate : ""}</div>
-        
-        <div >{Math.round(item.partDay*100*100)/100}--{Math.round(item.remPerc*100*100)/100}%</div>
-        
-        
        
+        <div className = {styles.date}>{item.newDay == true ? new Date(item.startDate).toLocaleDateString() : ""}</div>        
+        <div >{new Date(item.startDate).toLocaleTimeString()}--{new Date(item.endDate).toLocaleTimeString()}</div>       
         
         </div>
         )

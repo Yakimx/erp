@@ -88,7 +88,12 @@ export const resourcesSlice = createSlice({
       }
             
     },
-
+    setStartTime: (state, action) => {   
+      const {value, target} = action.payload;      
+      state.objResources.resources.areas[target].startTime = value;
+      
+    },
+    
     setDayResources: (state, action) => {      
       state.objResources.resources.areas[action.payload.target].dayResources = action.payload.value;
     },
@@ -148,6 +153,7 @@ export const {
 
   setDayResources,
   setAdjustment,
+  setStartTime,
 
 
 } = resourcesSlice.actions;

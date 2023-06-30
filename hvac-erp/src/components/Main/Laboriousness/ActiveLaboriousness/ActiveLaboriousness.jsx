@@ -63,7 +63,7 @@ const ActiveLaboriousness = () => {
 
 
 <div>Документация</div>
-    <div>Снабжение</div>
+    
     <div>Рубка</div>
     <div>Гибка</div>
     <div>Сварка</div>
@@ -76,7 +76,7 @@ const ActiveLaboriousness = () => {
     <div>Сборка УПКП</div>
 
     <div>Документация САУ</div>
-    <div>Снабжение САУ</div>
+    
     <div>Сборка САУ</div>
 
 </div>

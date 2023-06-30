@@ -1,0 +1,31 @@
+.input{  
+    background-color: transparent;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    //background:#bada55;
+    border:1px solid white;
+    border-radius: 5px;
+    //padding: 3px;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 0;
+    //margin: 0 0 0 5px; 
+    
+    width: 100%; 
+    height: 90%;
+    &:disabled{
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        border: none;
+        font-weight: 600;
+        color: black;
+        text-align: right;
+    }
+    
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+   }

@@ -6,8 +6,7 @@ import { calcLastDate } from "../../utils/calcLastDate.js";
 
 const initialState = {
   areas: [
-    'documentation',
-    'delivery',
+    'documentation',    
     'cutting',
     'sheetBender',
     'welding',
@@ -18,9 +17,12 @@ const initialState = {
     'assemblingBV',
     'assemblingMTF',
     'assemblingUPKP',
-    'documentationSAU',
-    'deliverySAU',
+    'documentationSAU',    
     'assemblingSAU',
+  ],
+  delivery: [    
+    'delivery',    
+    'deliverySAU',    
   ],
   status: "loading", //loading | success|error
   statusUpdate: "loading", //loading | success|error
@@ -165,8 +167,20 @@ export const contractsSlice = createSlice({
       
       
       state.activeContract.contract.products[index].delivery[target] = date;
-
     },
+    setStartDate: (state, action) => {      
+      let value = action.payload;
+      let date = value == "" ? 0 : value;      
+      state.activeContract.contract.startDate = date;
+    },
+    setCompletionDateContract: (state, action) => {      
+      let value = action.payload;
+      let date = value == "" ? 0 : value;      
+      state.activeContract.contract.completionDateContract = date;
+    },
+
+
+
 
     setValueLab: (state, action) => {
       let {value, index, key} = action.payload;
@@ -250,6 +264,8 @@ export const {
   setShipped,
   setActiveContractDate,
   resetValue,
+  setStartDate,
+  setCompletionDateContract,
 } = contractsSlice.actions;
 
 export default contractsSlice.reducer;

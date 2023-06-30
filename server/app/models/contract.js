@@ -25,7 +25,7 @@ const Contract = new Schema({
   //errorData: true,
   resourcesAllProducts: {
     documentation: { type: Number, default: 0 },
-    delivery: { type: Number, default: 0 },
+    
     cutting: { type: Number, default: 0 },
     sheetBender: { type: Number, default: 0 },
     welding: { type: Number, default: 0 },
@@ -39,7 +39,7 @@ const Contract = new Schema({
     assemblingUPKP: { type: Number, default: 0 },
 
     documentationSAU: { type: Number, default: 0 },
-    deliverySAU: { type: Number, default: 0 },
+    
     assemblingSAU: { type: Number, default: 0 },
     
     

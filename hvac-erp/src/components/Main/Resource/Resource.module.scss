@@ -2,7 +2,7 @@
     padding: 10px 5px 5px 10px;
     .date{
         display: grid;
-        grid-template-columns: 15rem 9rem 14rem;
+        grid-template-columns: 13rem 9rem 14rem;
         justify-items: left;
         align-items: center;
         grid-gap: 1rem;
@@ -38,7 +38,7 @@
 .headRow{
     margin-right: 1.1rem;
     display: grid;
-    grid-template-columns: 15rem repeat(15,1fr);
+    grid-template-columns: 15rem repeat(13,1fr);
     grid-template-rows: auto;
     justify-items: center;
     align-items: center;
@@ -63,7 +63,7 @@
 .row{
     padding: 0.3rem 0.5rem 0.3rem 0;
     display: grid;
-    grid-template-columns: 15rem repeat(15,1fr);
+    grid-template-columns: 15rem repeat(13,1fr);
     grid-template-rows: 1.5rem;
     justify-items: center;
     align-items: center;

@@ -15,56 +15,8 @@ const Resource = new Schema({
     areas:{
 
     
-    documentation: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    delivery: {   
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    cutting: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 },
-   },
-    sheetBender: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    welding: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    painting: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    rolling: { 
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
-    balancing: { 
+    documentation: {
+    startTime: { type: String, default: "08:00" },
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
@@ -72,28 +24,81 @@ const Resource = new Schema({
     requiredResources: { type: Number, default: 0 }, 
   },
     
-    assemblingOP: { 
+    cutting: { 
+    startTime: { type: String, default: "08:00" },
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 },
+   },
+    sheetBender: {
+    startTime: { type: String, default: "08:00" },
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    assemblingBV: { 
+    welding: {
+    startTime: { type: String, default: "08:00" },   
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    assemblingMTF: { 
+    painting: {
+    startTime: { type: String, default: "08:00" },   
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    assemblingUPKP: { 
+    rolling: {
+    startTime: { type: String, default: "08:00" },   
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 }, 
+  },
+    balancing: {
+    startTime: { type: String, default: "08:00" },   
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 }, 
+  },
+    
+    assemblingOP: {
+    startTime: { type: String, default: "08:00" },   
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 }, 
+  },
+    assemblingBV: {
+    startTime: { type: String, default: "08:00" }, 
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 }, 
+  },
+    assemblingMTF: {
+    startTime: { type: String, default: "08:00" }, 
+    dayResources: { type: Number, default: 8 },
+    adjustment: { type: Number, default: 0 },
+    allWorkDays: { type: Number, default: 0 },
+    totalResources: { type: Number, default: 0 },
+    requiredResources: { type: Number, default: 0 }, 
+  },
+    assemblingUPKP: {
+    startTime: { type: String, default: "08:00" },   
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
@@ -101,21 +106,17 @@ const Resource = new Schema({
     requiredResources: { type: Number, default: 0 }, 
   },
 
-    documentationSAU: { 
+    documentationSAU: {
+    startTime: { type: String, default: "08:00" },   
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },
     totalResources: { type: Number, default: 0 },
     requiredResources: { type: Number, default: 0 }, 
   },
-    deliverySAU: {     
-    dayResources: { type: Number, default: 8 },
-    adjustment: { type: Number, default: 0 },
-    allWorkDays: { type: Number, default: 0 },
-    totalResources: { type: Number, default: 0 },
-    requiredResources: { type: Number, default: 0 }, 
-  },
+    
     assemblingSAU: { 
+    startTime: { type: String, default: "08:00" },
     dayResources: { type: Number, default: 8 },
     adjustment: { type: Number, default: 0 },
     allWorkDays: { type: Number, default: 0 },

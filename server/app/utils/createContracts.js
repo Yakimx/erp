@@ -5,25 +5,25 @@ const  findLaboriousness  = require("./findLaboriousness");
 
 
 const createContracts = (objData, laboriousness) => {
-  
+  //commitmentdate="14.06.2023" manufacturedate="10.07.2023">
   let contracts = objData.map((contract) => {
-    let { number, date, status, statusdate, deliverydays, commitmentdate } =
+    let { number, date, status, statusdate, deliverydays, commitmentdate, manufacturedate } =
       contract.invoice[0].$;
 
     let items = contract.invoice[0].item;
-    let completionDate =
-      deliverydays > 0
-        ? new Date(
-            deliverydays * 24 * 60 * 60 * 1000 +
-              Date.parse(statusdate.split('.').reverse().join('.'))
-          )
-            .toLocaleDateString()
-        : commitmentdate;
+    let completionDate = manufacturedate;
+      // deliverydays > 0
+      //   ? new Date(
+      //       deliverydays * 24 * 60 * 60 * 1000 +
+      //         Date.parse(statusdate.split('.').reverse().join('.'))
+      //     )
+      //       .toLocaleDateString()
+      //   : commitmentdate;
 
     return new Contract({
       customer: contract.$.name,
       contractNumber: number,
-      startDate: date,
+      startDate: commitmentdate,
       deliveryDays: +deliverydays,
       status: status,
       statusDate: statusdate,

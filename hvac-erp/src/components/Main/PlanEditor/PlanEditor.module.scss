@@ -86,14 +86,7 @@
     }
 }
 
-// .row{
-//     display: grid;
-//     grid-template-columns: repeat(10,1fr);
-//     grid-template-rows: 2rem;
-//     justify-items: center;
-//     align-items: center;
-//     border-bottom: 2px groove rgb(230, 230, 230);
-//     }
+
 
 .headRow{
     
@@ -131,7 +124,7 @@
 }
 
 .inputDate{  
-
+    padding-left: 1rem;
     background-color: transparent;         
     text-align: left;
     font-family: 'Roboto', sans-serif;
