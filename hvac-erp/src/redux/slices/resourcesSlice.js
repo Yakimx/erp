@@ -101,6 +101,8 @@ export const resourcesSlice = createSlice({
       state.objResources.resources.areas[action.payload.target].adjustment = action.payload.value;
     },
 
+    
+
 
     saveValue: (state, action) => {},
     updateValue: (state, action) => {},
