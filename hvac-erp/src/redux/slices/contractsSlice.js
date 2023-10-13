@@ -20,9 +20,29 @@ const initialState = {
     'documentationSAU',    
     'assemblingSAU',
   ],
+  areasDesc: [
+    'Документация',    
+    'Рубка',
+    'Гибка',
+    'Сварка',
+    'Покраска',
+    'Прокатка',
+    'Балансировка',
+    'Сборка ОП',
+    'Сборка БВ',
+    'Сборка МТФ',
+    'Сборка УПКП',
+    'Документация САУ',    
+    'Сборка САУ',
+  ],
+  
   delivery: [    
     'delivery',    
     'deliverySAU',    
+  ],
+  deliveryDesc: [    
+    'Снабжение',    
+    'Снабжение САУ',    
   ],
   status: "loading", //loading | success|error
   statusUpdate: "loading", //loading | success|error
@@ -185,7 +205,7 @@ export const contractsSlice = createSlice({
     setValueLab: (state, action) => {
       let {value, index, key} = action.payload;
 
-      let maxValue = 20;
+      let maxValue = 999;
       value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
 
       state.activeContract.contract.products[

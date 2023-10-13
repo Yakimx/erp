@@ -23,7 +23,7 @@ const Resource = () => {
     const {disabledInput, objResources } = useSelector((state)=>state.resources);
     const {lastDate, checkBoxDate } = objResources.config;
     const {resources } = objResources;    
-    const {areas} = useSelector((state)=>state.contracts);
+    const {areas, areasDesc} = useSelector((state)=>state.contracts);
 
 
   React.useEffect(()=>{
@@ -84,7 +84,7 @@ const Resource = () => {
     
     
      <div className={styles.date}>
-      Ресурсы предприятия до 
+      {/* Ресурсы предприятия до 
      <input type="date" min={new Date().toLocaleDateString().split('.').reverse().join('-')} 
             onChange={(e)=>onChangeLastDate(e.target.value.split('-').reverse().join('.'))} 
             disabled={disabledInput || checkBoxDate} 
@@ -96,7 +96,7 @@ const Resource = () => {
                           checked={checkBoxDate} />
                     Дата последнего договора
                    </div>)
-            }
+            } */}
                  
     </div> 
      
@@ -104,23 +104,12 @@ const Resource = () => {
 
        <div className={styles.headRow}>   
        <div></div>       
-       <div>Документация</div>
     
-    <div>Рубка</div>
-    <div>Гибка</div>
-    <div>Сварка</div>
-    <div>Покраска</div>
-    <div>Прокатка</div>
-    <div>Балансировка</div>
-    <div>Сборка ОП</div>
-    <div>Сборка БВ</div>
-    <div>Сборка МТФ</div>
-    <div>Сборка УПКП</div>
-
-    <div>Документация САУ</div>
-    
-    <div>Сборка САУ</div>
-       
+            {
+              areasDesc.map((item, i)=><div key = {i}>{item}</div>)
+            }
+        
+           
        </div>
       
     <div className={styles.rows}> 
@@ -138,7 +127,7 @@ const Resource = () => {
 
 
     <div className={styles.row}>
-    <div>Доступно в день</div>      
+    <div>Доступно в день, минут</div>      
 
     {   
       areas.map((area,index)=>{

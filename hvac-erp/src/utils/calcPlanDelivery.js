@@ -2,7 +2,7 @@ import { sortDateUp, sortDateDown } from "./sortDate";
 import { getWorkDay } from "./calcWorkDay";
 import { isErrorLab } from "./isErrorLab";
 
-export const calcPlanDelivery = (typeDelivery, contracts, objResources, sector) => {
+export const calcPlanDelivery = (typeDelivery, contracts, objResources, sector, sectorDesc) => {
   let startPlanDate = objResources.config.startPlanDate;  
   
   let plan = 
@@ -59,7 +59,9 @@ export const calcPlanDelivery = (typeDelivery, contracts, objResources, sector) 
           completionDateDesired: contract.completionDateDesired,          
           timeCodeStart: product.delivery[sector] + 20*60*60*1000,
           timeCodeEnd: product.delivery[sector] + 20*60*60*1000,
-          delivery: product.delivery[sector],          
+          delivery: product.delivery[sector], 
+          sector: sectorDesc,
+              
        }} 
 
     })

@@ -1,4 +1,5 @@
-export const url = "http://10.10.16.2:8008";
+//export const url = "http://10.10.16.2:8008";
+export const url = "http://127.0.0.1:8008";
 //export const url = "https://d199-178-120-50-67.ngrok-free.app";
 
 export const routes = {

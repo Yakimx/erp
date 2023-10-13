@@ -18,6 +18,7 @@ import Laboriousness from './Laboriousness/Laboriousness';
 
 
 
+
 const Main = () => {
 
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ React.useEffect(() => {
 
 return (
     <div className={styles.root}>  
+
 
 <Chart />      
 <TabBar listTab={listTab} setActiveTab={(i)=>setActiveTab(i)} activeTabListTab={activeTabListTab}/>

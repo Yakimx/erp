@@ -24,6 +24,7 @@ const PlanEditor = () => {
   const dispatch = useDispatch();
   const {contract} = useSelector((state)=>state.contracts.activeContract);
   const {disabledInput} = useSelector((state)=>state.contractEditor);
+  const {areasDesc, deliveryDesc} = useSelector((state)=>state.contracts);
 
   const onClickEditButton = (bool)=>{
     dispatch(setDisabledInput(bool));
@@ -172,24 +173,11 @@ const PlanEditor = () => {
 
     <div>Наименование</div>    
     <div>Кол-во</div>
+        
+             {
+              [...areasDesc, ...deliveryDesc].map((item, i)=><div key = {i}>{item}</div>)
+            }
     
-    <div>Документация</div>
-    
-    <div>Рубка</div>
-    <div>Гибка</div>
-    <div>Сварка</div>
-    <div>Покраска</div>
-    <div>Прокатка</div>
-    <div>Балансировка</div>
-    <div>Сборка ОП</div>
-    <div>Сборка БВ</div>
-    <div>Сборка МТФ</div>
-    <div>Сборка УПКП</div>
-    <div>Документация САУ</div>    
-    <div>Сборка САУ</div>
-    <div>Снабжение</div>
-    <div>Снабжение САУ</div>
-
     
     </div>
    

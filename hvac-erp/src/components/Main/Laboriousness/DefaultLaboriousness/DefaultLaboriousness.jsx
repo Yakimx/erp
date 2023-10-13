@@ -18,6 +18,7 @@ const DefaultLaboriousness = () => {
 
   const dispatch = useDispatch();
   const {status, disabledInput, laboriousness, activeItem} = useSelector((state)=>state.laboriousness);
+  const {areasDesc} = useSelector((state)=>state.contracts);
   
   const onClickEditButton = (bool)=>{
     dispatch(setDisabledInput(bool));
@@ -63,7 +64,7 @@ const DefaultLaboriousness = () => {
       }  
 
 <div className={styles.label}>
-    Трудоёмкости в часах:
+    Трудоёмкости в минутах:
 </div>
 
 
@@ -72,23 +73,10 @@ const DefaultLaboriousness = () => {
 <div>Арт.</div>
 <div>Наименование</div>
 
+            {
+              areasDesc.map((item, i)=><div key = {i}>{item}</div>)
+            }
 
-<div>Док.</div>
-    
-    <div>Рубка</div>
-    <div>Гибка</div>
-    <div>Сварка</div>
-    <div>Покрас.</div>
-    <div>Прокатка</div>
-    <div>Балансир.</div>
-    <div>Сборка ОП</div>
-    <div>Сборка БВ</div>
-    <div>Сборка МТФ</div>
-    <div>Сборка УПКП</div>
-
-    <div>Док. САУ</div>
-    
-    <div>Сборка САУ</div>
 
 </div>
 

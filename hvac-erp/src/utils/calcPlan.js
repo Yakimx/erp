@@ -6,7 +6,7 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
   let startPlanDate = +new Date(Date.parse(objResources.config.startPlanDate.split(".").reverse().join(".")) + new Date().getTimezoneOffset()*60*1000);  
   let startTime = +objResources.resources.areas[sector].startTime.split(':')[0]*60*60*1000 + +objResources.resources.areas[sector].startTime.split(':')[1]*60*1000;
   
-  let resourcesDay = objResources.resources.areas[sector].dayResources;
+  let resourcesDay = objResources.resources.areas[sector].dayResources * 60 * 1000;
   let weekend = objResources.config.weekend;
   
   let plan = 
@@ -36,6 +36,11 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
     timeCodeEnd = 0;
     deliveryOp = 0;
     deliverySau = 0;
+    prevSector = 0;
+    prevStartTime = 0;    
+    involvedResource = 0;
+    freeResource = 0;
+    windowResource = 0;
     planItem  = [
       {
       newDay:  false,
@@ -70,13 +75,12 @@ export const calcPlan = (typeDelivery, contracts, objResources, sector, prev) =>
           indexItem: indexProduct,
           completionDateDesired: objPrev.date,
           shift: objPrev.shift,
-          resourcesRequired:Math.round(product.resourcesRequired[sector] * (product.quantity - product.quantityMade[sector])*1000) / 1000,
+          resourcesRequired: Math.round(product.resourcesRequired[sector]* 60 * 1000 * (product.quantity - product.quantityMade[sector])*1000) / 1000,
           timeCodeStart: 0,
           timeCodeEnd: 0,
           sector: sector,
           startTime: startTime,
-          prevSector: sector,
-          prevStartTime: startTime,
+          
        }} 
 
     })
@@ -95,7 +99,7 @@ for(let i=0; i < plan.itemsPlan.length; i++){
   let day = Math.floor((startPlanDate)/(24*60*60*1000)) + 1 ; 
   let time = startTime;
   let timeCodeStart = day*24*60*60*1000 + time;
-  let endDayTime = startTime + resourcesDay*60*60*1000;
+  let endDayTime = startTime + resourcesDay;
 
   
   //let timeCodeStart = day*24*60*60*1000 + startTime;
@@ -147,7 +151,7 @@ for(let i=0; i < plan.itemsPlan.length; i++){
   plan.itemsPlan[i].timeCodeStart = day*24*60*60*1000 + time; 
 
   let dayEnd = day + Math.floor(plan.itemsPlan[i].resourcesRequired/resourcesDay);
-  let timeEnd = time + (plan.itemsPlan[i].resourcesRequired % resourcesDay)*60*60*1000;
+  let timeEnd = time + plan.itemsPlan[i].resourcesRequired % resourcesDay;
  
   
   if(timeEnd > (endDayTime)) {
@@ -175,7 +179,8 @@ for(let i=0; i < plan.itemsPlan.length; i++){
   let day = Math.floor((startPlanDate + startTime)/(24*60*60*1000)); 
   let time = startTime;
   let timeCodeStart = day*24*60*60*1000 + time;
-  let endDayTime = startTime + resourcesDay*60*60*1000;
+  let endDayTime = startTime + resourcesDay;
+
 
   if (i==0){
     
@@ -191,17 +196,24 @@ for(let i=0; i < plan.itemsPlan.length; i++){
       timeCodeEnd: timeCodeEnd});
   } else{
 
-    let end = plan.itemsPlan[i-1].timeCodeEnd - startTime - (resourcesDay)*60*60*1000; 
-    let start = plan.itemsPlan[i].timeCodeStart - startTime - 24*60*60*1000; 
-    
+    let end = plan.itemsPlan[i-1].timeCodeEnd - startTime - resourcesDay; 
+    let start = plan.itemsPlan[i].timeCodeStart - startTime - 24*60*60*1000;     
     let isWind = end == start ? false : true
+    
+    timeCodeStart = (plan.itemsPlan[i-1].timeCodeEnd % (24*60*60*1000)) == endDayTime
+    ? (Math.floor(plan.itemsPlan[i-1].timeCodeEnd/(24*60*60*1000)) + 1)*24*60*60*1000 + startTime
+    : plan.itemsPlan[i-1].timeCodeEnd
+    
+   let timeCodeEnd = (plan.itemsPlan[i].timeCodeStart % (24*60*60*1000)) == startTime
+    ? (Math.floor(plan.itemsPlan[i].timeCodeStart/(24*60*60*1000)) - 1)*24*60*60*1000 + endDayTime
+    : plan.itemsPlan[i].timeCodeStart
 
     if((plan.itemsPlan[i].timeCodeStart > plan.itemsPlan[i-1].timeCodeEnd) && isWind) windows.push({...new Item, 
       window: true,
       id: i + sector,
       completionDateDesired: plan.itemsPlan[i-1].completionDateDesired,
-      timeCodeStart: plan.itemsPlan[i-1].timeCodeEnd, 
-      timeCodeEnd: plan.itemsPlan[i].timeCodeStart });
+      timeCodeStart: timeCodeStart, 
+      timeCodeEnd: timeCodeEnd });
 }
 }
 
@@ -225,7 +237,7 @@ plan.itemsPlan = plan.itemsPlan.map((item, index)=>{
         : startTime + (startDay + j)*24*60*60*1000 + timeZone,
         endDate: j==days 
         ? item.timeCodeEnd + timeZone
-        : startTime + resourcesDay*60*60*1000 + (startDay + j)*24*60*60*1000  + timeZone,
+        : startTime + resourcesDay + (startDay + j)*24*60*60*1000  + timeZone,
         
        }
 
@@ -262,13 +274,61 @@ for(let i = 0; i < plan.itemsPlan.length; i++){
   }
 }
 
- 
+if(plan.itemsPlan.length>0){
+
+
+
+ plan.windowResource = plan.itemsPlan.reduce((pre, item)=>{
+  return pre + item.planItem.reduce((prev, curr)=>{
+        return item.window ? (prev + (curr.endDate - curr.startDate)) : prev;  
+  },0)   
+  },0)
+
+ plan.involvedResource = plan.itemsPlan.reduce((pre, item)=>{
+  return pre + item.planItem.reduce((prev, curr)=>{
+        return !item.window ? (prev + (curr.endDate - curr.startDate)) : prev;  
+  },0)   
+  },0)
+
+  
+ plan.windowResource = plan.windowResource;
+ plan.involvedResource = plan.involvedResource ;
+ plan.resourcesDay = resourcesDay;
+// startDate(pin):1688619600000
+// endDate(pin):1688623200000
+}
+
   return plan;
 };
 
-const plusDay = (date)=>{
-  return new Date(Date.parse(date) + 1*1000*60*60*24).toLocaleDateString().split(".").reverse().join(".")
+
+
+const calcWeekend = (itemsPlan)=>{
+
+for(let i = 0; i < itemsPlan.length; i++){  
+  for(let j = 0; j < itemsPlan[i].planItem.length; j++){
+    
+    let day = new Date(itemsPlan[i].planItem[j].startDate).getDay(); 
+    let flag = false;
+    j = flag ? (j-1) : j
+        
+    if((day == 0 || day == 6) && itemsPlan[i].planItem[j].newDay) {    
+      
+        for(let i2 = i; i2 < itemsPlan.length; i2++){  
+        for(let j2 = j; j2 < itemsPlan[i2].planItem.length; j2++){        
+          itemsPlan[i2].planItem[j2].startDate += 24*60*60*1000;
+          itemsPlan[i2].planItem[j2].endDate += 24*60*60*1000;          
+        }}
+        flag = true;
+    }else  flag = false;   
+    
+  }}
+return itemsPlan;
+
 }
+
+
+
 
 const getDateDesired = (product, prev, dateDesired, shift)=>{
   

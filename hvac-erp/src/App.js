@@ -8,6 +8,7 @@ import Main from "./components/Main/Main";
 import ListContract from "./components/ListContract/ListContract";
 
 import styles from "./App.module.scss";
+import Loader from "./elementsUI/Loader/Loader";
 
 function App() {
   const dispatch = useDispatch();
@@ -54,12 +55,14 @@ React.useEffect(() => {
         <>
         <div className={styles.main}>
             <Main />
+            
           </div>
 
         <div className={styles.listContract}>
-            <ListContract />
+            <ListContract />            
         </div>
 
+        {/* <Loader /> */}
           
         </>
       )}

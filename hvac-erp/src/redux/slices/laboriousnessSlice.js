@@ -73,7 +73,7 @@ export const laboriousnessSlice = createSlice({
     setValue: (state, action) => {
      let {value, index, key} = action.payload;
       
-      let maxValue = 20;
+      let maxValue = 999;
       value = +value > +maxValue ? +maxValue : +value < 0 ? 0 : +value;
 
       state.laboriousness[index].areas[key] = value;

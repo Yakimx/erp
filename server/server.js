@@ -27,7 +27,8 @@ app.use("/list", contractRouter);
 app.use("/resource", resourceRouter);
 app.use("/laboriousness", laboriousnessRouter);
 
-const hostname = '10.10.16.2';
+//const hostname = '10.10.16.2';
+const hostname = '127.0.0.1';
 const port = 8008;
 
 

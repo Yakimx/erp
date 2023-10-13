@@ -6,12 +6,16 @@ import {
   setCorrectDayUp,
   setCorrectDayDown,
 } from "../../../../redux/slices/contractsSlice";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const ProductRow = ({product, number, disabledInput, setValue, inputValue,indexContract, indexItem, type, active, highlight }) => {
 
 const dispatch = useDispatch();
+
+const {areas, delivery, areasDesc, deliveryDesc} = useSelector((state)=>state.contracts);
+  let list = [...areas, ...delivery];
+  let listDisc = [...areasDesc, ...deliveryDesc];
 
 
 
@@ -42,7 +46,7 @@ const dispatch = useDispatch();
        :<div></div>
     }
     
-    <div>{product.prevSector == 0 ? 'нет' : product.prevSector }</div>
+    <div>{product.prevSector == 0 ? 'нет' : listDisc[list.indexOf(product.prevSector,0)] }</div>
     <div  className = {styles.planDate}>      
     
          
@@ -52,8 +56,13 @@ const dispatch = useDispatch();
         return (         
         <div key = {index} className = {highlight==item.startDate ? styles.highlight : styles.nohighlight}> 
        
-        <div className = {styles.date}>{item.newDay == true ? new Date(item.startDate).toLocaleDateString() : ""}</div>        
-        <div >{new Date(item.startDate).toLocaleTimeString()}--{new Date(item.endDate).toLocaleTimeString()}</div>       
+        <div className = {styles.date}>{item.newDay == true ? new Date(item.startDate).toLocaleDateString() : ""}</div>
+        { 
+        product.typeDelivery 
+        ?<div >{new Date(item.startDate).toLocaleDateString()}</div>   
+        :<div >{new Date(item.startDate).toLocaleTimeString()}--{new Date(item.endDate).toLocaleTimeString()}</div>   
+        }        
+            
         
         </div>
         )

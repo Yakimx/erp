@@ -5,6 +5,7 @@ import { calcPlanDelivery } from "../../utils/calcPlanDelivery";
 const initialState = {
   active: -1,
   disabledInput: true,
+  lastTime: 0,
   areasPlan: {
 
   }
@@ -30,7 +31,7 @@ export const planSlice = createSlice({
 
     
     let documentation = calcPlan(false, allContracts, objResources,'documentation');
-    let delivery = calcPlanDelivery(true, allContracts, objResources,'op');
+    let delivery = calcPlanDelivery(true, allContracts, objResources,'op', 'delivery');
     let cutting = calcPlan(false, allContracts, objResources,'cutting', [delivery, documentation]);
     let sheetBender = calcPlan(false, allContracts, objResources,'sheetBender', [cutting, delivery, documentation]);
     let welding = calcPlan(false, allContracts, objResources,'welding', [sheetBender, cutting, delivery, documentation]);
@@ -42,7 +43,7 @@ export const planSlice = createSlice({
     let assemblingMTF = calcPlan(false, allContracts, objResources,'assemblingMTF', [assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
     let assemblingUPKP = calcPlan(false, allContracts, objResources,'assemblingUPKP', [assemblingMTF, assemblingBV, assemblingOP, balancing, rolling, painting, welding, sheetBender, cutting, delivery, documentation]);
     let documentationSAU = calcPlan(false, allContracts, objResources,'documentationSAU');
-    let deliverySAU = calcPlanDelivery(true, allContracts, objResources,'sau');
+    let deliverySAU = calcPlanDelivery(true, allContracts, objResources,'sau', 'deliverySAU');
     let assemblingSAU = calcPlan(false, allContracts, objResources,'assemblingSAU', [deliverySAU, documentationSAU]);
       
     state.areasPlan['documentation'] = documentation;
@@ -60,7 +61,14 @@ export const planSlice = createSlice({
     state.areasPlan['documentationSAU'] = documentationSAU;
     state.areasPlan['deliverySAU'] = deliverySAU;
     state.areasPlan['assemblingSAU'] = assemblingSAU;
-    },
+
+    let lastTime = 0;
+    for (let key in state.areasPlan){
+      state.areasPlan[key].itemsPlan.map(item => item.timeCodeEnd);      
+      lastTime = Math.max(Math.max.apply(null, state.areasPlan[key].itemsPlan.map(item => item.timeCodeEnd)), lastTime);
+    }
+    state.lastTime = lastTime;    
+    },  
 
 
     saveValue: (state, action) => {},
